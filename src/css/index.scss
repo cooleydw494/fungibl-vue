@@ -1,3 +1,6 @@
 @import "./mixins.scss";
 @import "./animations.scss";
 @import "./reset.scss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

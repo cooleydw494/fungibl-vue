@@ -1,7 +1,7 @@
 <template>
   <page-container class="hello">
     <h1 class="h2">{{ msg }}</h1>
-    <h3>Quick-start</h3>
+    <h3 class="bg-blue-500">Quick-start</h3>
     <p>
       Here from the
       <a
