@@ -33,6 +33,12 @@ const StoreMixin = defineComponent({
       // See docs for @jackcom/raphsducks to see how the global store works.
       this.unsubscribeStore = store.subscribeToKeys(this.onStoreUpdate, keys);
     },
+
+    setLocale(locale?: string) {
+      // 'en','es',...
+      this.$i18n.locale = locale || navigator.languages[1]
+    },
+
   },
 });
 

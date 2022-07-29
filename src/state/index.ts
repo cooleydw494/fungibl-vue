@@ -3,9 +3,6 @@ import { NETWORKS } from "@jackcom/reachduck";
 
 /** Your global application state. Add any properties you need here */
 const store = createState({
-  /** @demo Counter property. You can remove this */
-  count: 0,
-
   /** When true, user has connected a wallet */
   connected: false,
 
