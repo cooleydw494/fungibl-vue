@@ -29,7 +29,7 @@ export default defineComponent({
       return this.$i18n.locale === 'en'
           ? 'es'
           : 'en'
-    }
+    },
   },
 
   mounted() {

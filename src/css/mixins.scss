@@ -1,5 +1,4 @@
-/* Sizes (all) */
-
+// Global Variables
 $xxxlg: 5.25rem;
 $xxlg: 3.2rem;
 $xlg: 2.8rem;
@@ -11,11 +10,6 @@ $xxs: 0.5rem;
 $xxxs: 0.25rem;
 $tiny: 0.12rem;
 $xtiny: 0.05rem;
-
-// Theme stuff
-$primary: #2c3e50;
-$secondary: #3fb983;
-$link: #36b4c7;
 
 @mixin hide-scrollbar {
   -ms-overflow-style: none;
@@ -49,7 +43,6 @@ $link: #36b4c7;
 
 @mixin app-font {
   font-family: "Open Sans", sans-serif;
-  letter-spacing: 0.04rem;
 }
 
 @mixin heading-font() {

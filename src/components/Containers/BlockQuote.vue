@@ -16,7 +16,7 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 blockquote {
-  border-left: 0.4rem solid $primary;
+  border-left: 0.4rem solid theme('colors.faqua');
   padding-left: 0.4rem;
   border: 0.01rem solid #ccc1;
 }
