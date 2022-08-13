@@ -11,6 +11,17 @@ $xxxs: 0.25rem;
 $tiny: 0.12rem;
 $xtiny: 0.05rem;
 
+$fwhite: theme('colors.fwhite');
+$fgreen: theme('colors.fgreen');
+$fyellow: theme('colors.fyellow');
+$forange: theme('colors.forange');
+$fpink: theme('colors.fpink');
+$fblue: theme('colors.fblue');
+$faqua: theme('colors.faqua');
+$fblurple: theme('colors.fblurple');
+$fdarkblue: theme('colors.fdarkblue');
+$fdark: theme('colors.fdark');
+
 @mixin hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -42,11 +53,11 @@ $xtiny: 0.05rem;
 }
 
 @mixin app-font {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Georama", sans-serif;
 }
 
 @mixin heading-font() {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Georama", sans-serif;
 }
 
 @mixin h1 {
@@ -81,6 +92,10 @@ $xtiny: 0.05rem;
   font-size: $font-size;
   line-height: $font-size;
 }
+
+//@mixin background($color, $alpha: 1) {
+//  background-color: rgba(red($color), green($color), blue($color), $alpha);
+//}
 
 /* FLEX */
 @mixin flex($direction: row, $content-align: flex-start) {

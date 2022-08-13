@@ -1,23 +1,33 @@
 <template>
   <header>
-    <img class="logo" alt="Vue logo" src="../assets/logo.png" />
-
-    <div>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-      <connect-wallet />
+    <div class="logo-icons-container">
+      <router-link v-if="isSubmit" to="/roll">
+        <img src="../assets/icons/Submit-Icon.svg" alt="Submit Icon - Click to Switch to Roll">
+      </router-link>
+      <router-link v-if="!isSubmit" to="/submit">
+        <img src="../assets/icons/Roll-Icon.svg" alt="Roll Icon - Click to Switch to Submit">
+      </router-link>
+      <div class="logo">
+        <img alt="Vue logo" src="../assets/Logo-Full.svg" />
+      </div>
+      <router-link to="/analytics">
+        <img src="../assets/icons/Analytics-Icon.svg" alt="Click to go to Analytics">
+      </router-link>
     </div>
   </header>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { defineComponent } from "vue";
-import ConnectWallet from "./ConnectWallet.vue";
 
 export default defineComponent({
   name: "AppNav",
-
-  components: { ConnectWallet },
+  components: { /**/ },
+  computed: {
+    isSubmit() {
+      return this.$route.name === 'submit'
+    },
+  }
 });
 </script>
 
@@ -25,15 +35,27 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 header {
-  @include flex($content-align: space-between);
-  background-color: #000;
-  height: 10vmin;
-  padding: 0.4rem;
-  width: 100vw;
+  padding: theme('margin.8') theme('margin.6');
+  width: theme('width.full');
+  text-align: right;
 
-  .logo {
-    height: 8vmin;
-    width: 8vmin;
+  .logo-icons-container {
+    @include flex($content-align: space-between);
+    .logo {
+      padding: 0 theme('padding.8');
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    /* <router-link> becomes <a> */
+    a {
+      img {
+        width: theme('width.14');
+        height: auto;
+      }
+    }
   }
 
   a {

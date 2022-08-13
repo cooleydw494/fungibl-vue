@@ -1,5 +1,5 @@
 <template>
-  <styled-button @click="toggleConnect">{{ connectButtonText }}</styled-button>
+  <styled-button :style="'connect'" @click="toggleConnect">{{ connectButtonText }}</styled-button>
 </template>
 
 <script>
@@ -29,7 +29,7 @@ export default defineComponent({
     connectButtonText() {
       return this.connected
         ? truncateString(this.store.address)
-        : "Connect Wallet";
+        : "CONNECT WALLET";
     },
 
     connected() {

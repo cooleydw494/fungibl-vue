@@ -3,7 +3,7 @@
     <div class="flex justify-around mb-8">
       <global-locale-button></global-locale-button>
     </div>
-    <h1 class="h2 text-fblurple">{{ $t('I love you so much, my silly girl <3') }}</h1>
+    <h1 class="h2 text-fblurple">{{ $t('I love you so much, my silly girl <3') }}KK</h1>
     <h3 class="text-2xl bestfriend">{{ $t("You are my best friend. I can't do any of this without you.") }}</h3>
   </page-container>
 </template>
@@ -21,8 +21,11 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+
+@import "@/css/mixins.scss";
+
 .bestfriend {
-  color: theme('colors.fblue');
+  color: $fblue;
 }
 h3 {
   margin: 40px 0 0;

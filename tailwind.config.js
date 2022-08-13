@@ -13,7 +13,7 @@ module.exports = {
         'faqua': '#10CFC9',
         'fblurple': "#6069F2",
         'fdarkblue': '#1D1934',
-        'fdark': '#1A1A1A',
+        'fdark': 'rgba(26,26,26,.25)',
       },
       fontSize: {
         'xxs': '.65rem',

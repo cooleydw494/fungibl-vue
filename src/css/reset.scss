@@ -1,5 +1,5 @@
-/* 
-  * CSS reset based on meyer reset: modified to pull in 
+/*
+  * CSS reset based on meyer reset: modified to pull in
   * rules and theming from sibling 'mixins.scss' file.
 
   (See Meyer reset here: http://meyerweb.com/eric/tools/css/reset/)
@@ -12,6 +12,7 @@ html{
 	font-size: 18px;
 	height: 100vh;
 	overflow: hidden;
+	background-color: $fdarkblue;
 
 	* {
 		box-sizing: border-box;
@@ -27,8 +28,8 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, input, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -42,7 +43,7 @@ time, mark, audio, video {
 }
 
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -56,7 +57,7 @@ body {
 	overflow-y: auto;
 	padding: 0;
 /* Smooth scrolling haxx -- need this for Glory™ on iOS devices */
-	-webkit-overflow-scrolling: touch; 
+	-webkit-overflow-scrolling: touch;
 }
 
 a {

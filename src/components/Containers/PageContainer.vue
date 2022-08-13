@@ -33,7 +33,7 @@ export default defineComponent({
   }
 
   > hr {
-    background-color: theme('colors.faqua');
+    background-color: $faqua;
     border: 0;
     height: 1px;
     margin: 1.5rem 0;
