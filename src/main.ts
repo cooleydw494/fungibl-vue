@@ -4,7 +4,7 @@ import './registerServiceWorker'
 import router from './router'
 import {createI18n} from 'vue-i18n'
 import messages from './translations'
-// import './css/index.scss'
+import './css/index.scss'
 
 const defaultLanguage = navigator.languages[1] // 'en', 'es', etc
 
