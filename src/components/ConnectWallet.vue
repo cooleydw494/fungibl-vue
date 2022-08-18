@@ -1,5 +1,10 @@
 <template>
-  <styled-button :style="'connect'" @click="toggleConnect">{{ connectButtonText }}</styled-button>
+  <styled-button :style="'connect'" @click="toggleConnect">
+    <div class="flex align-center justify-center">
+      <img class="icon mr-4" src="../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
+      {{ connectButtonText }}
+    </div>
+  </styled-button>
 </template>
 
 <script>
@@ -12,7 +17,7 @@ import {
   connectWallet,
   reconnectWallet,
 } from "@/reach";
-import StyledButton from "./Containers/StyledButton.vue";
+import StyledButton from "./utilities/StyledButton.vue";
 
 export default defineComponent({
   name: "ConnectWallet",
@@ -56,3 +61,13 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+@import "@/css/mixins.scss";
+
+.icon {
+  width: $sp-5;
+  height: auto;
+  display: inline-block;
+}
+</style>

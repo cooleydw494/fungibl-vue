@@ -3,14 +3,14 @@
     <div class="flex justify-around mb-8">
       <global-locale-button></global-locale-button>
     </div>
-    <h1 class="h2 text-fblurple">{{ $t('I love you so much, my silly girl <3') }}KK</h1>
-    <h3 class="text-2xl bestfriend">{{ $t("You are my best friend. I can't do any of this without you.") }}</h3>
+    <h1 class="text-center h2 text-fblurple">{{ $t('I love you so much, my silly girl <3') }}</h1>
+    <h3 class="text-center text-2xl bestfriend">{{ $t("You are my best friend. I can't do any of this without you.") }}</h3>
   </page-container>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import PageContainer from "./Containers/PageContainer.vue";
+import PageContainer from "./utilities/PageContainer.vue";
 import GlobalLocaleButton from "@/components/GlobalLocaleButton";
 
 export default defineComponent({

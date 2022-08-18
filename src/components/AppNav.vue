@@ -1,17 +1,17 @@
 <template>
   <header>
     <div class="logo-icons-container">
-      <router-link v-if="isSubmit" to="/roll">
-        <img src="../assets/icons/Submit-Icon.svg" alt="Submit Icon - Click to Switch to Roll">
+      <router-link v-if="isSubmit" to="/pull">
+        <img src="../assets/icons/Submit-Icon.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
       </router-link>
       <router-link v-if="!isSubmit" to="/submit">
-        <img src="../assets/icons/Roll-Icon.svg" alt="Roll Icon - Click to Switch to Submit">
+        <img src="../assets/icons/Pull-Icon.svg" :alt="$t('Pull Icon - Click to Switch to Submit')">
       </router-link>
       <div class="logo">
-        <img alt="Vue logo" src="../assets/Logo-Full.svg" />
+        <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" />
       </div>
       <router-link to="/analytics">
-        <img src="../assets/icons/Analytics-Icon.svg" alt="Click to go to Analytics">
+        <img src="../assets/icons/Analytics-Icon.svg" :alt="$t('Click to go to Analytics')">
       </router-link>
     </div>
   </header>
@@ -35,14 +35,15 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 header {
-  padding: theme('margin.8') theme('margin.6');
-  width: theme('width.full');
+  padding: $sp-4;
+  width: calc(100 - $sp-4*2);
+  height: auto;
   text-align: right;
 
   .logo-icons-container {
     @include flex($content-align: space-between);
     .logo {
-      padding: 0 theme('padding.8');
+      margin: 0 $sp-8;
       img {
         width: 100%;
         height: auto;
@@ -52,8 +53,8 @@ header {
     /* <router-link> becomes <a> */
     a {
       img {
-        width: theme('width.14');
-        height: auto;
+        width: $sp-18;
+        height: $sp-18;
       }
     }
   }

@@ -1,6 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./index.html', './src/components/*.{vue,js,ts,jsx,tsx}'],
+  safelist: [
+    {
+      pattern: /border-f.*/,
+      variants: ['opacity'],
+    },
+    {
+      pattern: /.*f(white|green|yellow|orange|pink|blue|aqua|blurple|darkblue|dark).*/,
+      variants: ['opacity'],
+    }
+  ],
   theme: {
     extend: {
       colors: {
@@ -18,6 +28,24 @@ module.exports = {
       fontSize: {
         'xxs': '.65rem',
       },
+      spacing: {
+        18: '4.5rem',
+        22: '5.5rem',
+        26: '6.5rem',
+        30: '7.5rem',
+        34: '8.5rem',
+        38: '9.5rem',
+        42: '10.5rem',
+        46: '11.5rem',
+        50: '12.5rem',
+        54: '13.5rem',
+        58: '14.5rem',
+        62: '15.5rem',
+        68: '17rem',
+        76: '19rem',
+        88: '22rem',
+        n4: '-1rem',
+      }
     },
   },
   plugins: [],

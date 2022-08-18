@@ -9,7 +9,7 @@
 import { defineComponent } from "@vue/runtime-core";
 import StoreMixin from "@/mixins/Store.mixin";
 import store from "@/state";
-import StyledButton from "./Containers/StyledButton.vue";
+import StyledButton from "./utilities/StyledButton.vue";
 
 export default defineComponent({
   name: "GlobalCountButton",

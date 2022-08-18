@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-// These routes use route level code-splitting -- import('path-to-component')
-// this generates a separate chunk (about.[hash].js) for each route
-// which is lazy-loaded when the route is visited.
-const routes: Array<RouteRecordRaw> = [
+const host = window.location.host;
+const parts = host.split('.');
+const domainLength = 3; // route1.example.com => domain length = 3
+
+let routes: Array<RouteRecordRaw>;
+const appRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
@@ -12,14 +14,30 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/submit',
     name: 'submit',
-    component: () => import('../views/Submit.vue'), // lazy-loads
+    component: () => import('../components/views/Submit.vue'), // lazy-loads
   },
   {
-    path: '/roll',
-    name: 'roll',
-    component: () => import('../views/Roll.vue'), // lazy-loads
+    path: '/pull',
+    name: 'pull',
+    component: () => import('../components/views/Pull.vue'), // lazy-loads
   },
-];
+]
+
+const marketingRoutes: Array<RouteRecordRaw> = [
+  {
+    path: '/',
+    name: 'home',
+    component: () => import('../components/views/MarketingSite.vue'), // lazy-loads
+  },
+]
+
+if (parts.length === (domainLength - 1) || parts[0] === 'www' || parts[0] === 'staging') {
+  routes = marketingRoutes
+} else if (parts[0] === 'app' || parts[0] === 'staging-app') {
+  routes = appRoutes
+} else {
+  routes = appRoutes
+}
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),

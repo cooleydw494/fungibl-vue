@@ -20,6 +20,8 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 footer {
-
+  position: absolute;
+  bottom: $sp-6;
+  width: 100%;
 }
 </style>

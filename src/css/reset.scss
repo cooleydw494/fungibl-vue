@@ -12,7 +12,6 @@ html{
 	font-size: 18px;
 	height: 100vh;
 	overflow: hidden;
-	background-color: $fdarkblue;
 
 	* {
 		box-sizing: border-box;
@@ -46,43 +45,6 @@ time, mark, audio, video {
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
-}
-
-body {
-	@include app-font();
-	font-size: $sm;
-	height: 100%;
-	margin: 0;
-	overflow-x: hidden;
-	overflow-y: auto;
-	padding: 0;
-/* Smooth scrolling haxx -- need this for Glory™ on iOS devices */
-	-webkit-overflow-scrolling: touch;
-}
-
-a {
-	color: #36b4c7;
-	font-weight: bold;
-	text-decoration: none;
-}
-
-h1, .h1 {
-	@include h1();
-}
-h2, .h2 {
-	@include h2();
-}
-h3, .h3 {
-	@include h3();
-}
-h4, .h4 {
-	@include h4();
-}
-h5, .h5 {
-	@include h5();
-}
-h6, .h6 {
-	@include h6();
 }
 
 blockquote,

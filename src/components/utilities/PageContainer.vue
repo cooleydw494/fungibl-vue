@@ -18,8 +18,6 @@ export default defineComponent({
 .page {
   justify-content: flex-start;
   margin: 0 auto;
-  max-width: 80vmin;
-  min-height: 70vmax;
   padding: 1.5rem 0;
   text-align: left;
 
