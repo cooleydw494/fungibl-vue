@@ -1,16 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./index.html', './src/components/*.{vue,js,ts,jsx,tsx}'],
-  safelist: [
-    {
-      pattern: /border-f.*/,
-      variants: ['opacity'],
-    },
-    {
-      pattern: /.*f(white|green|yellow|orange|pink|blue|aqua|blurple|darkblue|dark).*/,
-      variants: ['opacity'],
-    }
-  ],
+  purge: ['./index.html'],
   theme: {
     extend: {
       colors: {
