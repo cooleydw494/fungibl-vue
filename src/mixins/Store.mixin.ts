@@ -1,5 +1,7 @@
 import { defineComponent } from "@vue/runtime-core";
 import store from "../state/index";
+import {checkSessionExists} from "@jackcom/reachduck";
+import {reconnectWallet, useMyAlgo} from "../reach";
 
 const StoreMixin = defineComponent({
   data(): any {
@@ -38,6 +40,14 @@ const StoreMixin = defineComponent({
       // 'en','es',...
       this.$i18n.locale = locale || navigator.languages[1]
     },
+
+    initWallet() {
+      // check for existing session
+      const { exists, addr } = checkSessionExists()
+      if (!exists || addr === null) return
+      useMyAlgo()
+      reconnectWallet(addr)
+    }
 
   },
 });

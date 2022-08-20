@@ -1,5 +1,5 @@
 <template>
-  <button :class="`button button-${style}`">
+  <button :class="`button button-${buttonStyle}`">
     <slot />
   </button>
 </template>
@@ -10,7 +10,7 @@ import { defineComponent } from "@vue/runtime-core"
 export default defineComponent({
   name: "StyledButton",
   props: {
-    style: {
+    buttonStyle: {
       type: String,
       default: 'default',
     },
@@ -22,25 +22,19 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 .button {
-  width: $sp-32;
-  background: $faqua;
-  border: 0;
-  border-radius: $border-radius-md;
-  color: $fdarkblue;
-  cursor: pointer;
-  margin: 0 $sp-4;
-  padding: $sp-4;
-  font-size: $font-xl;
-  font-weight: 750;
+  @apply w-32 my-0 mx-4 rounded-md cursor-pointer
+  border-2 border-solid
+  bg-faqua text-fdarkblue text-xl font-bolder;
   font-stretch: 115%;
 }
 
 .button-connect {
-  width: $sp-72;
-  background-color: $fdark;
-  color: $faqua;
-  border: theme('borderWidth.2') solid $faqua;
-  padding: $sp-2 $sp-4;
+  @apply w-72 py-2 px-4 bg-fdark text-faqua border-faqua/50;
+}
+
+.button-small {
+  @apply inline-block w-26 mx-3 py-2 px-1 bg-fblue border-fyellow text-sm text-fdarkblue;
+  font-stretch: 100%;
 }
 
 </style>

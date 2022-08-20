@@ -10,8 +10,6 @@
         <slot name="secondary" />
       </div>
     </div>
-
-    <div class="text-fblue border-fblue/50 text-forange border-forange/50 text-fyellow border-fyellow/50 text-fpink border-fpink/50"></div>
   </div>
 </template>
 
@@ -33,11 +31,11 @@ export default defineComponent({
   computed: {
     primaryClasses() {
       let color = this.primaryColor
-      return `rectangle primary border-${color} border-opacity-50 text-${color}`
+      return `rectangle primary border-${color}/50 text-${color}`
     },
     secondaryClasses() {
       let color = this.secondaryColor
-      return `rectangle secondary border-${color} border-opacity-50 text-${color}`
+      return `rectangle secondary border-${color}/50 text-${color}`
     }
   }
 });
@@ -47,40 +45,25 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 .two-rectangles {
-  width: $sp-72;
-  margin-right: $sp-n4;
-  overflow: hidden;
+  @apply w-72 -mr-4 overflow-hidden;
 
   .rectangle {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: $sp-72;
-    min-height: $sp-24;
-
-    border-width: 2px;
-    border-style: solid;
-    border-radius: $border-radius-md;
-
-    // border and text-colors are set with tailwind classes
+    @apply flex flex-col justify-center w-72 min-h-24;
+    @apply bg-fdark rounded-md border-solid border-2;
 
     &.primary {
-      z-index: 5;
-      background-color: $fdark;
-      margin-left: $sp-4;
-      padding-left: $sp-10;
-
-      .primary-content {
-
-      }
+      // border/text color set dynamically in template
+      @apply z-10 ml-4 pl-10;
     }
 
     &.secondary {
-      background-color: $fdark;
-      margin-left: $sp-8;
-      margin-top: -2px;
-      padding-left: $sp-6;
-      border-radius: 0 $border-radius-md $border-radius-md $border-radius-md;
+      // border/text color set dynamically in template
+      @apply ml-8 -mt-0.5 pl-6 rounded-md rounded-tl-none;
+
+      .secondary-content {
+        @apply flex items-center;
+      }
+
     }
 
   }

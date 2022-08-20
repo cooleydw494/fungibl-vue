@@ -18,6 +18,12 @@ const store = createState({
   /** Reach `networkAccount` balance */
   balance: "0",
 
+  /** TODO: Get wallet NFTs */
+  userNfts: [],
+
+  /** TODO: Calculate actual Pull Cost */
+  pullCost: 2000000,
+
   /** Current configured network */
   currentNetwork: NETWORKS.ALGO.abbr,
 

@@ -2,10 +2,10 @@
   <header>
     <div class="logo-icons-container">
       <router-link v-if="isSubmit" to="/pull">
-        <img src="../assets/icons/Submit-Icon.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
+        <img src="../assets/icons/Submit-Icon-Green.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
       </router-link>
       <router-link v-if="!isSubmit" to="/submit">
-        <img src="../assets/icons/Pull-Icon.svg" :alt="$t('Pull Icon - Click to Switch to Submit')">
+        <img src="../assets/icons/Pull-Icon-Green.svg" :alt="$t('Pull Icon - Click to Switch to Submit')">
       </router-link>
       <div class="logo">
         <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" />

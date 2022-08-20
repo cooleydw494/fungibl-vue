@@ -2,10 +2,10 @@
   <page-container>
     <div>
       <top-or-left-panel>
-        <img class="icon" src="../../assets/icons/Submit-Icon.svg" :alt="$t('Submit Icon')">
+        <img class="icon" src="../../assets/icons/Submit-Icon-Green.svg" :alt="$t('Submit Icon')">
         <two-rectangles primary-color="fblue" secondary-color="forange">
           <template #primary>
-            <h4>MarketingSite</h4>
+            <h4>Marketing Site</h4>
             <p class="font-bold">to the pool to get <span class="text-fpink">$FUN</span></p>
           </template>
           <template #secondary>

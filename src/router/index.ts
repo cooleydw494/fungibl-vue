@@ -21,6 +21,11 @@ const appRoutes: Array<RouteRecordRaw> = [
     name: 'pull',
     component: () => import('../components/views/Pull.vue'), // lazy-loads
   },
+  {
+    path: '/analytics',
+    name: 'analytics',
+    component: () => import('../components/views/MarketingSite.vue') // lazy-loads
+  },
 ]
 
 const marketingRoutes: Array<RouteRecordRaw> = [

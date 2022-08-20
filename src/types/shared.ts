@@ -1,4 +1,7 @@
 import { Stdlib_User } from "@reach-sh/stdlib/interfaces";
+import {providers} from "@reach-sh/stdlib/dist/types/cfxers";
+import Provider = providers.Provider;
+import {ProviderEnv, ProviderName, Token, ContractInfo, Address, NetworkAccount, Ty, Backend, Account} from "@reach-sh/stdlib/dist/types/ALGO";
 
 /** Reach StdLib instance */
 type BigNumber = any;
@@ -21,7 +24,7 @@ export type NetworkData = {
 };
 
 /** StdLib Helper Interface */
-export type ReachStdLib = Stdlib_User<any> & {
+export type ReachStdLib = Stdlib_User<Provider, ProviderEnv, ProviderName, Token, ContractInfo, Address, NetworkAccount, Ty, Backend, Account> & {
   [x: string]: any;
   /* Properties */
   atomicUnit: string;

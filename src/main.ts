@@ -6,7 +6,8 @@ import {createI18n} from 'vue-i18n'
 import messages from './translations'
 import './css/index.scss'
 
-const defaultLanguage = navigator.languages[1] // 'en', 'es', etc
+// 'en', 'es', etc
+const defaultLanguage = navigator.language.substr(0,2)
 
 const i18n = createI18n({
     locale: defaultLanguage,

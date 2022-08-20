@@ -2,18 +2,8 @@
   <page-container>
     <div>
       <top-or-left-panel>
-        <img class="icon" src="../../assets/icons/Submit-Icon.svg" :alt="$t('Submit Icon')">
-        <two-rectangles primary-color="fblue" secondary-color="forange">
-          <template #primary>
-            <h4>SUBMIT AN NFT</h4>
-            <p class="font-bold">to the pool to get <span class="text-fpink">$FUN</span></p>
-          </template>
-          <template #secondary>
-            <p class="font-bold">Connect your wallet</p>
-            <p class="font-bold">To browse NFTs from</p>
-            <p class="font-bold">your collection</p>
-          </template>
-        </two-rectangles>
+        <img class="icon" src="../../assets/icons/Submit-Icon-Blue.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
+        <submission-headers></submission-headers>
       </top-or-left-panel>
       <bottom-or-right-panel>
 
@@ -23,25 +13,38 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import PageContainer from "../utilities/PageContainer.vue";
-import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel";
-import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel";
-import TwoRectangles from "@/components/utilities/TwoRectangles";
+import { defineComponent } from "vue"
+import PageContainer from "../utilities/PageContainer.vue"
+import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel"
+import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel"
+import SubmissionHeaders from "@/components/utilities/SubmissionHeaders"
+import StoreMixin from "@/mixins/Store.mixin"
 
 export default defineComponent({
-  components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, TwoRectangles },
+
+  components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, SubmissionHeaders },
+
   name: "Submit",
+
+  mixins: [StoreMixin],
+
+  // data: () => ({
+  //   store: { /* add anything this component uses */ },
+  // }),
+
+  // mounted() {
+  //   const storeKeys = Object.keys(this.store)
+  //   this.subscribe(storeKeys)
+  // },
+
 });
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 @import "@/css/mixins.scss";
 
 .icon {
-  width: $sp-32;
-  height: $sp-32;
-  margin-left: $sp-8;
+  @apply w-32 h-32 ml-8;
 }
+
 </style>

@@ -1,16 +1,18 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./index.html', './src/components/*.{vue,js,ts,jsx,tsx}'],
-  purge: ['index.html'],
+  content: [
+      './public/index.html',
+    './src/components/*.{vue,js,ts}',
+    './src/components/views/*.vue',
+    './src/components/utilities/*.vue'
+  ],
   safelist: [
     {
       pattern: /border-f.*/,
-      variants: ['opacity'],
     },
     {
       pattern: /.*f(white|green|yellow|orange|pink|blue|aqua|blurple|darkblue|dark).*/,
-      variants: ['opacity'],
-    }
+    },
   ],
   theme: {
     extend: {
@@ -29,6 +31,9 @@ module.exports = {
       fontSize: {
         'xxs': '.65rem',
       },
+      fontWeight: {
+        'bolder': '750',
+      },
       spacing: {
         18: '4.5rem',
         22: '5.5rem',
@@ -46,7 +51,10 @@ module.exports = {
         76: '19rem',
         88: '22rem',
         n4: '-1rem',
-      }
+      },
+      minHeight: ({ theme }) => ({
+        ...theme('spacing'),
+      }),
     },
   },
   plugins: [],

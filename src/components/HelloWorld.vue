@@ -11,7 +11,7 @@
 <script>
 import { defineComponent } from "vue";
 import PageContainer from "./utilities/PageContainer.vue";
-import GlobalLocaleButton from "@/components/GlobalLocaleButton";
+import GlobalLocaleButton from "@/components/utilities/GlobalLocaleButton";
 
 export default defineComponent({
   components: { PageContainer, GlobalLocaleButton },

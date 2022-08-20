@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import ConnectWallet from "./ConnectWallet.vue";
+import ConnectWallet from "./utilities/ConnectWallet.vue";
 
 export default defineComponent({
   name: "AppFooter",
@@ -20,8 +20,6 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 footer {
-  position: absolute;
-  bottom: $sp-6;
-  width: 100%;
+  @apply absolute bottom-6 w-full;
 }
 </style>
