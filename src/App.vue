@@ -16,13 +16,7 @@ export default {
 
   mixins: [StoreMixin],
 
-  // data: () => ({
-  //   store: { /* add anything this component uses */ },
-  // }),
-
   mounted() {
-    // const storeKeys = Object.keys(this.store)
-    // this.subscribe(storeKeys)
     this.initWallet();
   },
 };

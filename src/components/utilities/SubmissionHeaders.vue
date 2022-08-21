@@ -49,7 +49,7 @@ export default defineComponent({
 
   mounted() {
     const storeKeys = Object.keys(this.store)
-    this.subscribe(storeKeys)
+    this.store = this.subscribe(storeKeys, true)
   },
 
   computed: {

@@ -2,6 +2,7 @@ import { defineComponent } from "@vue/runtime-core";
 import store from "../state/index";
 import {checkSessionExists} from "@jackcom/reachduck";
 import {reconnectWallet, useMyAlgo} from "../reach";
+import {ApplicationState, Store} from "@jackcom/raphsducks/lib/types";
 
 const StoreMixin = defineComponent({
   data(): any {
@@ -29,25 +30,55 @@ const StoreMixin = defineComponent({
 
     /**
      * Call this on `mount` to link your component to the global state.
-     * The subscription will trigger when any property in `keys` is updated. */
-    subscribe(keys: string[]) {
+     * The subscription will trigger when any property in `keys` is updated.
+     * Optionally returns a keyed object to initialize local component store.
+     * This can prevent lag between component mount and update, as well as
+     * initialization issues on mount when the store has already been updated */
+    subscribe(keys: string[], initializeLocal = false): object|void {
       // Subscription returns an "unsubscribe" function (used in unmount).
       // See docs for @jackcom/raphsducks to see how the global store works.
       this.unsubscribeStore = store.subscribeToKeys(this.onStoreUpdate, keys);
+      // If initializeLocal, return initial object to set on calling component
+      if (initializeLocal) {
+        return this.currentLocalStore(keys)
+      }
+    },
+
+    /**
+     * Get an object of current application state key/values for specified keys.
+     */
+    currentLocalStore(subscribedKeys: string[]): object {
+      const localStore: {[k: string]: any} = {}
+      const currentState: {[k: string]: any} = store.getState()
+      subscribedKeys.forEach((key: string): void => {
+        localStore[key] = currentState[key]
+      })
+      return localStore
+    },
+
+    /**
+     * Get a specific current application state value. You have your reasons.
+     */
+    currentStoreValue(key: string): any {
+      return store[key]
+    },
+
+    /**
+     * Initialize wallet globally from anywhere. Updates to initializing local
+     * stores should make this work perfectly (I think). :thumbs-up:
+     */
+    initWallet(): Promise<any>|void {
+      // check for existing session
+      const { exists, addr } = checkSessionExists()
+      if (!exists || addr === null) return
+      useMyAlgo()
+      return reconnectWallet(addr)
     },
 
     setLocale(locale?: string) {
       // 'en','es',...
       this.$i18n.locale = locale || navigator.languages[1]
     },
-
-    initWallet() {
-      // check for existing session
-      const { exists, addr } = checkSessionExists()
-      if (!exists || addr === null) return
-      useMyAlgo()
-      reconnectWallet(addr)
-    }
 
   },
 });
