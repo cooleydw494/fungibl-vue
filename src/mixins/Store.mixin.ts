@@ -2,7 +2,6 @@ import { defineComponent } from "@vue/runtime-core";
 import store from "../state/index";
 import {checkSessionExists} from "@jackcom/reachduck";
 import {reconnectWallet, useMyAlgo} from "../reach";
-import {ApplicationState, Store} from "@jackcom/raphsducks/lib/types";
 
 const StoreMixin = defineComponent({
   data(): any {
@@ -71,7 +70,6 @@ const StoreMixin = defineComponent({
       // check for existing session
       const { exists, addr } = checkSessionExists()
       if (!exists || addr === null) return
-      useMyAlgo()
       return reconnectWallet(addr)
     },
 

@@ -1,10 +1,17 @@
 <template>
-  <styled-button :button-style="'connect'" @click="toggleConnect">
-    <div class="content-container">
-      <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
-      {{ connectButtonText }}
-    </div>
-  </styled-button>
+  <div>
+    <styled-button :button-style="'connect'" @click="toggleConnect">
+      <div class="content-container">
+        <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
+        {{ connectButtonText }}
+      </div>
+    </styled-button>
+    <modal v-if="showWalletSelect" @close="showWalletSelect = false" center>
+      <div v-for="(provider, index) in providers" :key="index" class="mb-8">
+        <styled-button button-style="connect" darker-bg @click.native="connectTo(provider.value)">{{ provider.name }}</styled-button>
+      </div>
+    </modal>
+  </div>
 </template>
 
 <script>
@@ -13,24 +20,32 @@ import { defineComponent } from "@vue/runtime-core"
 import StoreMixin from "@/mixins/Store.mixin"
 import {
   disconnectWallet,
-  useMyAlgo,
   connectWallet,
   } from "@/reach"
 import StyledButton from "./StyledButton.vue"
+import Modal from "./Modal"
 
 export default defineComponent({
   name: "ConnectWallet",
 
-  components: { StyledButton },
+  components: { StyledButton, Modal },
 
   mixins: [StoreMixin],
 
   data: () => ({
     store: { address: "" },
+    connecting: false,
+    showWalletSelect: false,
+    providers: [
+      { name: "MyAlgo", value: "MyAlgo" },
+      { name: "Pera Wallet", value: "PeraConnect" },
+      { name: "WalletConnect", value: "WalletConnect" },
+    ],
   }),
 
   computed: {
     connectButtonText() {
+      if (this.connecting) return 'Connecting...'
       return this.walletIsConnected
         ? truncateString(this.store.address)
         : "CONNECT WALLET"
@@ -49,8 +64,17 @@ export default defineComponent({
   methods: {
     toggleConnect() {
       if (this.walletIsConnected) return disconnectWallet()
-      useMyAlgo()
-      connectWallet()
+      this.showWalletSelect = true
+    },
+    async connectTo(provider) {
+      this.showWalletSelect = false
+      this.connecting = true
+      await connectWallet(provider).then(() => {
+        console.log('Wallet connected with provider: ' + provider)
+      }).catch(err => {
+        alert(err)
+      })
+      this.connecting = false
     },
   },
 });

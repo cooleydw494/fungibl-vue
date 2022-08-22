@@ -1,5 +1,5 @@
 <template>
-  <button :class="`button button-${buttonStyle}`">
+  <button :class="`button button-${buttonStyle}${darkerBg ? ' darker-bg' : ''}`">
     <slot />
   </button>
 </template>
@@ -14,6 +14,10 @@ export default defineComponent({
       type: String,
       default: 'default',
     },
+    darkerBg: {
+      type: Boolean,
+      default: false,
+    }
   },
 })
 </script>
@@ -29,7 +33,11 @@ export default defineComponent({
 }
 
 .button-connect {
-  @apply w-72 py-2 px-4 bg-fdark text-faqua border-faqua/50;
+  @apply w-72 py-2 px-4 bg-fdark/25 text-faqua border-faqua/50;
+
+  &.darker-bg {
+    @apply bg-fdark/50;
+  }
 }
 
 .button-small {

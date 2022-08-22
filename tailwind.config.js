@@ -26,7 +26,7 @@ module.exports = {
         'faqua': '#10CFC9',
         'fblurple': "#6069F2",
         'fdarkblue': '#1D1934',
-        'fdark': 'rgba(26,26,26,.25)',
+        'fdark': 'rgba(26,26,26)',
       },
       fontSize: {
         'xxs': '.65rem',

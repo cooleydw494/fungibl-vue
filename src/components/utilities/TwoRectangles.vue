@@ -49,7 +49,7 @@ export default defineComponent({
 
   .rectangle {
     @apply flex flex-col justify-center w-72 min-h-24;
-    @apply bg-fdark rounded-md border-solid border-2;
+    @apply bg-fdark/25 rounded-md border-solid border-2;
 
     &.primary {
       // border/text color set dynamically in template

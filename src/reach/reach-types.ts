@@ -59,8 +59,3 @@ export type NetworkData = {
   active?: boolean;
   decimals?: number;
 };
-
-/** StdLib Helper Interface */
-export type ReachStdLib = StdLibUser<Provider, ProviderEnv, ProviderName, Token, ContractInfo, Address, NetworkAccount, Ty, Backend, Account> & {
-  [x: string]: any;
-};
