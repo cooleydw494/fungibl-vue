@@ -1,7 +1,7 @@
 import { defineComponent } from "@vue/runtime-core";
 import store from "../state/index";
 import {checkSessionExists} from "@jackcom/reachduck";
-import {reconnectWallet, useMyAlgo} from "../reach";
+import {reconnectWallet} from "../reach";
 
 const StoreMixin = defineComponent({
   data(): any {

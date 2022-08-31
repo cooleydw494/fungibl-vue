@@ -11,7 +11,8 @@
   "dependencies": {
     "@jackcom/raphsducks": "^2.0.1",
     "@jackcom/reachduck": "^0.4.5",
-    "@reach-sh/stdlib": "^0.1.11-rc.6",
+    "@reach-sh/stdlib": "^0.1.11-rc.8",
+    "algosdk": "^1.19.1",
     "core-js": "^3.6.5",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "register-service-worker": "^1.7.1",
