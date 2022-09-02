@@ -13,9 +13,10 @@
       </p>
       <!-- Connected - Not Enough $FUN -->
       <p v-if="walletState === 'connected_needs_fun'" class="font-bold w-20">
-        {{ $t(`You need more`) }} <span class="text-fpink">{{ $t('$FUN') }} {{ $t('to pull!') }}</span>
+        {{ $t(`You need more`) }} <span class="text-fpink">{{ $t('$FUN') }}{{ $t('!') }}</span>
       </p>
-      <styled-button v-if="walletState === 'connected_needs_fun'" button-style="small">
+      <styled-button v-if="walletState === 'connected_needs_fun'" button-style="small"
+                     @click.native="$router.push('submit')">
         {{ $t('GET $FUN') }}
       </styled-button>
       <!-- Connected - Not Opted In -->
@@ -23,8 +24,9 @@
         {{ $t(`Missing out on all the`) }} <span class="text-fpink">{{ $t('$FUN') }} {{ $t('?') }}</span>
       </p>
       <styled-button v-if="walletState === 'connected_not_opted_in'" button-style="small"
-                     @click.native="optInToFun">
-        {{ $t('OPT-IN NOW') }}
+                     @click.native="optInToFun()">
+        <span v-if="!store.funOptingIn">{{ $t('OPT-IN NOW') }}</span>
+        <span v-if="store.funOptingIn">{{ $t('Opting In...') }}</span>
       </styled-button>
       <!-- Not Connected -->
       <p v-if="walletState === 'not_connected'" class="font-bold w-36">
@@ -51,7 +53,8 @@ export default defineComponent({
   data() {
     return {
       store: { connected: false, connecting: false, disconnecting: false,
-        address: "", nfts: [], funOptedIn: false, funBalance: "", pullCost: 0, },
+        address: "", nfts: [], pullCost: 0,
+        funOptedIn: false, funOptingIn: false, funBalance: "", },
       secondaryColors: {
         'not_connected': 'forange',
         'connected_not_opted_in': 'fyellow',

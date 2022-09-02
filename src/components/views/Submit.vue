@@ -1,13 +1,23 @@
 <template>
   <page-container>
     <div class="panel-container">
-      <top-or-left-panel>
+
+      <!--No NFT Selected-->
+      <top-or-left-panel v-if="!store.selectedNftId">
         <img class="icon" src="../../assets/icons/Submit-Icon-Blue.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
         <submission-headers></submission-headers>
       </top-or-left-panel>
+
+      <!--NFT Selected-->
+      <top-or-left-panel v-if="store.selectedNftId">
+        <img class="icon" src="../../assets/icons/Submit-Icon-Blue.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
+        <submission-headers></submission-headers>
+      </top-or-left-panel>
+
       <bottom-or-right-panel>
         <select-nft></select-nft>
       </bottom-or-right-panel>
+
     </div>
   </page-container>
 </template>
@@ -32,14 +42,14 @@ export default defineComponent({
 
   mixins: [StoreMixin],
 
-  // data: () => ({
-  //   store: { /* add anything this component uses */ },
-  // }),
+  data: () => ({
+    store: { selectedNftId: null, selectedNft: null, },
+  }),
 
-  // mounted() {
-  //   const storeKeys = Object.keys(this.store)
-  //   this.subscribe(storeKeys)
-  // },
+  mounted() {
+    const storeKeys = Object.keys(this.store)
+    this.subscribe(storeKeys)
+  },
 
 });
 </script>

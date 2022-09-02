@@ -3,7 +3,6 @@ import store from "../state/index";
 import {checkSessionExists} from "@jackcom/reachduck";
 import {reconnectWallet, connectWallet, useReach} from "../reach";
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
-import {getAlgodClient} from "../algod";
 import {get, post} from "../api.js"
 import {loadStdlib} from "@reach-sh/stdlib";
 import StoreMixin from "./Store.mixin";
@@ -41,32 +40,35 @@ const AuthMixin = defineComponent({
       const { exists, addr } = checkSessionExists()
       if (!exists || addr === null) return
       store.connecting(true)
-      reconnectWallet(addr).then(async (res) => {
+      reconnectWallet(addr).then(async (/*res*/) => {
         const isAuthed = await this.userIsAuthenticated(this.store.address)
-        const actions = isAuthed
-            ? [await this.initWalletStuff()]
-            : [await this.initWalletStuff(), await this.authForApi()]
-        await Promise.all(actions)
+        await Promise.all([
+          await this.initWalletStuff(),
+          isAuthed ? await null : await this.authForApi()
+        ])
         store.connecting(false)
       }).catch(err => {console.log(err); alert('Error reconnecting wallet, check console')})
+      console.log('finished initWallet')
     },
 
     async connectTo(provider: string) {
       store.connecting(true)
       await connectWallet(provider).then(async () => {
         const isAuthed = await this.userIsAuthenticated(this.store.address)
-        const actions = isAuthed
-            ? [await this.initWalletStuff()]
-            : [await this.initWalletStuff(), await this.authForApi()]
-        await Promise.all(actions)
+        await Promise.all([
+            await this.initWalletStuff(),
+            isAuthed ? await null : await this.authForApi()
+        ])
       }).catch((err: any) => {alert(err)})
       store.connecting(false)
+      console.log('finished connectTo')
     },
 
     async initWalletStuff(): Promise<any> {
       Promise.all([
         await this.getAssets(),
-        // more setup
+        await this.getFunUserInfo(),
+        await this.getAppFunInfo(),
       ]).then(() => console.log('Finished initWalletStuff'))
           .catch(err => {console.log(err); alert(err.message)})
     },
@@ -102,19 +104,17 @@ const AuthMixin = defineComponent({
             await Promise.all(this.store.assets.filter(
                 (asset: {[k: string]: any}) => {return asset.amount === 1}))
         )
-        await this.getFunUserInfo()
-        const appFunInfo = await algod.accountAssetInformation(this.FUNGIBL_APP_WALLET, this.FUN_ASSET_ID).do()
-        store.appFunBalance(appFunInfo['asset-holding'].amount)
       } catch (err) {
         console.log(err)
-        alert('There was an error getting assets, check console')
+        alert('There was an error getting assets/nfts, check console')
       }
-      console.log('Finished fetching all assets')
+      console.log('Finished fetching assets/nfts')
       const logAssets = await Promise.all(this.store.assets)
       console.log(logAssets)
     },
 
     async authForApi() {
+      console.log(`removing funJwt: ${localStorage.getItem('funJwt')} and funAuthWallet: ${localStorage.getItem('funAuthWallet')}`)
       localStorage.removeItem('funJwt')
       localStorage.removeItem('funAuthWallet')
       try {
@@ -123,6 +123,7 @@ const AuthMixin = defineComponent({
             .then(async res => { challenge = res.challenge })
             .catch(err => {console.log(err);alert('Problem requesting auth challenge, check console.')})
 
+        /** Directly use stdlib here bc reachduck doesn't expose note opt yet */
         const reach = loadStdlib()
 
         // const opts = {
@@ -151,8 +152,9 @@ const AuthMixin = defineComponent({
         post('auth/login', {
           algorand_address: this.store.address, signed_tx: JSON.stringify(txn)
         }).then((res) => {
-          if (res.ok)
+          console.log(`setting funJwt: ${res.access_token}`)
           localStorage.setItem('funJwt', res.access_token)
+          console.log(`setting funAuthWallet: ${this.store.address}`)
           localStorage.setItem('funAuthWallet', this.store.address)
         }).catch(err => {
           alert('Issue with login transaction. You were not logged in to the API.')
@@ -161,6 +163,7 @@ const AuthMixin = defineComponent({
         console.log(err)
         alert(`Failed to sign authentication challenge transaction: ${JSON.stringify(err.message)}`)
       }
+      console.log('Finished auth')
     },
 
     async userIsAuthenticated(address: string): Promise<boolean> {

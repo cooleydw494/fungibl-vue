@@ -7,7 +7,7 @@ const StoreMixin = defineComponent({
   data(): any {
     return {
       /** Components should override this */
-      store: { algodClient: null, },
+      store: { /** */ },
       /** This will become an "unsubscribe" function when the component mounts */
       unsubscribeStore: null,
       FUN_ASSET_ID: 107453082,
@@ -41,28 +41,28 @@ const StoreMixin = defineComponent({
       this.unsubscribeStore = store.subscribeToKeys(this.onStoreUpdate, keys);
       // If initializeLocal, return initial object to set on calling component
       if (initializeLocal) {
-        return this.currentLocalStore(keys)
+        return this.currentLocalState(keys)
       }
     },
 
     /**
      * Get an object of current application state key/values for specified keys.
      */
-    currentLocalStore(subscribedKeys: string[]): object {
-      const localStore: {[k: string]: any} = {}
+    currentLocalState(subscribedKeys: string[]): object {
+      const localState: {[k: string]: any} = {}
       const currentState: {[k: string]: any} = store.getState()
       subscribedKeys.forEach((key: string): void => {
-        localStore[key] = currentState[key]
+        localState[key] = currentState[key]
       })
-      return localStore
+      return localState
     },
 
     /**
      * Get a specific current application state value. You have your reasons.
      */
-    currentStoreValue(key: string): any {
+    storeVal(key: string): any {
       const currentState: {[k: string]: any} = store.getState()
-      return store[key]
+      return currentState[key]
     },
 
     setLocale(locale?: string) {
@@ -71,15 +71,17 @@ const StoreMixin = defineComponent({
     },
 
     async getAlgodClient(): Promise<Algodv2> {
-      if (!this.store.algodClient) {
+      const algod = this.storeVal('algodClient')
+      if (!algod) {
         store.algodClient(await getAlgodClient())
       }
-      return this.store.algodClient
+      return this.storeVal('algodClient')
     },
 
     async getFunUserInfo(): Promise<any> {
       const algod = await this.getAlgodClient()
-      const funInfo = await algod.accountAssetInformation(this.store.address, this.FUN_ASSET_ID).do()
+      const address = this.storeVal('address')
+      const funInfo = await algod.accountAssetInformation(address, this.FUN_ASSET_ID).do()
       if (funInfo['asset-holding']) {
         store.funBalance(funInfo['asset-holding'].amount)
         store.funOptedIn(true)
@@ -89,9 +91,23 @@ const StoreMixin = defineComponent({
     },
 
     async optInToFun(): Promise<any> {
-      await this.store.account.tokenAccept(this.FUN_ASSET_ID)
-      await this.getFunUserInfo()
+      store.funOptingIn(true)
+      try {
+        const account = this.storeVal('account')
+        await account.tokenAccept(this.FUN_ASSET_ID)
+        await this.getFunUserInfo()
+      } catch (err) {
+        console.log(err)
+        alert('Problem opting in to $FUN')
+      }
+      store.funOptingIn(false)
     },
+
+    async getAppFunInfo(): Promise<any> {
+      const algod = await this.getAlgodClient()
+      const appFunInfo = await algod.accountAssetInformation(this.FUNGIBL_APP_WALLET, this.FUN_ASSET_ID).do()
+      store.appFunBalance(appFunInfo['asset-holding'].amount)
+    }
 
   },
 });

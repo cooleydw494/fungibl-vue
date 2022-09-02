@@ -25,6 +25,8 @@ const store = createState({
 
   funOptedIn: false,
 
+  funOptingIn: false,
+
   funBalance: "0",
 
   appFunBalance: "0",

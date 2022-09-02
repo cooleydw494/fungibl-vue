@@ -1,4 +1,4 @@
-const messages = {
+const messages: {[k:string]: {[k:string]: string}} = {
     "en": {
         // Examples
         "You are my best friend. I can't do any of this without you.": "You are my best friend. I can't do any of this without you.",
@@ -16,9 +16,6 @@ const messages = {
         "SUBMIT": "SUBMIT",
         "SUBMIT AN NFT": "SUBMIT AN NFT",
         "to the pool to get": "to the pool to get",
-        "$FUN": "$FUN",
-        "$ALGO": "$ALGO",
-        "NFTs": "NFTs",
         "Connect your wallet to browse NFTs from your collection": "Connect your wallet to browse NFTs from your collection",
         "PULL AN NFT": "PULL AN NFT",
         "Connect your wallet to access your": "Connect your wallet to access your",
@@ -26,7 +23,6 @@ const messages = {
         "You don't have any eligible NFTs": "You don't have any eligible NFTs",
         "Insta-Ape lets you get NFTs in exchange instantly": "Insta-Ape lets you get NFTs in exchange instantly",
         "Missing out on all the": "Missing out on all the",
-        "?": "?",
         "OPT-IN NOW": "OPT-IN NOW",
         "You need more": "You need more",
         "to pull!": "to pull!",
@@ -35,6 +31,7 @@ const messages = {
         "to get a randomized NFT": "to get a randomized NFT",
         "SELECT AN NFT": "SELECT AN NFT",
         "SELECT ANOTHER NFT": "SELECT ANOTHER NFT",
+        "Opting In...": "Opting In...",
     },
     "es": {
         // Ejemplos
@@ -53,9 +50,6 @@ const messages = {
         "SUBMIT": "SUBMIT",
         "SUBMIT AN NFT": "SUBMIT AN NFT",
         "to the pool to get": "to the pool to get",
-        "$FUN": "$FUN",
-        "$ALGO": "$ALGO",
-        "NFTs": "NFTs",
         "Connect your wallet to browse NFTs from your collection": "Connect your wallet to browse NFTs from your collection",
         "PULL AN NFT": "PULL AN NFT",
         "Connect your wallet to access your": "Connect your wallet to access your",
@@ -63,7 +57,6 @@ const messages = {
         "You don't have any eligible NFTs": "You don't have any eligible NFTs",
         "Insta-Ape lets you get NFTs in exchange instantly": "Insta-Ape lets you get NFTs in exchange instantly",
         "Missing out on all the": "Missing out on all the",
-        "?": "?",
         "OPT-IN NOW": "OPT-IN NOW",
         "You need more": "You need more",
         "to pull!": "to pull!",
@@ -72,7 +65,12 @@ const messages = {
         "to get a randomized NFT": "to get a randomized NFT",
         "SELECT AN NFT": "SELECT AN NFT",
         "SELECT ANOTHER NFT": "SELECT ANOTHER NFT",
+        "Opting In...": "Opting In...",
     }
 }
 
-export default messages
+const dontTranslate: Array<string> = [
+    '$FUN', 'FUN', '$ALGO', 'ALGO', '!', '?',
+]
+
+export {messages, dontTranslate}

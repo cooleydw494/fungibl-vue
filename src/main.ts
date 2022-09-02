@@ -3,7 +3,7 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import {createI18n} from 'vue-i18n'
-import messages from './translations'
+import {messages, dontTranslate} from './translations'
 import './css/index.scss'
 import globalMixins from "./globalMixins";
 
@@ -14,6 +14,12 @@ const i18n = createI18n({
     locale: defaultLanguage,
     fallbackLocale: 'en',
     messages,
+    missing: (locale, key) => {
+        if (dontTranslate.includes(key))
+        return key
+        console.log(`No translation for "${key}" in ${locale} locale.
+        Add a translation or `)
+    },
     // ...
 })
 
