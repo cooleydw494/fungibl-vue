@@ -45,7 +45,8 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 .two-rectangles {
-  @apply w-72 -mr-4 overflow-hidden;
+  @apply w-72 overflow-hidden;
+
 
   .rectangle {
     @apply flex flex-col justify-center w-72 min-h-24;

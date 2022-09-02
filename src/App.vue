@@ -7,22 +7,22 @@
 <script>
 import AppNav from "./components/AppNav.vue";
 import AppFooter from "./components/AppFooter.vue";
-import StoreMixin from "@/mixins/Store.mixin";
+import AuthMixin from "@/mixins/Auth.mixin";
 
 export default {
   name: "App",
 
   components: { AppNav, AppFooter },
 
-  mixins: [StoreMixin],
+  mixins: [AuthMixin],
 
-  mounted() {
+  created() {
     this.initWallet();
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 #app {
   -webkit-font-smoothing: antialiased;

@@ -18,7 +18,7 @@ export default defineComponent({
 .page {
   justify-content: flex-start;
   margin: 0 auto;
-  padding: 1.5rem 0;
+  padding: 0;
   text-align: left;
 
   > h1,

@@ -35,32 +35,27 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 header {
-  padding: $sp-4;
-  width: calc(100 - $sp-4*2);
-  height: auto;
-  text-align: right;
+  @apply w-full min-h-15vh p-4;
+
+  @media(min-width: theme('screens.md')) {
+    @apply min-h-15vh;
+  }
 
   .logo-icons-container {
-    @include flex($content-align: space-between);
+    @apply flex justify-between items-center;
     .logo {
-      margin: 0 $sp-8;
+      @apply my-0 mx-8;
       img {
-        width: 100%;
-        height: auto;
+        @apply w-full h-auto;
       }
     }
 
     /* <router-link> becomes <a> */
     a {
       img {
-        width: $sp-18;
-        height: $sp-18;
+        @apply w-18 h-18;
       }
     }
-  }
-
-  a {
-    font-weight: bolder;
   }
 }
 </style>

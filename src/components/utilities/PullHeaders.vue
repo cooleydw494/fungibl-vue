@@ -6,26 +6,30 @@
       <p class="font-bold">{{ $t('from the pool') }}</p>
     </template>
 
-    <!-- Connected -->
-    <template v-if="walletState === 'connected'" #secondary>
-      <p class="font-bold w-38">{{ $t('Trade in') }} {{ (`24.5M`).toUpperCase() }} {{ $t('$FUN') }} {{ $t('to get a randomized NFT') }}</p>
-    </template>
-
-    <!-- Connected - Not Enough $FUN -->
-    <template v-if="walletState === 'connected_not_enough_fun'" #secondary>
-      <p class="font-bold w-20">{{ $t(`You need more`) }} <span class="text-fpink">{{ $t('$FUN') }} {{ $t('to pull!') }}</span></p>
-      <styled-button button-style="small">{{ $t('GET $FUN') }}</styled-button>
-    </template>
-
-    <!-- Connected - Not Opted In -->
-    <template v-if="walletState === 'connected_not_opted_in'" #secondary>
-      <p class="font-bold w-20">{{ $t(`Missing out on all the`) }} <span class="text-fpink">{{ $t('$FUN') }} {{ $t('?') }}</span></p>
-      <styled-button button-style="small">{{ $t('OPT-IN NOW') }}</styled-button>
-    </template>
-
-    <!-- Not Connected -->
     <template #secondary>
-      <p class="font-bold w-36">{{ $t('Connect your wallet to access your') }} <span class="text-fpink">{{ $t('$FUN') }}</span></p>
+      <!-- Connected -->
+      <p v-if="walletState === 'connected'" class="font-bold w-38">
+        {{ $t('Trade in') }} {{ (`24.5M`).toUpperCase() }} {{ $t('$FUN') }} {{ $t('to get a randomized NFT') }}
+      </p>
+      <!-- Connected - Not Enough $FUN -->
+      <p v-if="walletState === 'connected_needs_fun'" class="font-bold w-20">
+        {{ $t(`You need more`) }} <span class="text-fpink">{{ $t('$FUN') }} {{ $t('to pull!') }}</span>
+      </p>
+      <styled-button v-if="walletState === 'connected_needs_fun'" button-style="small">
+        {{ $t('GET $FUN') }}
+      </styled-button>
+      <!-- Connected - Not Opted In -->
+      <p v-if="walletState === 'connected_not_opted_in'" class="font-bold w-20">
+        {{ $t(`Missing out on all the`) }} <span class="text-fpink">{{ $t('$FUN') }} {{ $t('?') }}</span>
+      </p>
+      <styled-button v-if="walletState === 'connected_not_opted_in'" button-style="small"
+                     @click.native="optInToFun">
+        {{ $t('OPT-IN NOW') }}
+      </styled-button>
+      <!-- Not Connected -->
+      <p v-if="walletState === 'not_connected'" class="font-bold w-36">
+        {{ $t('Connect your wallet to access your') }} <span class="text-fpink">{{ $t('$FUN') }}</span>
+      </p>
     </template>
 
   </two-rectangles>
@@ -46,11 +50,12 @@ export default defineComponent({
 
   data() {
     return {
-      store: { address: "", userNfts: [] },
+      store: { connected: false, connecting: false, disconnecting: false,
+        address: "", nfts: [], funOptedIn: false, funBalance: "", pullCost: 0, },
       secondaryColors: {
         'not_connected': 'forange',
         'connected_not_opted_in': 'fyellow',
-        'connected_not_enough_fun': 'fyellow',
+        'connected_needs_fun': 'fyellow',
         'connected': 'fpink',
       },
     }
@@ -68,13 +73,11 @@ export default defineComponent({
     secondaryColor() {
       return this.secondaryColors[this.walletState]
     },
-    walletIsConnected() {
-      return this.store.address.length > 0
-    },
     walletState() {
-      return this.walletIsConnected
-          ? (this.store.userNfts.length > 0 ? 'connected' : 'connected')
-          : 'not_connected'
+      if (!this.store.connected) return 'not_connected'
+      if (!this.store.funOptedIn) return 'connected_not_opted_in'
+      if (this.store.funBalance < this.store.pullCost) return 'connected_needs_fun'
+      return 'connected'
     },
   },
 

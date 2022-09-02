@@ -17,6 +17,8 @@ const messages = {
         "SUBMIT AN NFT": "SUBMIT AN NFT",
         "to the pool to get": "to the pool to get",
         "$FUN": "$FUN",
+        "$ALGO": "$ALGO",
+        "NFTs": "NFTs",
         "Connect your wallet to browse NFTs from your collection": "Connect your wallet to browse NFTs from your collection",
         "PULL AN NFT": "PULL AN NFT",
         "Connect your wallet to access your": "Connect your wallet to access your",
@@ -31,6 +33,8 @@ const messages = {
         "GET $FUN": "GET $FUN",
         "Trade in": "Trade in",
         "to get a randomized NFT": "to get a randomized NFT",
+        "SELECT AN NFT": "SELECT AN NFT",
+        "SELECT ANOTHER NFT": "SELECT ANOTHER NFT",
     },
     "es": {
         // Ejemplos
@@ -50,6 +54,8 @@ const messages = {
         "SUBMIT AN NFT": "SUBMIT AN NFT",
         "to the pool to get": "to the pool to get",
         "$FUN": "$FUN",
+        "$ALGO": "$ALGO",
+        "NFTs": "NFTs",
         "Connect your wallet to browse NFTs from your collection": "Connect your wallet to browse NFTs from your collection",
         "PULL AN NFT": "PULL AN NFT",
         "Connect your wallet to access your": "Connect your wallet to access your",
@@ -64,6 +70,8 @@ const messages = {
         "GET $FUN": "GET $FUN",
         "Trade in": "Trade in",
         "to get a randomized NFT": "to get a randomized NFT",
+        "SELECT AN NFT": "SELECT AN NFT",
+        "SELECT ANOTHER NFT": "SELECT ANOTHER NFT",
     }
 }
 

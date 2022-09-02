@@ -1,4 +1,6 @@
-export async function getAlgodClient() {
+import {Algodv2} from "algosdk";
+
+export async function getAlgodClient(): Promise<Algodv2> {
     const algosdk = require('algosdk')
     const baseServer = 'https://testnet-algorand.api.purestake.io/ps2'
     const port = ''

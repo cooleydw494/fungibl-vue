@@ -67,7 +67,7 @@ async function configureWalletProvider(provider: string) {
 }
 
 /** Connect user Wallet  */
-export async function connectWallet(provider: string = 'MyAlgo') {
+export async function connectWallet(provider = 'MyAlgo') {
   try {
     store.loading(true)
     addNotification("🔑 Connecting Account ... ")
@@ -113,10 +113,10 @@ function onConnected(data: ConnectedUserData) {
       address,
       account,
       balance,
+      connected: true,
       loading: false,
     })
     addNotification("✅ Connected ")
-
     return account
   } catch (e: any) {
     store.error(e.message || e)

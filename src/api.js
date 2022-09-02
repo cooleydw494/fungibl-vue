@@ -6,6 +6,7 @@ export async function get(relativePath, baseUrl = process.env.VUE_APP_API_URL) {
         headers: { 'Authorization': `Bearer ${jwtToken}` },
     } : {}
     const response = await fetch(`${baseUrl}${relativePath}`, options)
+    if (!response.ok) throw new Error(response.statusMessage)
     return response.json()
 }
 
@@ -29,5 +30,6 @@ export async function post(relativePath, data = {}, baseUrl = process.env.VUE_AP
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(data)
     })
+    if (!response.ok) throw new Error(response.statusMessage)
     return response.json()
 }

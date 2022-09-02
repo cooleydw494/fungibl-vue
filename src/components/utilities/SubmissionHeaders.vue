@@ -1,24 +1,24 @@
 <template>
-  <two-rectangles :primary-color="primaryColor" :secondary-color="secondaryColor">
+  <two-rectangles :primary-color="'fblue'" :secondary-color="secondaryColor">
 
     <template #primary>
       <h4>{{ $t('SUBMIT AN NFT') }}</h4>
       <p class="font-bold">{{ $t('to the pool to get') }} <span class="text-fpink">{{ $t('$FUN') }}</span></p>
     </template>
 
-    <!-- Connected -->
-    <template v-if="walletState === 'connected'" #secondary>
-      <p class="font-bold w-44">{{ $t('Insta-Ape lets you get NFTs in exchange instantly') }}</p>
-    </template>
-
-    <!-- Connected - No NFTs -->
-    <template v-if="walletState === 'connected_no_nfts'" #secondary>
-      <p class="font-bold w-36">{{ $t(`You don't have any eligible NFTs`) }}</p>
-    </template>
-
-    <!-- Not Connected -->
-    <template v-if="walletState === 'not_connected'" #secondary>
-      <p class="font-bold w-36">{{ $t('Connect your wallet to browse NFTs from your collection') }}</p>
+    <template #secondary>
+      <!-- Connected -->
+      <p v-if="walletState === 'connected'" class="font-bold w-44">
+        {{ $t('Insta-Ape lets you get NFTs in exchange instantly') }}
+      </p>
+      <!-- Connected - No NFTs -->
+      <p v-if="walletState === 'connected_no_nfts'" class="font-bold w-36">
+        {{ $t(`You don't have any eligible NFTs`) }}
+      </p>
+      <!-- Not Connected -->
+      <p v-if="walletState === 'not_connected'" class="font-bold w-36">
+        {{ $t('Connect your wallet to browse NFTs from your collection') }}
+      </p>
     </template>
 
   </two-rectangles>
@@ -38,7 +38,7 @@ export default defineComponent({
 
   data() {
     return {
-      store: { address: "", userNfts: [] },
+      store: { connected: false, address: "", nfts: [] },
       secondaryColors: {
         'not_connected': 'forange',
         'connected_no_nfts': 'fyellow',
@@ -53,18 +53,12 @@ export default defineComponent({
   },
 
   computed: {
-    primaryColor() {
-      return 'fblue'
-    },
     secondaryColor() {
       return this.secondaryColors[this.walletState]
     },
-    walletIsConnected() {
-      return this.store.address.length > 0
-    },
     walletState() {
-      return this.walletIsConnected
-          ? (this.store.userNfts.length > 0 ? 'connected' : 'connected_no_nfts')
+      return this.store.connected
+          ? (this.store.nfts.length > 0 ? 'connected' : 'connected_no_nfts')
           : 'not_connected'
     },
   },

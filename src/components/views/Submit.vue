@@ -1,12 +1,12 @@
 <template>
   <page-container>
-    <div>
+    <div class="panel-container">
       <top-or-left-panel>
         <img class="icon" src="../../assets/icons/Submit-Icon-Blue.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
         <submission-headers></submission-headers>
       </top-or-left-panel>
       <bottom-or-right-panel>
-
+        <select-nft></select-nft>
       </bottom-or-right-panel>
     </div>
   </page-container>
@@ -18,11 +18,15 @@ import PageContainer from "../utilities/PageContainer.vue"
 import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel"
 import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel"
 import SubmissionHeaders from "@/components/utilities/SubmissionHeaders"
+import SelectNft from "@/components/utilities/SelectNft";
 import StoreMixin from "@/mixins/Store.mixin"
 
 export default defineComponent({
 
-  components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, SubmissionHeaders },
+  components: {
+    PageContainer, TopOrLeftPanel, BottomOrRightPanel, SubmissionHeaders,
+    SelectNft,
+  },
 
   name: "Submit",
 
@@ -42,6 +46,8 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import "@/css/mixins.scss";
+
+@include panel-container();
 
 .icon {
   @apply w-32 h-32 ml-8;

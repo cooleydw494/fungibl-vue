@@ -1,10 +1,15 @@
 import createState from "@jackcom/raphsducks";
 import { NETWORKS } from "@jackcom/reachduck";
+import {Algodv2} from "algosdk";
 
 /** Your global application state. Add any properties you need here */
 const store = createState({
   /** When true, user has connected a wallet */
   connected: false,
+
+  connecting: false,
+
+  disconnecting: false,
 
   /** Message objects (can be sorted by timestamp) */
   notifications: [] as Alert[],
@@ -18,11 +23,24 @@ const store = createState({
   /** Reach `networkAccount` balance */
   balance: "0",
 
+  funOptedIn: false,
+
+  funBalance: "0",
+
+  appFunBalance: "0",
+
+  /** All assets of connected wallet */
+  assets: [],
+
   /** TODO: Get wallet NFTs */
-  userNfts: [],
+  nfts: [],
+
+  selectedNft: null as any | null,
+
+  selectedNftId: null as any | null,
 
   /** TODO: Calculate actual Pull Cost */
-  pullCost: 2000000,
+  pullCost: 1000000,
 
   /** Current configured network */
   currentNetwork: NETWORKS.ALGO.abbr,
@@ -32,6 +50,9 @@ const store = createState({
 
   /** Global Loading state */
   loading: false,
+
+  /** DO NOT ACCESS DIRECTLY, CALL StoreMixin.getAlgodClient */
+  algodClient: <Algodv2|null> null,
 });
 
 export default store;
