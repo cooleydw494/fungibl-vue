@@ -32,6 +32,10 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "SELECT AN NFT": "SELECT AN NFT",
         "SELECT ANOTHER NFT": "SELECT ANOTHER NFT",
         "Opting In...": "Opting In...",
+        "CONNECT WALLET": "CONNECT WALLET",
+        "Disconnecting...": "Disconnecting...",
+        "Connecting...": "Connecting...",
+
     },
     "es": {
         // Ejemplos
@@ -66,11 +70,15 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "SELECT AN NFT": "SELECT AN NFT",
         "SELECT ANOTHER NFT": "SELECT ANOTHER NFT",
         "Opting In...": "Opting In...",
+        "CONNECT WALLET": "CONNECT WALLET",
+        "Disconnecting...": "Disconnecting...",
+        "Connecting...": "Connecting...",
+
     }
 }
 
 const dontTranslate: Array<string> = [
-    '$FUN', 'FUN', '$ALGO', 'ALGO', '!', '?',
+    '$FUN', 'FUN', '$ALGO', 'ALGO', 'NFTs', '!', '?',
 ]
 
 export {messages, dontTranslate}

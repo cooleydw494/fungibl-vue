@@ -29,7 +29,8 @@ module.exports = {
         'fdark': 'rgba(26,26,26)',
       },
       fontSize: {
-        'xxs': '.65rem',
+        '3xs': ['0.4rem', { lineHeight: '1' }],
+        '2xs': ['0.5rem', { lineHeight: '1'}],
       },
       fontWeight: {
         'bolder': '750',
@@ -53,6 +54,8 @@ module.exports = {
         '100vh': '100vh',
         '75vh': '75vh',
         '70vh': '70vh',
+        '65vh': '65vh',
+        '60vh': '60vh',
         '50vh': '50vh',
         '40vh': '40vh',
         '35vh': '35vh',
@@ -61,6 +64,8 @@ module.exports = {
         '100vw': '100vw',
         '75vw': '75vw',
         '70vw': '70vw',
+        '65vw': '65vw',
+        '60vw': '60vw',
         '50vw': '50vw',
         '40vw': '40vw',
         '35vw': '35vw',

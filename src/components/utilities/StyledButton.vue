@@ -26,14 +26,14 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 .button {
-  @apply w-32 my-0 mx-4 rounded-md cursor-pointer
+  @apply min-w-32 my-0 mx-4 rounded-md cursor-pointer
   border-2 border-solid
   bg-faqua text-fdarkblue text-xl font-bolder;
   font-stretch: 115%;
 }
 
 .button-connect {
-  @apply w-72 py-2 px-4 bg-fdark/25 text-faqua border-faqua/50;
+  @apply min-w-72 py-2 px-4 bg-fdark/25 text-faqua border-faqua/50;
 
   &.darker-bg {
     @apply bg-fdark/50;
@@ -41,7 +41,7 @@ export default defineComponent({
 }
 
 .button-small {
-  @apply inline-block w-26 mx-3 py-2 px-1 bg-fblue border-fyellow text-sm text-fdarkblue;
+  @apply inline-block min-w-26 mx-3 py-2 px-1 bg-fblue border-fyellow text-sm text-fdarkblue;
   font-stretch: 100%;
 }
 

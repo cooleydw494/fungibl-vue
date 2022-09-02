@@ -2,6 +2,7 @@ import { defineComponent } from "@vue/runtime-core";
 import store from "../state/index";
 import {Algodv2} from "algosdk";
 import {getAlgodClient} from "../algod";
+import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
 
 const StoreMixin = defineComponent({
   data(): any {
@@ -66,8 +67,7 @@ const StoreMixin = defineComponent({
     },
 
     setLocale(locale?: string) {
-      // 'en','es',...
-      this.$i18n.locale = locale || navigator.languages[1]
+      this.$i18n.locale = locale || navigator.languages[1] // 'en','es',...
     },
 
     async getAlgodClient(): Promise<Algodv2> {
@@ -76,6 +76,53 @@ const StoreMixin = defineComponent({
         store.algodClient(await getAlgodClient())
       }
       return this.storeVal('algodClient')
+    },
+
+    async initWalletStuff(): Promise<any> {
+      Promise.all([
+        await this.getAssets(),
+        await this.getFunUserInfo(),
+        await this.getAppFunInfo(),
+      ]).then(() => console.log('Finished initWalletStuff'))
+          .catch(err => {console.log(err); alert(err.message)})
+    },
+
+    async getAssets(): Promise<any> {
+      try {
+        let nextToken = ''
+        let moreResults = true
+        const limit = 5
+        do {
+          const assetsRes = await useIndexerClient()
+              .lookupAccountAssets(this.store.address)
+              .limit(limit).nextToken(nextToken).do()
+          // @ts-ignore
+          store.assets([...this.store.assets, ...assetsRes.assets])
+          nextToken = assetsRes['next-token']
+          moreResults = assetsRes.assets.length === limit
+        } while (moreResults)
+        store.assets(this.store.assets.filter((asset: {[k: string]: any}) => {
+          return asset.amount > 0 && !asset['is-frozen'] && !asset.deleted
+        }))
+        const algod = await this.getAlgodClient()
+        store.assets(await Promise.all(this.store.assets.map(async (asset: {[k: string]: any}) => {
+          const assetInfo = await algod.getAssetByID(asset['asset-id']).do()
+          const imageUrl = assetInfo.params.url.indexOf('https://') > -1
+              ? assetInfo.params.url
+              : assetInfo.params.url.replace('ipfs://', 'https://ipfs.io/ipfs/')
+          const label = `${assetInfo.params.name} - ${assetInfo.params['unit-name']}`
+          return {...asset, ...assetInfo, imageUrl, label}
+        })))
+        // @ts-ignore
+        store.nfts(
+            await Promise.all(this.store.assets.filter(
+                (asset: {[k: string]: any}) => {return asset.amount === 1}))
+        )
+      } catch (err) {
+        console.log(err)
+        alert('There was an error getting assets/nfts, check console')
+      }
+      console.log('Finished fetching assets/nfts')
     },
 
     async getFunUserInfo(): Promise<any> {

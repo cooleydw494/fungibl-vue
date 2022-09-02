@@ -5,19 +5,19 @@
         <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
         {{ connectButtonText }}
       </div>
-      <div v-if="store.connected" class="flex flex-row justify-around text-xs">
+      <div v-if="store.connected" class="content-container wallet-info">
         <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
         <div class="flex flex-col place-content-center text-fpink">
-          <span class="text-xxs">{{ $t('$FUN') }}</span>
           <span>{{ store.funBalance }}</span>
+          <span class="text-2xs">{{ $t('$FUN') }}</span>
         </div>
         <div class="flex flex-col place-content-center text-fgreen">
-          <span class="text-xxs">{{ $t('NFTs') }}</span>
           <span>{{ store.nfts.length }}</span>
+          <span class="text-2xs">{{ $t('NFTs') }}</span>
         </div>
         <div class="flex flex-col place-content-center text-fblue">
-          <span class="text-xxs">{{ $t('$ALGO') }}</span>
           <span>{{ store.balance }}</span>
+          <span class="text-2xs">{{ $t('$ALGO') }}</span>
         </div>
       </div>
     </styled-button>
@@ -68,11 +68,9 @@ export default defineComponent({
 
   computed: {
     connectButtonText() {
-      if (this.store.connecting) return 'Connecting...'
-      if (this.store.disconnecting) return 'Disconnecting...'
-      return this.store.connected
-        ? truncateString(this.store.address)
-        : "CONNECT WALLET"
+      if (this.store.connecting) return this.$i18n.t('Connecting...')
+      if (this.store.disconnecting) return this.$i18n.t('Disconnecting...')
+      return this.$i18n.t('CONNECT WALLET')
     },
   },
 
@@ -96,11 +94,15 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 .icon {
-  @apply inline-block h-auto w-5 mr-4;
+  @apply inline-block w-5 h-5;
 }
 
 .content-container {
-  @apply flex place-content-center;
+  @apply flex justify-around items-center;
+
+  &.wallet-info {
+    @apply text-base w-65vw md:w-96 h-14 md:h-16;
+  }
 }
 
 </style>
