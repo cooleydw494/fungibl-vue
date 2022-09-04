@@ -8,7 +8,7 @@ module.exports = {
     'eslint:recommended',
     '@vue/typescript/recommended',
     // Recommended
-    'plugin:@intlify/vue-i18n/recommended'
+    'plugin:@intlify/vue-i18n/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2020,

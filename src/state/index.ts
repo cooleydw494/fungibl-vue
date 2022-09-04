@@ -1,6 +1,7 @@
 import createState from "@jackcom/raphsducks";
 import { NETWORKS } from "@jackcom/reachduck";
 import {Algodv2} from "algosdk";
+import ImageKit from "imagekit-javascript";
 
 /** Your global application state. Add any properties you need here */
 const store = createState({
@@ -55,6 +56,9 @@ const store = createState({
 
   /** DO NOT ACCESS DIRECTLY, CALL StoreMixin.getAlgodClient */
   algodClient: <Algodv2|null> null,
+
+  /** DO NOT ACCESS DIRECTLY, CALL StoreMixin.getImageKit */
+  imagekitClient: <ImageKit|null> null,
 });
 
 export default store;

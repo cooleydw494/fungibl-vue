@@ -1,7 +1,7 @@
 import { defineComponent } from "@vue/runtime-core";
 import store from "../state/index";
 import {checkSessionExists} from "@jackcom/reachduck";
-import {reconnectWallet, connectWallet, useReach} from "../reach";
+import {reconnectWallet, connectWallet} from "../reach";
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
 import {get, post} from "../api.js"
 import {loadStdlib} from "@reach-sh/stdlib";
@@ -103,11 +103,10 @@ const AuthMixin = defineComponent({
         post('auth/login', {
           algorand_address: this.store.address, signed_tx: JSON.stringify(txn)
         }).then((res) => {
-          console.log(`setting funJwt: ${res.access_token}`)
           localStorage.setItem('funJwt', res.access_token)
-          console.log(`setting funAuthWallet: ${this.store.address}`)
           localStorage.setItem('funAuthWallet', this.store.address)
-        }).catch(err => {
+        }).catch((err) => {
+          console.log(err)
           alert('Issue with login transaction. You were not logged in to the API.')
         })
       } catch (err) {
@@ -121,7 +120,7 @@ const AuthMixin = defineComponent({
       let authWorks = false
       await get('whoami')
           .then(res => authWorks = !!res.id)
-          .catch(err => authWorks = false)
+          .catch((/*err*/) => { return null })
       const connectedUserIsAuthedUser =
           localStorage.getItem('funAuthWallet') === address
       return authWorks && connectedUserIsAuthedUser

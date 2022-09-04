@@ -11,6 +11,8 @@ const StoreMixin = defineComponent({
       store: { /** */ },
       /** This will become an "unsubscribe" function when the component mounts */
       unsubscribeStore: null,
+
+      /** Global Constants */
       FUN_ASSET_ID: 107453082,
       FUNGIBL_APP_WALLET: 'D7277RRGZ6PJZ2WA4BTWJGZ43BGCSTAKZ4ZUBVWNFELJTYAPHKVD2IURDQ',
     };
@@ -36,7 +38,7 @@ const StoreMixin = defineComponent({
      * Optionally returns a keyed object to initialize local component store.
      * This can prevent lag between component mount and update, as well as
      * initialization issues on mount when the store has already been updated */
-    subscribe(keys: string[], initializeLocal = false): object|void {
+    subscribe(keys: string[], initializeLocal = false): {[k:string]: any}|void {
       // Subscription returns an "unsubscribe" function (used in unmount).
       // See docs for @jackcom/raphsducks to see how the global store works.
       this.unsubscribeStore = store.subscribeToKeys(this.onStoreUpdate, keys);
@@ -49,7 +51,7 @@ const StoreMixin = defineComponent({
     /**
      * Get an object of current application state key/values for specified keys.
      */
-    currentLocalState(subscribedKeys: string[]): object {
+    currentLocalState(subscribedKeys: string[]): {[k:string]: any} {
       const localState: {[k: string]: any} = {}
       const currentState: {[k: string]: any} = store.getState()
       subscribedKeys.forEach((key: string): void => {
@@ -71,10 +73,8 @@ const StoreMixin = defineComponent({
     },
 
     async getAlgodClient(): Promise<Algodv2> {
-      const algod = this.storeVal('algodClient')
-      if (!algod) {
-        store.algodClient(await getAlgodClient())
-      }
+      if (this.storeVal('algodClient')) return this.storeVal('algodClient')
+      store.algodClient(await getAlgodClient())
       return this.storeVal('algodClient')
     },
 
@@ -154,7 +154,7 @@ const StoreMixin = defineComponent({
       const algod = await this.getAlgodClient()
       const appFunInfo = await algod.accountAssetInformation(this.FUNGIBL_APP_WALLET, this.FUN_ASSET_ID).do()
       store.appFunBalance(appFunInfo['asset-holding'].amount)
-    }
+    },
 
   },
 });

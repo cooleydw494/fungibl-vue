@@ -1,10 +1,10 @@
 <template>
   <div class="w-full flex justify-center">
     <div class="w-full">
-      <select class="select" id="selectNft" :disabled="!enabled" @change="setSelected($event.target.value)">
+      <select class="select" id="selectNft" :disabled="!enabled" @change="setSelected(parseInt($event.target.value))">
         <option v-if="!store.selectedNft" value="null" class="option">{{ $t('SELECT AN NFT') }}</option>
         <!--      <option v-if="store.selectedNft.length" value="null" class="option">{{ $t('SELECT ANOTHER NFT') }}</option>-->
-        <option v-for="nft in selectableNfts" :key="nft['asset-id']" :value="nft" class="option">{{ nft.label }}</option>
+        <option v-for="nft in selectableNfts" :key="nft['asset-id']" :value="nft['asset-id']" class="option">{{ nft.label }}</option>
       </select>
     </div>
   </div>
@@ -47,9 +47,9 @@ export default defineComponent({
   },
 
   methods: {
-    setSelected(nft) {
-      store.selectedNft(nft)
-      store.selectedNftId(nft['asset-id'])
+    setSelected(nftId) {
+      store.selectedNftId(nftId)
+      store.selectedNft((this.store.nfts.filter(nft => nft['asset-id'] === nftId))[0])
     },
   }
 

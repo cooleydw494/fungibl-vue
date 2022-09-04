@@ -9,5 +9,8 @@ export default {
                 return item.charCodeAt(0)
             }))
         },
+        isStaging(): boolean {
+            return window.location.host.includes('staging')
+        }
     },
 }

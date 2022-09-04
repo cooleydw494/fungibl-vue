@@ -6,24 +6,27 @@
         {{ connectButtonText }}
       </div>
       <div v-if="store.connected" class="content-container wallet-info">
-        <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
-        <div class="flex flex-col place-content-center text-fpink">
+        <div class="wallet-data-container text-faqua">
+          <img class="icon wallet-info" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
+          <span class="label">{{ walletString }}</span>
+        </div>
+        <div class="wallet-data-container text-fpink">
           <span>{{ store.funBalance }}</span>
-          <span class="text-2xs">{{ $t('$FUN') }}</span>
+          <span class="label">{{ $t('$FUN') }}</span>
         </div>
-        <div class="flex flex-col place-content-center text-fgreen">
+        <div class="wallet-data-container text-fgreen">
           <span>{{ store.nfts.length }}</span>
-          <span class="text-2xs">{{ $t('NFTs') }}</span>
+          <span class="label">{{ $t('NFTs') }}</span>
         </div>
-        <div class="flex flex-col place-content-center text-fblue">
+        <div class="wallet-data-container text-fblue">
           <span>{{ store.balance }}</span>
-          <span class="text-2xs">{{ $t('$ALGO') }}</span>
+          <span class="label">{{ $t('$ALGO') }}</span>
         </div>
       </div>
     </styled-button>
     <modal v-if="showWalletSelect" @close="showWalletSelect = false" center>
       <div v-for="(provider, index) in providers" :key="index" class="mb-8">
-        <styled-button button-style="connect" darker-bg @click.native="connectToProvider(provider.value)">{{ provider.name }}</styled-button>
+        <styled-button button-style="connect" darker-bg @click="connectToProvider(provider.value)">{{ provider.name }}</styled-button>
       </div>
     </modal>
   </div>
@@ -32,7 +35,6 @@
 <script>
 import {  truncateString } from "@jackcom/reachduck"
 import { defineComponent } from "@vue/runtime-core"
-import StoreMixin from "@/mixins/Store.mixin"
 import {
   disconnectWallet,
   } from "@/reach"
@@ -45,7 +47,7 @@ export default defineComponent({
 
   components: { StyledButton, Modal },
 
-  mixins: [StoreMixin, AuthMixin],
+  mixins: [AuthMixin],
 
   data: () => ({
     store: {
@@ -72,6 +74,9 @@ export default defineComponent({
       if (this.store.disconnecting) return this.$i18n.t('Disconnecting...')
       return this.$i18n.t('CONNECT WALLET')
     },
+    walletString() {
+      return this.store.connected ? truncateString(this.store.address, 4) : `🥲`
+    }
   },
 
   methods: {
@@ -95,13 +100,25 @@ export default defineComponent({
 
 .icon {
   @apply inline-block w-5 h-5;
+
+  &.wallet-info {
+    @apply w-4 h-4 mr-auto mt-1;
+  }
 }
 
 .content-container {
-  @apply flex justify-around items-center;
+  @apply flex justify-around items-center min-h-10 text-left;
 
   &.wallet-info {
     @apply text-base w-65vw md:w-96 h-14 md:h-16;
+  }
+
+  .wallet-data-container {
+    @apply flex flex-col justify-between min-h-10;
+
+    .label {
+      @apply text-2xs font-semibold;
+    }
   }
 }
 

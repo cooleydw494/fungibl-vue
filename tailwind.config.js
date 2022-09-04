@@ -29,8 +29,8 @@ module.exports = {
         'fdark': 'rgba(26,26,26)',
       },
       fontSize: {
-        '3xs': ['0.4rem', { lineHeight: '1' }],
-        '2xs': ['0.5rem', { lineHeight: '1'}],
+        '3xs': ['0.5rem', { lineHeight: '1' }],
+        '2xs': ['0.6rem', { lineHeight: '1'}],
       },
       fontWeight: {
         'bolder': '750',
