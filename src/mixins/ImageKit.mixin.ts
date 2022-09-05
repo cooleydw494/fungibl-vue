@@ -13,9 +13,9 @@ const ImageKitMixin = defineComponent({
       defaultWidth: '200',
       defaultHeight: 'auto',
       defaultParams: {
-        // 'height': 'auto', // if not specified is auto by default
         'aspectRatio': '1-1',
-        'radius': '5',
+        // 'height': 'auto', // if not specified is auto by default
+        // 'radius': '5', // Usually set this in CSS
       }
     };
   },
@@ -30,20 +30,15 @@ const ImageKitMixin = defineComponent({
     getImageKitClient(): ImageKit {
       if (this.getState('imageKitClient')) return this.getState('imageKitClient')
       const stagingOrNot = this.isStaging() ? '/staging' : ''
-      store.imagekitClient(new ImageKit({
+      const imageKitClient = new ImageKit({
         urlEndpoint: `${process.env.VUE_APP_IMAGE_KIT_ENDPOINT}${stagingOrNot}`,
-      }))
+      })
+      store.imageKitClient(imageKitClient)
       return this.getState('imageKitClient')
     },
 
     imageKitUrl(path: string, w: string|null = null, params: {[k:string]: any}|null = null) {
-      const stagingOrNot = this.isStaging() ? '/staging' : ''
-      // return `https://fungible-files.s3.amazonaws.com/cache/images/local-dev/${path}`
-      const imageKitClient = new ImageKit({
-        urlEndpoint: `${process.env.VUE_APP_IMAGE_KIT_ENDPOINT}${stagingOrNot}`,
-      })
-
-      return imageKitClient.url({
+      return this.getImageKitClient().url({
         path: path,
         transformation: [{
           "width": w || this.defaultWidth,

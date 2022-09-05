@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex justify-center">
-    <div class="w-full min-h-76 flex flex-col" :class="{'justify-between': store.selectedNftId, 'justify-around': !store.selectedNftId }">
+    <div class="w-full min-h-76 md:min-h-96 flex flex-col" :class="{'justify-between': store.selectedNftId, 'justify-around': !store.selectedNftId }">
       <select class="select" id="selectNft" :disabled="!enabled" @change="setSelected(parseInt($event.target.value))">
         <option v-if="!store.selectedNft" value="null" class="option">{{ $t('SELECT AN NFT') }}</option>
         <!--      <option v-if="store.selectedNft.length" value="null" class="option">{{ $t('SELECT ANOTHER NFT') }}</option>-->

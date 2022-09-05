@@ -10,17 +10,17 @@
           <img class="icon wallet-info" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
           <span class="label">{{ walletString }}</span>
         </div>
-        <div class="wallet-data-container text-fpink">
-          <span>{{ store.funBalance }}</span>
-          <span class="label">{{ $t('$FUN') }}</span>
+        <div class="wallet-data-container text-fblue">
+          <span>{{ store.balance }}</span>
+          <span class="label">{{ $t('$ALGO') }}</span>
         </div>
         <div class="wallet-data-container text-fgreen">
           <span>{{ store.nfts.length }}</span>
           <span class="label">{{ $t('NFTs') }}</span>
         </div>
-        <div class="wallet-data-container text-fblue">
-          <span>{{ store.balance }}</span>
-          <span class="label">{{ $t('$ALGO') }}</span>
+        <div class="wallet-data-container text-fpink">
+          <span>{{ store.funBalance }}</span>
+          <span class="label">{{ $t('$FUN') }}</span>
         </div>
       </div>
     </styled-button>

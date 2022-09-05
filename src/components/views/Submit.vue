@@ -11,15 +11,15 @@
       <!--NFT Selected-->
       <top-or-left-panel v-if="store.selectedNftId">
         <div class="selected-nft-data">
-          <div v-show="store.selectedNftLoading" class="nft-image flex place-content-center">
+          <div v-if="store.selectedNftLoading" class="nft-image flex place-content-center">
             <fulfilling-square-spinner
-                :animation-duration="4000"
-                :size="spacingToPixels(64)"
+                :animation-duration="2000"
+                :size="spacingToPixels(nftImageWidth)"
                 :color="themeColor('fgreen')"
             />
           </div>
           <img v-show="!store.selectedNftLoading" class="nft-image" @load="selectedNftLoaded()"
-               :src="imageKitUrl(`${store.selectedNftId}.png`, spacingToPixels(76))"
+               :src="imageKitUrl(`${store.selectedNftId}.png`, spacingToPixels(nftImageWidth))"
                alt="TODO">
         </div>
       </top-or-left-panel>
@@ -64,6 +64,12 @@ export default defineComponent({
     this.subscribe(storeKeys)
   },
 
+  computed: {
+    nftImageWidth() {
+      return window.innerWidth < 768 ? 76 : 96
+    }
+  },
+
   methods: {
     selectedNftLoaded() {
       store.selectedNftLoading(false)
@@ -87,7 +93,7 @@ export default defineComponent({
   @apply block w-full;
 
   .nft-image {
-    @apply w-76 h-auto mx-auto;
+    @apply w-76 md:w-96 h-auto mx-auto md:ml-0 rounded border-2 border-solid border-fgreen;
   }
 }
 

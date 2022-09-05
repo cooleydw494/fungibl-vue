@@ -64,7 +64,7 @@ const store = createState({
   algodClient: <Algodv2|null> null,
 
   /** DO NOT ACCESS DIRECTLY, CALL StoreMixin.getImageKit */
-  imagekitClient: <ImageKit|null> null,
+  imageKitClient: <ImageKit|null> null,
 
   authConfirmed: false,
 });

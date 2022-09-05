@@ -120,11 +120,10 @@ const StoreMixin = defineComponent({
         store.nfts(
             await Promise.all(this.store.assets.filter(
                 (asset: {[k: string]: any}) => {
-                  const isNft = asset.amount === 1
-                  if (isNft) this.syncNftToBackend(asset)
-                  return isNft
+                  return asset.amount === 1
                 }))
         )
+        this.syncNftsToBackend(this.getState('nfts'))
       } catch (err) {
         console.log(err)
         alert('There was an error getting assets/nfts, check console')
@@ -132,19 +131,19 @@ const StoreMixin = defineComponent({
       console.log('Finished fetching assets/nfts')
     },
 
-    async syncNftToBackend(nft: {[k:string]: any}): Promise<any> {
+    async syncNftsToBackend(nfts: Array<{[k:string]: any}>): Promise<any> {
       let tries = 0
       do {
         if (this.getState('authConfirmed')) {
           tries = 69
-          post(`nfts/${nft['asset-id']}/sync`, nft)
+          post(`nfts/sync`, {nfts})
               .then((res) => {
-                if (!res.image_cached) {
-                  this.cacheImage(nft)
-                }
+                res.needs_caching.forEach((assetId: number) => {
+                  this.cacheImage(assetId)
+                })
               })
               .catch((err) => {
-                console.log(`Err on NFT Sync ${nft['asset-id']}`, err)
+                console.log(`Err on NFT Sync`, err)
               })
         } else {
           tries++
@@ -153,13 +152,13 @@ const StoreMixin = defineComponent({
       } while (tries <= 3)
     },
 
-    async cacheImage(nft: {[k:string]: any}): Promise<any> {
-      post(`nfts/${nft['asset-id']}/cache-image`, {})
+    async cacheImage(assetId: number): Promise<any> {
+      post(`nfts/${assetId}/cache-image`, {})
           .then((/*res*/) => {
             return null // handle post-sync if needed
           })
           .catch((err) => {
-            console.log(`Err on NFT Sync ${nft['asset-id']}`, err)
+            console.log(`Err on NFT Sync ${assetId}`, err)
           })
     },
 
