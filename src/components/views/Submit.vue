@@ -10,7 +10,7 @@
 
       <!--NFT Selected-->
       <top-or-left-panel v-if="store.selectedNftId">
-        <img class="icon" src="../../assets/icons/Submit-Icon-Blue.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
+        <img class="nftImage" :src="store.selectedNft.imageUrl" alt="TODO">
         <submission-headers></submission-headers>
       </top-or-left-panel>
 
@@ -61,6 +61,10 @@ export default defineComponent({
 
 .icon {
   @apply w-32 h-32 ml-8;
+}
+
+.nftImage {
+  @apply w-96 h-auto;
 }
 
 </style>

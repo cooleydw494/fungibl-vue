@@ -1,8 +1,9 @@
-import { defineComponent } from "@vue/runtime-core";
-import store from "../state/index";
-import {Algodv2} from "algosdk";
-import {getAlgodClient} from "../algod";
-import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
+import { defineComponent } from "@vue/runtime-core"
+import store from "../state/index"
+import {post} from "../api"
+import {Algodv2} from "algosdk"
+import {getAlgodClient} from "../algod"
+import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer"
 
 const StoreMixin = defineComponent({
   data(): any {
@@ -15,13 +16,13 @@ const StoreMixin = defineComponent({
       /** Global Constants */
       FUN_ASSET_ID: 107453082,
       FUNGIBL_APP_WALLET: 'D7277RRGZ6PJZ2WA4BTWJGZ43BGCSTAKZ4ZUBVWNFELJTYAPHKVD2IURDQ',
-    };
+    }
   },
 
   /** Unsubscribe from global state */
   beforeUnmount() {
-    if (!this.unsubscribeStore) return;
-    this.unsubscribeStore();
+    if (!this.unsubscribeStore) return
+    this.unsubscribeStore()
   },
 
   methods: {
@@ -29,7 +30,7 @@ const StoreMixin = defineComponent({
     onStoreUpdate(updates: any) {
       // "updates" is a sub-section of the updated global state. It will
       // contain some or all keys specified by the component that uses this mixin.
-      this.store = { ...this.store, ...updates };
+      this.store = { ...this.store, ...updates }
     },
 
     /**
@@ -41,7 +42,7 @@ const StoreMixin = defineComponent({
     subscribe(keys: string[], initializeLocal = false): {[k:string]: any}|void {
       // Subscription returns an "unsubscribe" function (used in unmount).
       // See docs for @jackcom/raphsducks to see how the global store works.
-      this.unsubscribeStore = store.subscribeToKeys(this.onStoreUpdate, keys);
+      this.unsubscribeStore = store.subscribeToKeys(this.onStoreUpdate, keys)
       // If initializeLocal, return initial object to set on calling component
       if (initializeLocal) {
         return this.currentLocalState(keys)
@@ -63,7 +64,7 @@ const StoreMixin = defineComponent({
     /**
      * Get a specific current application state value. You have your reasons.
      */
-    storeVal(key: string): any {
+    getState(key: string): any {
       const currentState: {[k: string]: any} = store.getState()
       return currentState[key]
     },
@@ -73,9 +74,9 @@ const StoreMixin = defineComponent({
     },
 
     async getAlgodClient(): Promise<Algodv2> {
-      if (this.storeVal('algodClient')) return this.storeVal('algodClient')
+      if (this.getState('algodClient')) return this.getState('algodClient')
       store.algodClient(await getAlgodClient())
-      return this.storeVal('algodClient')
+      return this.getState('algodClient')
     },
 
     async initWalletStuff(): Promise<any> {
@@ -107,16 +108,22 @@ const StoreMixin = defineComponent({
         const algod = await this.getAlgodClient()
         store.assets(await Promise.all(this.store.assets.map(async (asset: {[k: string]: any}) => {
           const assetInfo = await algod.getAssetByID(asset['asset-id']).do()
-          const imageUrl = assetInfo.params.url.indexOf('https://') > -1
-              ? assetInfo.params.url
-              : assetInfo.params.url.replace('ipfs://', 'https://ipfs.io/ipfs/')
+          // const base = 'https://gateway.pinata.cloud/ipfs/'
+          const base = 'https://nftstorage.link/ipfs/'
+          const assetUrl = assetInfo.params.url
+          const index = assetUrl.indexOf('ipfs://') > -1 ?
+              assetUrl.indexOf('ipfs://') + 7 : assetUrl.indexOf('ipfs/') + 5;
+          const imageUrl = `${base}${assetUrl.substr(index)}`
           const label = `${assetInfo.params.name} - ${assetInfo.params['unit-name']}`
           return {...asset, ...assetInfo, imageUrl, label}
         })))
-        // @ts-ignore
         store.nfts(
             await Promise.all(this.store.assets.filter(
-                (asset: {[k: string]: any}) => {return asset.amount === 1}))
+                (asset: {[k: string]: any}) => {
+                  const isNft = asset.amount === 1
+                  if (isNft) this.syncNftToBackend(asset)
+                  return isNft
+                }))
         )
       } catch (err) {
         console.log(err)
@@ -125,9 +132,40 @@ const StoreMixin = defineComponent({
       console.log('Finished fetching assets/nfts')
     },
 
+    async syncNftToBackend(nft: {[k:string]: any}): Promise<any> {
+      let tries = 0
+      do {
+        if (this.getState('authConfirmed')) {
+          tries = 69
+          post(`nfts/${nft['asset-id']}/sync`, nft)
+              .then((res) => {
+                if (!res.image_cached) {
+                  this.cacheImage(nft)
+                }
+              })
+              .catch((err) => {
+                console.log(`Err on NFT Sync ${nft['asset-id']}`, err)
+              })
+        } else {
+          tries++
+          await this.sleep(10000)
+        }
+      } while (tries <= 3)
+    },
+
+    async cacheImage(nft: {[k:string]: any}): Promise<any> {
+      post(`nfts/${nft['asset-id']}/cache-image`, {})
+          .then((/*res*/) => {
+            return null // handle post-sync if needed
+          })
+          .catch((err) => {
+            console.log(`Err on NFT Sync ${nft['asset-id']}`, err)
+          })
+    },
+
     async getFunUserInfo(): Promise<any> {
       const algod = await this.getAlgodClient()
-      const address = this.storeVal('address')
+      const address = this.getState('address')
       const funInfo = await algod.accountAssetInformation(address, this.FUN_ASSET_ID).do()
       if (funInfo['asset-holding']) {
         store.funBalance(funInfo['asset-holding'].amount)
@@ -140,7 +178,7 @@ const StoreMixin = defineComponent({
     async optInToFun(): Promise<any> {
       store.funOptingIn(true)
       try {
-        const account = this.storeVal('account')
+        const account = this.getState('account')
         await account.tokenAccept(this.FUN_ASSET_ID)
         await this.getFunUserInfo()
       } catch (err) {
@@ -157,6 +195,6 @@ const StoreMixin = defineComponent({
     },
 
   },
-});
+})
 
-export default StoreMixin;
+export default StoreMixin

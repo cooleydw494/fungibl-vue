@@ -6,7 +6,6 @@ import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
 import {get, post} from "../api.js"
 import {loadStdlib} from "@reach-sh/stdlib";
 import StoreMixin from "./Store.mixin";
-import {Algodv2} from "algosdk";
 
 const AuthMixin = defineComponent({
 
@@ -17,10 +16,8 @@ const AuthMixin = defineComponent({
       store: {
         connected: false, connecting: false, disconnecting: false,
         account: null, address: "", assets: [],
-        algodClient: null,
       },
       txns: [],
-      algodClient: <Algodv2|null> null,
     };
   },
 
@@ -105,6 +102,7 @@ const AuthMixin = defineComponent({
         }).then((res) => {
           localStorage.setItem('funJwt', res.access_token)
           localStorage.setItem('funAuthWallet', this.store.address)
+          store.authConfirmed(true)
         }).catch((err) => {
           console.log(err)
           alert('Issue with login transaction. You were not logged in to the API.')
@@ -123,6 +121,7 @@ const AuthMixin = defineComponent({
           .catch((/*err*/) => { return null })
       const connectedUserIsAuthedUser =
           localStorage.getItem('funAuthWallet') === address
+      store.authConfirmed(authWorks)
       return authWorks && connectedUserIsAuthedUser
     },
 

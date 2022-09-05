@@ -59,6 +59,8 @@ const store = createState({
 
   /** DO NOT ACCESS DIRECTLY, CALL StoreMixin.getImageKit */
   imagekitClient: <ImageKit|null> null,
+
+  authConfirmed: false,
 });
 
 export default store;
