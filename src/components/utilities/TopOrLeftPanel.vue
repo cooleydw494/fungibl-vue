@@ -16,7 +16,7 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 .top-or-left-panel {
-  @apply flex justify-between items-center m-4 -mr-4;
+  @apply flex justify-between items-center m-4;
   min-width: calc(100% - $sp-4*2);
   min-height: calc(35vh - $sp-4*2);
 

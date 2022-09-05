@@ -49,7 +49,7 @@ export default defineComponent({
 
 
   .rectangle {
-    @apply flex flex-col justify-center w-72 min-h-24;
+    @apply flex flex-col justify-center w-72 min-h-24 -mr-4;
     @apply bg-fdark/25 rounded-md border-solid border-2;
 
     &.primary {

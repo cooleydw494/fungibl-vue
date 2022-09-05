@@ -3,18 +3,19 @@ import ImageKit from "imagekit-javascript"
 import store from "../state/index";
 import StoreMixin from "./Store.mixin";
 
-const AuthMixin = defineComponent({
+const ImageKitMixin = defineComponent({
 
   mixins: [StoreMixin],
 
   data(): any {
     return {
       store: { imageKitClient: null, },
-      defaultWidth: '100%',
+      defaultWidth: '200',
       defaultHeight: 'auto',
       defaultParams: {
+        // 'height': 'auto', // if not specified is auto by default
         'aspectRatio': '1-1',
-        'radius': '.25rem'
+        'radius': '5',
       }
     };
   },
@@ -26,23 +27,26 @@ const AuthMixin = defineComponent({
 
   methods: {
 
-    getImageKitClient() {
-      if (this.store.imageKitClient) return this.store.imageKitClient
+    getImageKitClient(): ImageKit {
+      if (this.getState('imageKitClient')) return this.getState('imageKitClient')
       const stagingOrNot = this.isStaging() ? '/staging' : ''
       store.imagekitClient(new ImageKit({
-        urlEndpoint: `${process.env.IMAGE_KIT_ENDPOINT}${stagingOrNot}`,
+        urlEndpoint: `${process.env.VUE_APP_IMAGE_KIT_ENDPOINT}${stagingOrNot}`,
       }))
-      return this.store.imageKitClient
+      return this.getState('imageKitClient')
     },
 
-    imageKitUrl(path: string, w: string|null = null, h: string|null = null,
-                params: {[k:string]: any}|null = null) {
+    imageKitUrl(path: string, w: string|null = null, params: {[k:string]: any}|null = null) {
+      const stagingOrNot = this.isStaging() ? '/staging' : ''
+      // return `https://fungible-files.s3.amazonaws.com/cache/images/local-dev/${path}`
+      const imageKitClient = new ImageKit({
+        urlEndpoint: `${process.env.VUE_APP_IMAGE_KIT_ENDPOINT}${stagingOrNot}`,
+      })
 
-      return this.getImageKitClient().url({
-        path: "/default-image.jpg",
+      return imageKitClient.url({
+        path: path,
         transformation: [{
           "width": w || this.defaultWidth,
-          "height": h || this.defaultHeight,
           ...(params || this.defaultParams),
         }]
       })
@@ -51,4 +55,4 @@ const AuthMixin = defineComponent({
   },
 });
 
-export default AuthMixin;
+export default ImageKitMixin;

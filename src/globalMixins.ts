@@ -1,3 +1,5 @@
+import {spacing, colors} from "./tailwindExports"
+
 export default {
     methods: {
         async sleep(ms: number): Promise<any> {
@@ -8,6 +10,21 @@ export default {
             return new Uint8Array(utf8.split('').map(function (item) {
                 return item.charCodeAt(0)
             }))
+        },
+        // use a numeric rem key from Tailwind to get pixels
+        spacingToPixels(spacingKey: number): number {
+            const tailwindVal = spacing[spacingKey]
+            const remIndex = tailwindVal.indexOf('rem')
+            if (remIndex === -1)
+                throw new Error(
+                    'spacingToPixels only works for numeric Tailwind rem keys'
+                )
+            const rem = parseFloat(tailwindVal.substr(0, remIndex))
+            const fontSize = getComputedStyle(document.documentElement).fontSize
+            return rem * parseFloat(fontSize);
+        },
+        themeColor(color: string): string {
+            return colors[color]
         },
         isStaging(): boolean {
             return window.location.host.includes('staging')

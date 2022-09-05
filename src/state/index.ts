@@ -42,6 +42,12 @@ const store = createState({
 
   selectedNftId: null as any | null,
 
+  selectedNftLoading: false,
+
+  selectedNftEstimates: {
+    estAlgo: 0,
+  },
+
   /** TODO: Calculate actual Pull Cost */
   pullCost: 1000000,
 
