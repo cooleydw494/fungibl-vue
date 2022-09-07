@@ -201,7 +201,7 @@ const StoreMixin = defineComponent({
             alert('Problem fetching pool metas')
             console.log(err)
           })
-      setTimeout(this.getPoolMetas(), 30000);
+      setTimeout(this.getPoolMetas, 30000);
     }
 
   },
