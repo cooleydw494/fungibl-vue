@@ -20,6 +20,7 @@
           </div>
           <img v-show="!store.selectedNftLoading" class="nft-image" @load="selectedNftLoaded()"
                :src="imageKitUrl(`${store.selectedNftId}.png`, spacingToPixels(nftImageWidth))"
+               @error="$event.target.src = store.selectedNft.imageUrl"
                alt="TODO">
         </div>
       </top-or-left-panel>

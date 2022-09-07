@@ -8,7 +8,7 @@
         <img src="../assets/icons/Pull-Icon-Green.svg" :alt="$t('Pull Icon - Click to Switch to Submit')">
       </router-link>
       <div class="logo">
-        <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" @click="mint()" />
+        <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" />
       </div>
       <router-link to="/analytics">
         <img src="../assets/icons/Analytics-Icon.svg" :alt="$t('Click to go to Analytics')">
@@ -19,7 +19,7 @@
 
 <script lang="js">
 import { defineComponent } from "vue";
-import {mintNfts} from "@/mint";
+// import {mintNfts} from "@/mint";
 
 export default defineComponent({
   name: "AppNav",
@@ -29,11 +29,11 @@ export default defineComponent({
       return this.$route.name === 'submit'
     },
   },
-  methods: {
-    mint() {
-      mintNfts()
-    }
-  }
+  // methods: {
+  //   doMint() {
+  //     mintNfts();
+  //   }
+  // }
 });
 </script>
 

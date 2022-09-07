@@ -29,7 +29,8 @@ const ImageKitMixin = defineComponent({
 
     getImageKitClient(): ImageKit {
       if (this.getState('imageKitClient')) return this.getState('imageKitClient')
-      const stagingOrNot = this.isStaging() ? '/staging' : ''
+      // If local, testnet is set in the env var, if built for prod, need to sniff in URL
+      const stagingOrNot = this.isStaging() ? '/testnet' : ''
       const imageKitClient = new ImageKit({
         urlEndpoint: `${process.env.VUE_APP_IMAGE_KIT_ENDPOINT}${stagingOrNot}`,
       })

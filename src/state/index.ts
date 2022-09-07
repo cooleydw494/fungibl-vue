@@ -48,6 +48,23 @@ const store = createState({
     estAlgo: 0,
   },
 
+  poolMetas: {
+    current_nft_count: 0,
+    starting_nft_count: 0,
+    lowest_nft_count: 0,
+    highest_nft_count: 0,
+    current_nft_value: 0,
+    starting_nft_value: 0,
+    lowest_nft_value: 0,
+    highest_nft_value: 0,
+    lowest_reward: 0,
+    highest_reward: 0,
+    app_supply_fun: 0,
+    llc_supply_fun: 0,
+    beta_supply_fun: 0,
+    public_supply_fun: 0,
+  },
+
   /** TODO: Calculate actual Pull Cost */
   pullCost: 1000000,
 

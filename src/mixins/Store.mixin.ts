@@ -1,6 +1,6 @@
 import { defineComponent } from "@vue/runtime-core"
 import store from "../state/index"
-import {post} from "../api"
+import {get, post} from "../api"
 import {Algodv2} from "algosdk"
 import {getAlgodClient} from "../algod"
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer"
@@ -84,6 +84,7 @@ const StoreMixin = defineComponent({
         await this.getAssets(),
         await this.getFunUserInfo(),
         await this.getAppFunInfo(),
+        await this.getPoolMetas(),
       ]).then(() => console.log('Finished initWalletStuff'))
           .catch(err => {console.log(err); alert(err.message)})
     },
@@ -158,7 +159,7 @@ const StoreMixin = defineComponent({
             return null // handle post-sync if needed
           })
           .catch((err) => {
-            console.log(`Err on NFT Sync ${assetId}`, err)
+            console.log(`Err on NFT cacheImage call for ${assetId}`, err)
           })
     },
 
@@ -192,6 +193,15 @@ const StoreMixin = defineComponent({
       const appFunInfo = await algod.accountAssetInformation(this.FUNGIBL_APP_WALLET, this.FUN_ASSET_ID).do()
       store.appFunBalance(appFunInfo['asset-holding'].amount)
     },
+
+    async getPoolMetas(): Promise<any> {
+      get('pool-metas')
+          .then((res) => { store.poolMetas(res.pool_metas) })
+          .catch((err) => {
+            alert('Problem fetching pool metas')
+            console.log(err)
+          })
+    }
 
   },
 })
