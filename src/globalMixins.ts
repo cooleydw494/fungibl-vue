@@ -21,7 +21,7 @@ export default {
                 )
             const rem = parseFloat(tailwindVal.substr(0, remIndex))
             const fontSize = getComputedStyle(document.documentElement).fontSize
-            return rem * parseFloat(fontSize);
+            return rem * parseFloat(fontSize)
         },
         themeColor(color: string): string {
             return colors[color]
