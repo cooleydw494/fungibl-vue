@@ -2,6 +2,7 @@ import createState from "@jackcom/raphsducks";
 import { NETWORKS } from "@jackcom/reachduck";
 import {Algodv2} from "algosdk";
 import ImageKit from "imagekit-javascript";
+import {defaultPoolMetas} from "../defaults"
 
 /** Your global application state. Add any properties you need here */
 const store = createState({
@@ -24,7 +25,8 @@ const store = createState({
   /** Reach `networkAccount` balance */
   balance: "0",
 
-  funOptedIn: false,
+  // init to true helps with smoother load, but check MUST resolve later
+  funOptedIn: true,
 
   funOptingIn: false,
 
@@ -38,6 +40,8 @@ const store = createState({
   /** TODO: Get wallet NFTs */
   nfts: [],
 
+  needsPostAuthNftSync: false,
+
   selectedNft: null as any | null,
 
   selectedNftId: null as any | null,
@@ -48,25 +52,7 @@ const store = createState({
     estAlgo: 0,
   },
 
-  poolMetas: {
-    current_nft_count: 0,
-    starting_nft_count: 0,
-    lowest_nft_count: 0,
-    highest_nft_count: 0,
-    current_nft_value: 0,
-    starting_nft_value: 0,
-    lowest_nft_value: 0,
-    highest_nft_value: 0,
-    lowest_reward: 0,
-    highest_reward: 0,
-    app_supply_fun: 0,
-    llc_supply_fun: 0,
-    beta_supply_fun: 0,
-    public_supply_fun: 0,
-  },
-
-  /** TODO: Calculate actual Pull Cost */
-  pullCost: 1000000,
+  poolMetas: defaultPoolMetas,
 
   /** Current configured network */
   currentNetwork: NETWORKS.ALGO.abbr,

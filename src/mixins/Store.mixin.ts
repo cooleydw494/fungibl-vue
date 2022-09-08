@@ -19,6 +19,11 @@ const StoreMixin = defineComponent({
     }
   },
 
+  created() {
+    const storeKeys = Object.keys(this.store)
+    this.store = this.subscribe(storeKeys, true)
+  },
+
   /** Unsubscribe from global state */
   beforeUnmount() {
     if (!this.unsubscribeStore) return
@@ -84,9 +89,8 @@ const StoreMixin = defineComponent({
         await this.getAssets(),
         await this.getFunUserInfo(),
         await this.getAppFunInfo(),
-        await this.getPoolMetas(),
       ]).then(() => console.log('Finished initWalletStuff'))
-          .catch(err => {console.log(err); alert(err.message)})
+          .catch(err => this.oop(err, err.message))
     },
 
     async getAssets(): Promise<any> {
@@ -125,32 +129,22 @@ const StoreMixin = defineComponent({
                 }))
         )
         this.syncNftsToBackend(this.getState('nfts'))
-      } catch (err) {
-        console.log(err)
-        alert('There was an error getting assets/nfts, check console')
-      }
+      } catch (err) { this.oop(err, 'There was an error getting assets/nfts')}
       console.log('Finished fetching assets/nfts')
     },
 
     async syncNftsToBackend(nfts: Array<{[k:string]: any}>): Promise<any> {
-      let tries = 0
-      do {
-        if (this.getState('authConfirmed')) {
-          tries = 69
-          post(`nfts/sync`, {nfts})
-              .then((res) => {
-                res.needs_caching.forEach((assetId: number) => {
-                  this.cacheImage(assetId)
-                })
+      if (this.getState('authConfirmed')) {
+        post(`nfts/sync`, {nfts})
+            .then((res) => {
+              res.needs_caching.forEach((assetId: number) => {
+                this.cacheImage(assetId)
               })
-              .catch((err) => {
-                console.log(`Err on NFT Sync`, err)
-              })
-        } else {
-          tries++
-          await this.sleep(10000)
-        }
-      } while (tries <= 3)
+            })
+            .catch((err) => {
+              this.oop(err, null, 'Err on NFT Sync')
+            })
+      } else { store.needsPostAuthNftSync(true) }
     },
 
     async cacheImage(assetId: number): Promise<any> {
@@ -159,20 +153,19 @@ const StoreMixin = defineComponent({
             return null // handle post-sync if needed
           })
           .catch((err) => {
-            console.log(`Err on NFT cacheImage call for ${assetId}`, err)
+            this.oop(err, null, `Err on NFT cacheImage call for ${assetId}`)
           })
     },
 
     async getFunUserInfo(): Promise<any> {
       const algod = await this.getAlgodClient()
       const address = this.getState('address')
-      const funInfo = await algod.accountAssetInformation(address, this.FUN_ASSET_ID).do()
-      if (funInfo['asset-holding']) {
-        store.funBalance(funInfo['asset-holding'].amount)
-        store.funOptedIn(true)
-      } else {
-        store.funBalance(`🥲`)
-      }
+      try {
+        const funInfo = await algod.accountAssetInformation(address, this.FUN_ASSET_ID).do()
+        if (funInfo['asset-holding']) {
+          store.funBalance(funInfo['asset-holding'].amount); store.funOptedIn(true)
+        } else { store.funBalance(`🥲`); store.funOptedIn(false) }
+      } catch (err) { store.funBalance(`🥲`); store.funOptedIn(false) }
     },
 
     async optInToFun(): Promise<any> {
@@ -181,10 +174,7 @@ const StoreMixin = defineComponent({
         const account = this.getState('account')
         await account.tokenAccept(this.FUN_ASSET_ID)
         await this.getFunUserInfo()
-      } catch (err) {
-        console.log(err)
-        alert('Problem opting in to $FUN')
-      }
+      } catch (err) { this.oop(err, 'Problem opting in to $FUN') }
       store.funOptingIn(false)
     },
 
@@ -197,10 +187,7 @@ const StoreMixin = defineComponent({
     async getPoolMetas(): Promise<any> {
       get('pool-metas')
           .then((res) => { store.poolMetas(res.pool_metas) })
-          .catch((err) => {
-            alert('Problem fetching pool metas')
-            console.log(err)
-          })
+          .catch((err) => { this.oop(err, 'Problem fetching pool metas') })
       setTimeout(this.getPoolMetas, 30000);
     }
 

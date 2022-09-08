@@ -13,8 +13,8 @@
             <p class="text-fblue text-xl font-bolder">{{ store.selectedNftEstimates.estAlgo }} $ALGO</p>
             <p class="text-fgreen text-xs">ESTIMATED VALUE</p>
           </div>
-          <div>
-            <p class="text-fpink text-xl font-bolder">~{{ (store.selectedNftEstimates.estAlgo * Math.random() / 10).toFixed(2) /*TODO: calculate*/ }}M $FUN</p>
+          <div :title="reward">
+            <p class="text-fpink text-xl font-bolder">~{{ rewardShort }} $FUN</p>
             <p class="text-fgreen text-xs">REWARD</p>
           </div>
         </div>
@@ -31,6 +31,8 @@ import StyledButton from "@/components/utilities/StyledButton";
 // import vSelect from 'vue-select'
 import StoreMixin from "@/mixins/Store.mixin"
 import store from "@/state"
+import {defaultPoolMetas} from "@/defaults"
+import {formatNumberShort} from "@jackcom/reachduck";
 
 export default defineComponent({
   name: "SelectNft",
@@ -45,14 +47,9 @@ export default defineComponent({
     return {
       store: {
         address: "", nfts: [], selectedNft: null, selectedNftId: null,
-        selectedNftEstimates: {},
+        selectedNftEstimates: { estAlgo: 0 }, poolMetas: defaultPoolMetas,
       },
     }
-  },
-
-  mounted() {
-    const storeKeys = Object.keys(this.store)
-    this.store = this.subscribe(storeKeys, true)
   },
 
   computed: {
@@ -65,7 +62,16 @@ export default defineComponent({
       // return this.store.nfts.filter((nft) => {
       //   return nft['asset-id'] !== this.store.selectedNftId
       // })
-    }
+    },
+    reward() {
+      let estAlgo = this.store.selectedNftEstimates?.estAlgo
+      const reward = this.store.poolMetas.app_supply_fun
+          * (estAlgo / (this.store.poolMetas.current_pool_value + estAlgo))
+      // We always round down on estimates/rewards, we like to keep things
+      // neat and this defaults in favor of $FUN holders.
+      return Math.floor(reward)
+    },
+    rewardShort() { return formatNumberShort(this.reward) },
   },
 
   methods: {

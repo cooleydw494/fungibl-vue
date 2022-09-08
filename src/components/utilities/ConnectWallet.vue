@@ -18,8 +18,8 @@
           <span>{{ store.nfts.length }}</span>
           <span class="label">{{ $t('NFTs') }}</span>
         </div>
-        <div class="wallet-data-container text-fpink">
-          <span>{{ store.funBalance }}</span>
+        <div class="wallet-data-container text-fpink" :title="store.funBalance">
+          <span>{{ displayFunBalance }}</span>
           <span class="label">{{ $t('$FUN') }}</span>
         </div>
       </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {  truncateString } from "@jackcom/reachduck"
+import {  truncateString, formatNumberShort } from "@jackcom/reachduck"
 import { defineComponent } from "@vue/runtime-core"
 import {
   disconnectWallet,
@@ -76,6 +76,9 @@ export default defineComponent({
     },
     walletString() {
       return this.store.connected ? truncateString(this.store.address, 4) : `🥲`
+    },
+    displayFunBalance() {
+      return formatNumberShort(this.store.funBalance)
     }
   },
 

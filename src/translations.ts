@@ -35,6 +35,7 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "CONNECT WALLET": "CONNECT WALLET",
         "Disconnecting...": "Disconnecting...",
         "Connecting...": "Connecting...",
+        "NFT Image for": "NFT Image for",
 
     },
     "es": {
@@ -73,6 +74,7 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "CONNECT WALLET": "CONNECT WALLET",
         "Disconnecting...": "Disconnecting...",
         "Connecting...": "Connecting...",
+        "NFT Image for": "NFT Image for",
 
     }
 }

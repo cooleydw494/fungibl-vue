@@ -78,7 +78,8 @@ $border-radius-md: theme('borderRadius.md');
 
 @mixin panel-container {
   .panel-container {
-    @apply md:flex md:flex-row md:place-content-center;
+    @apply md:flex md:flex-row md:place-content-center mx-auto;
+    max-width: 2000px;
   }
 }
 

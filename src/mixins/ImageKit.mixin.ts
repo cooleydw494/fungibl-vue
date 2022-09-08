@@ -9,7 +9,6 @@ const ImageKitMixin = defineComponent({
 
   data(): any {
     return {
-      store: { imageKitClient: null, },
       defaultWidth: '200',
       defaultHeight: 'auto',
       defaultParams: {
@@ -18,11 +17,6 @@ const ImageKitMixin = defineComponent({
         // 'radius': '5', // Usually set this in CSS
       }
     };
-  },
-
-  mounted() {
-    const storeKeys = Object.keys(this.store)
-    this.subscribe(storeKeys)
   },
 
   methods: {

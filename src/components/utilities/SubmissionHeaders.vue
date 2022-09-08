@@ -48,7 +48,7 @@ export default defineComponent({
 
   data() {
     return {
-      store: { connected: false, address: "", nfts: [] },
+      store: { connected: false, address: "", nfts: [], funOptedIn: true, },
       secondaryColors: {
         'not_connected': 'forange',
         'connected_not_opted_in': 'fyellow',
@@ -56,11 +56,6 @@ export default defineComponent({
         'connected': 'fpink',
       },
     }
-  },
-
-  mounted() {
-    const storeKeys = Object.keys(this.store)
-    this.store = this.subscribe(storeKeys, true)
   },
 
   computed: {

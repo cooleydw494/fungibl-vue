@@ -32,11 +32,6 @@ export default defineComponent({
     },
   },
 
-  mounted() {
-    const storeKeys = Object.keys(this.store);
-    this.subscribe(storeKeys);
-  },
-
   methods: {
     switchLanguage() {
       this.setLocale(this.inactiveLanguage)
