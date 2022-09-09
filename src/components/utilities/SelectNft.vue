@@ -35,7 +35,7 @@
 
         <h2 v-if="submissionState === 'not_submitting'" class="text-fblue font-extrabold mb-6">ARE YOU SURE?</h2>
         <h2 v-if="submissionState === 'creating'" class="text-fblue font-extrabold mb-6">CREATING CONTRACT</h2>
-        <h2 v-if="submissionState === 'publishing'" class="text-fblue font-extrabold mb-6">PUBLISHING ASSET ID</h2>
+        <h2 v-if="submissionState === 'initializing'" class="text-fblue font-extrabold mb-6">INITIALIZING</h2>
         <h2 v-if="submissionState === 'transferring'" class="text-fblue font-extrabold mb-6">TRANSFERRING</h2>
         <h2 v-if="submissionState === 'done'" class="text-fblue font-extrabold mb-6">SUCCESS!</h2>
 
@@ -61,7 +61,7 @@
 
         <div v-if="submissionState === 'done'">
           <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ rewardShort }} {{ $t('$FUN') }} momentarily</span></h5>
-          <styled-button button-style="connect" @click="closeSubmissionModal(true)">
+          <styled-button button-style="connect" @click="reInitialize()">
             {{ $t('DONE') }}
           </styled-button>
         </div>
@@ -101,7 +101,7 @@ export default defineComponent({
       },
       selected: null,
       showSubmissionModal: false,
-      submissionState: 'not_submitting', // 'creating', 'publishing', 'transferring'
+      submissionState: 'not_submitting', // 'creating', 'initializing', 'transferring'
       contractInfo: null,
       ctc: null,
     }
@@ -137,6 +137,7 @@ export default defineComponent({
     closeSubmissionModal(force = false) {
       this.showSubmissionModal =
           !(['not_submitting', 'done'].includes(this.submissionState) || force)
+      if (!this.showSubmissionModal) this.submissionState = 'not_submitting'
     },
     reInitialize() {
       this.sleep(5000).then(() => this.getFunUserInfo())
@@ -167,8 +168,8 @@ export default defineComponent({
     },
 
     // The rest of these methods are triggered by Reach
-    publishingAssetId() { this.submissionState = 'publishing' },
-    signingTransfer() { this.submissionState = 'transfer' },
+    initializing() { this.submissionState = 'initializing' },
+    signingTransfer() { this.submissionState = 'transferring' },
     async submitSuccess(assetId) {
       this.contractInfo = JSON.stringify(await this.ctc.getInfo(), null, 2)
       console.log('assetId', assetId)

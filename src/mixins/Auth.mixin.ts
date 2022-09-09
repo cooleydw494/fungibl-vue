@@ -94,7 +94,7 @@ const AuthMixin = defineComponent({
             .lookupAccountTransactions(this.store.address).limit(1).do()
         const txn = accountTxns.transactions[0]
         txn.txn = reachTxn
-        post('auth/login', {
+        await post('auth/login', {
           algorand_address: this.store.address, signed_tx: JSON.stringify(txn)
         }).then((res) => {
           localStorage.setItem('funJwt', res.access_token)
@@ -117,7 +117,6 @@ const AuthMixin = defineComponent({
     },
 
     async postAuthInit(): Promise<any> {
-      this.sleep(300);
       const needsNftSync = this.getState('needsPostAuthNftSync')
       // it may not resolve but at this point we stop trying
       store.needsPostAuthNftSync(false)

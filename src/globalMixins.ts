@@ -32,8 +32,8 @@ export default {
         },
         oop(err: any, alertTxt: string|null = null, consoleText: string|null = null) {
             if (alertTxt) alert(`${alertTxt}. Check console and file bug report.`)
-            if (consoleText) console.log(consoleText)
-            console.log(alertTxt)
+            console.log(consoleText || alertTxt)
+            console.log(err)
         },
     },
 }

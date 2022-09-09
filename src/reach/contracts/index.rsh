@@ -3,7 +3,7 @@
 export const main = Reach.App(() => {
   const Submitter = Participant('Submitter', {
     getNftAssetId: Fun([], Token),
-    publishingAssetId: Fun([], Null),
+    initializing: Fun([], Null),
     signingTransfer: Fun([], Null),
     submitSuccess: Fun([Token], Null)
   })
@@ -17,14 +17,12 @@ export const main = Reach.App(() => {
   Submitter.only(() => {
     const nftAssetId = declassify(interact.getNftAssetId())
   })
-
   Submitter.publish(nftAssetId)
-  Submitter.interact.publishingAssetId()
+  Submitter.interact.initializing()
   commit()
-
+  Submitter.interact.signingTransfer()
 
   Submitter.pay([[1, nftAssetId]])
-  Submitter.interact.signingTransfer()
   commit()
   Submitter.interact.submitSuccess(nftAssetId)
 
