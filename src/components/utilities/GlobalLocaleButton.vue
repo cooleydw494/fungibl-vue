@@ -1,5 +1,5 @@
 <template>
-  <styled-button type="button" @click="switchLanguage">
+  <styled-button type="button" @click="switchLanguage" class="mx-4">
     <b>{{ languageSwitchText }}</b>
   </styled-button>
 </template>

@@ -83,6 +83,10 @@ module.exports = {
         '3xl': '1760px',
         '4xl': '1920px',
       },
+      opacity: {
+        97: '0.97',
+        98: '0.98',
+      },
       minHeight: ({ theme }) => ({
         ...theme('spacing'),
       }),

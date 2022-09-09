@@ -1,6 +1,6 @@
 <template>
   <div>
-    <styled-button :button-style="'connect'" @click="toggleConnect">
+    <styled-button :button-style="'connect'" @click="toggleConnect" class="mx-4">
       <div v-if="!store.connected" class="content-container">
         <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
         {{ connectButtonText }}

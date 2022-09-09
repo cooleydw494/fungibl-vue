@@ -16,7 +16,7 @@
         {{ $t(`Missing out on all the`) }} <span class="text-fpink">{{ $t('$FUN') }} {{ $t('?') }}</span>
       </p>
       <styled-button v-if="walletState === 'connected_not_opted_in'" button-style="small"
-                     @click="optInToFun()">
+                     class="mx-4" @click="optInToFun()">
         <span v-if="!store.funOptingIn">{{ $t('OPT-IN NOW') }}</span>
         <span v-if="store.funOptingIn">{{ $t('Opting In...') }}</span>
       </styled-button>

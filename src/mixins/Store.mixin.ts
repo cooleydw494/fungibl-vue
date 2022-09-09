@@ -88,7 +88,7 @@ const StoreMixin = defineComponent({
       Promise.all([
         await this.getAssets(),
         await this.getFunUserInfo(),
-        await this.getAppFunInfo(),
+        // await this.getAppFunInfo(), obsoleted because of PoolMetas
       ]).then(() => console.log('Finished initWalletStuff'))
           .catch(err => this.oop(err, err.message))
     },
@@ -178,17 +178,17 @@ const StoreMixin = defineComponent({
       store.funOptingIn(false)
     },
 
-    async getAppFunInfo(): Promise<any> {
-      const algod = await this.getAlgodClient()
-      const appFunInfo = await algod.accountAssetInformation(this.FUNGIBL_APP_WALLET, this.FUN_ASSET_ID).do()
-      store.appFunBalance(appFunInfo['asset-holding'].amount)
-    },
+    // async getAppFunInfo(): Promise<any> {
+    //   const algod = await this.getAlgodClient()
+    //   const appFunInfo = await algod.accountAssetInformation(this.FUNGIBL_APP_WALLET, this.FUN_ASSET_ID).do()
+    //   store.appFunBalance(appFunInfo['asset-holding'].amount)
+    // },
 
     async getPoolMetas(): Promise<any> {
       get('pool-metas')
           .then((res) => { store.poolMetas(res.pool_metas) })
           .catch((err) => { this.oop(err, 'Problem fetching pool metas') })
-      setTimeout(this.getPoolMetas, 30000);
+      setTimeout(this.getPoolMetas, 15000);
     }
 
   },

@@ -2,17 +2,21 @@
   <header>
     <div class="logo-icons-container">
       <router-link v-if="isSubmit" to="/pull">
-        <img src="../assets/icons/Submit-Icon-Green.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
+        <img src="../assets/icons/Submit-Icon-Green.svg"
+             :alt="submitAlt" :title="submitAlt">
       </router-link>
       <router-link v-if="!isSubmit" to="/submit">
-        <img src="../assets/icons/Pull-Icon-Green.svg" :alt="$t('Pull Icon - Click to Switch to Submit')">
+        <img src="../assets/icons/Pull-Icon-Green.svg"
+             :alt="pullAlt" :title="pullAlt">
       </router-link>
       <div class="logo">
         <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" />
       </div>
-      <router-link to="/analytics">
-        <img src="../assets/icons/Analytics-Icon.svg" :alt="$t('Click to go to Analytics')">
-      </router-link>
+      <!--TODO: change to router-link to="/analytics"-->
+      <a @click="analyticsComingSoon">
+        <img src="../assets/icons/Analytics-Icon.svg"
+             :alt="analyticsAlt" :title="analyticsAlt">
+      </a>
     </div>
   </header>
 </template>
@@ -25,15 +29,19 @@ export default defineComponent({
   name: "AppNav",
   components: { /**/ },
   computed: {
-    isSubmit() {
-      return this.$route.name === 'submit'
-    },
+    isSubmit() { return this.$route.name === 'submit' },
+    analyticsAlt() { return this.$root.$t('Switch to Analytics') },
+    pullAlt() { return this.$root.$t('Switch to Submit') },
+    submitAlt() { return this.$root.$t('Switch to Pull') },
   },
-  // methods: {
-  //   doMint() {
-  //     mintNfts();
-  //   }
-  // }
+  methods: {
+    analyticsComingSoon() {
+      alert('Coming Soon :)')
+    },
+    // doMint() {
+    //   mintNfts();
+    // }
+  }
 });
 </script>
 
@@ -50,7 +58,7 @@ header {
   .logo-icons-container {
     @apply flex justify-between items-center;
     .logo {
-      @apply my-0 mx-8;
+      @apply z-50 my-0 mx-8;
       img {
         @apply w-full h-auto;
       }
@@ -59,7 +67,7 @@ header {
     /* <router-link> becomes <a> */
     a {
       img {
-        @apply w-18 h-18;
+        @apply w-18 h-18 mx-0 md:mx-2 xl:mx-4;
       }
     }
   }

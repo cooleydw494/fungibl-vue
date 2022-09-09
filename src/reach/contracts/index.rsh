@@ -1,8 +1,44 @@
-"reach 0.1";
+'reach 0.1'
 
 export const main = Reach.App(() => {
-  const A = Participant("A", {});
-  deploy();
+  const Submitter = Participant('Submitter', {
+    getNftAssetId: Fun([], Token),
+    publishingAssetId: Fun([], Null),
+    signingTransfer: Fun([], Null),
+    submitSuccess: Fun([Token], Null)
+  })
+  const Puller = Participant('Puller', {
+    getVerification: Fun([], UInt),
+    pullSuccess: Fun([Token], Null)
+  })
 
-  // App details go here
-});
+  init()
+
+  Submitter.only(() => {
+    const nftAssetId = declassify(interact.getNftAssetId())
+  })
+
+  Submitter.publish(nftAssetId)
+  Submitter.interact.publishingAssetId()
+  commit()
+
+
+  Submitter.pay([[1, nftAssetId]])
+  Submitter.interact.signingTransfer()
+  commit()
+  Submitter.interact.submitSuccess(nftAssetId)
+
+
+  Puller.only(() => {
+    const verification = declassify(interact.getVerification())
+  })
+
+  Puller.publish(verification)
+
+  transfer(1, nftAssetId).to(Puller)
+  commit()
+
+  Puller.interact.pullSuccess(nftAssetId)
+
+  exit()
+})

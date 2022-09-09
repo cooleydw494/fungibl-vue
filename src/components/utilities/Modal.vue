@@ -1,6 +1,8 @@
 <template>
   <section class="modal" :class="{'center': center}" tabindex="0" @keydown.esc="close">
-    <slot />
+    <div class="slot">
+      <slot />
+    </div>
   </section>
 </template>
 
@@ -34,10 +36,14 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 .modal {
-  @apply z-50 fixed top-0 bottom-0 left-0 right-0 w-full h-full bg-fdarkblue/95;
+  @apply z-40 fixed top-0 bottom-0 left-0 right-0 w-full h-full bg-fdarkblue/98;
 
   &.center {
     @apply flex flex-col place-content-center place-items-center;
   }
+
+  //.slot {
+  //  @apply p-4 bg-fdarkblue/25;
+  //}
 }
 </style>

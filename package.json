@@ -16,8 +16,6 @@
     "core-js": "^3.6.5",
     "epic-spinners": "^1.1.0",
     "imagekit-javascript": "^1.5.2",
-    "ipfs-core": "^0.15.4",
-    "multiformats": "github:multiformats/js-multiformats",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "register-service-worker": "^1.7.1",
     "vue": "^3.0.0",

@@ -1,7 +1,7 @@
-import createState from "@jackcom/raphsducks";
-import { NETWORKS } from "@jackcom/reachduck";
-import {Algodv2} from "algosdk";
-import ImageKit from "imagekit-javascript";
+import createState from "@jackcom/raphsducks"
+import { NETWORKS } from "@jackcom/reachduck"
+import {Algodv2} from "algosdk"
+import ImageKit from "imagekit-javascript"
 import {defaultPoolMetas} from "../defaults"
 
 /** Your global application state. Add any properties you need here */
@@ -32,8 +32,6 @@ const store = createState({
 
   funBalance: "0",
 
-  appFunBalance: "0",
-
   /** All assets of connected wallet */
   assets: [],
 
@@ -42,11 +40,11 @@ const store = createState({
 
   needsPostAuthNftSync: false,
 
+  nftImagesLoading: {},
+
   selectedNft: null as any | null,
 
   selectedNftId: null as any | null,
-
-  selectedNftLoading: false,
 
   selectedNftEstimates: {
     estAlgo: 0,
@@ -70,42 +68,49 @@ const store = createState({
   imageKitClient: <ImageKit|null> null,
 
   authConfirmed: false,
-});
+})
 
-export default store;
+export default store
 
-export type Alert = { msg: string; time: number };
+export type Alert = { msg: string; time: number }
 
 export function addNotification(msg: string, additionalUpdates = {}) {
-  const note = makeNotification(msg);
-  const { notifications: old } = store.getState();
-  const notifications = [...old, note];
-  store.multiple({ notifications, ...additionalUpdates });
+  const note = makeNotification(msg)
+  const { notifications: old } = store.getState()
+  const notifications = [...old, note]
+  store.multiple({ notifications, ...additionalUpdates })
 }
 
 export function resetNotifications(msg?: string) {
-  const updates = [];
-  if (msg) updates.push(makeNotification(msg));
-  store.notifications(updates);
+  const updates = []
+  if (msg) updates.push(makeNotification(msg))
+  store.notifications(updates)
 }
 
 export function removeNotification(msg: Alert, additionalUpdates = {}) {
-  const { notifications } = store.getState();
-  const i = notifications.findIndex((n) => n.time === msg.time);
-  if (i === -1) return;
+  const { notifications } = store.getState()
+  const i = notifications.findIndex((n) => n.time === msg.time)
+  if (i === -1) return
 
-  const updates = [...notifications];
-  updates.splice(i, 1);
-  store.multiple({ notifications: updates, ...additionalUpdates });
+  const updates = [...notifications]
+  updates.splice(i, 1)
+  store.multiple({ notifications: updates, ...additionalUpdates })
 }
 
 function makeNotification(msg: string) {
-  return { msg, time: new Date().getTime() };
+  return { msg, time: new Date().getTime() }
 }
 
 export function clearNotification(m?: string) {
-  if (!m) return;
-  const { notifications } = store.getState();
-  const note = notifications.find((n) => n.msg === m);
-  if (note) removeNotification(note);
+  if (!m) return
+  const { notifications } = store.getState()
+  const note = notifications.find((n) => n.msg === m)
+  if (note) removeNotification(note)
+}
+
+export function nftImageLoading(assetId: number, isLoading: boolean = true) {
+  const { nftImagesLoading } = store.getState()
+  let newLoading: {[k:number]: boolean} = {...nftImagesLoading}
+  newLoading[assetId] = isLoading
+  store.nftImagesLoading(newLoading)
 }

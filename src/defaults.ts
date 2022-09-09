@@ -2,7 +2,7 @@ const defaultPoolMetas: {[k:string]: number} = {
     current_nft_count: 0,
     current_pool_value: 0,
     current_avg_reward: 0,
-    current_pull_cost: 0,
+    current_pull_cost: 6969696969,
 
     starting_nft_count: 0,
     starting_pool_value: 0,

@@ -4,10 +4,16 @@
 
       <top-or-left-panel>
         <!--No NFT Selected-->
-        <img v-if="!store.selectedNftId" class="icon" src="../../assets/icons/Submit-Icon-Blue.svg" :alt="$t('Submit Icon - Click to Switch to Pull')">
+        <img v-if="!store.selectedNftId" class="icon"
+             src="../../assets/icons/Submit-Icon-Blue.svg"
+             :alt="$t('Submit Icon - Click to Switch to Pull')">
         <submission-headers v-if="!store.selectedNftId"></submission-headers>
         <!--NFT Selected-->
-        <selected-nft v-if="store.selectedNftId"></selected-nft>
+        <nft-image v-if="store.selectedNftId" :nft="store.selectedNft"
+                   :nft-image-loading="!!store.nftImagesLoading[store.selectedNftId]"
+                   :image-width="selectedNftImageWidth"
+                   :image-kit-url="selectedNftImageKitUrl">
+        </nft-image>
       </top-or-left-panel>
 
       <bottom-or-right-panel>
@@ -25,14 +31,14 @@ import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel"
 import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel"
 import SubmissionHeaders from "@/components/utilities/SubmissionHeaders"
 import SelectNft from "@/components/utilities/SelectNft"
-import SelectedNft from "@/components/utilities/SelectedNft";
+import NftImage from "@/components/utilities/NftImage";
 import ImageKitMixin from "@/mixins/ImageKit.mixin"
 
 export default defineComponent({
 
   components: {
     PageContainer, TopOrLeftPanel, BottomOrRightPanel, SubmissionHeaders,
-    SelectNft, SelectedNft,
+    SelectNft, NftImage,
   },
 
   name: "Submit",
@@ -40,8 +46,20 @@ export default defineComponent({
   mixins: [ImageKitMixin],
 
   data: () => ({
-    store: { selectedNftId: null, },
+    store: { selectedNft: null, selectedNftId: null, nftImagesLoading: {} },
   }),
+
+  computed: {
+    selectedNftImageWidth() {
+      return window.innerWidth < 768 ? 76 : 96
+    },
+    selectedNftImageKitUrl() {
+      return this.imageKitUrl(
+          `${this.store.selectedNftId}.png`,
+          this.spacingToPixels(this.selectedNftImageWidth)
+      )
+    }
+  }
 
 });
 </script>

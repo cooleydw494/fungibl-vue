@@ -9,14 +9,14 @@
     <template #secondary>
       <!-- Connected -->
       <p v-if="walletState === 'connected'" class="font-bold w-38">
-        {{ $t('Trade in') }} {{ (`24.5M`).toUpperCase() }} {{ $t('$FUN') }} {{ $t('to get a randomized NFT') }}
+        {{ $t('Trade in') }} {{ store.poolMetas.current_pull_cost }} {{ $t('$FUN') }} {{ $t('to get a randomized NFT') }}
       </p>
       <!-- Connected - Not Enough $FUN -->
       <p v-if="walletState === 'connected_needs_fun'" class="font-bold w-20">
         {{ $t(`You need more`) }} <span class="text-fpink">{{ $t('$FUN') }}{{ $t('!') }}</span>
       </p>
       <styled-button v-if="walletState === 'connected_needs_fun'" button-style="small"
-                     @click="$router.push('submit')">
+                     class="mx-4" @click="$router.push('submit')">
         {{ $t('GET $FUN') }}
       </styled-button>
       <!-- Connected - Not Opted In -->
@@ -24,7 +24,7 @@
         {{ $t(`Missing out on all the`) }} <span class="text-fpink">{{ $t('$FUN') }} {{ $t('?') }}</span>
       </p>
       <styled-button v-if="walletState === 'connected_not_opted_in'" button-style="small"
-                     @click="optInToFun()">
+                     class="mx-4" @click="optInToFun()">
         <span v-if="!store.funOptingIn">{{ $t('OPT-IN NOW') }}</span>
         <span v-if="store.funOptingIn">{{ $t('Opting In...') }}</span>
       </styled-button>
@@ -39,6 +39,7 @@
 
 <script>
 import { defineComponent } from "@vue/runtime-core"
+import {defaultPoolMetas} from "@/defaults"
 import TwoRectangles from "@/components/utilities/TwoRectangles"
 import StyledButton from "@/components/utilities/StyledButton"
 import StoreMixin from "@/mixins/Store.mixin"
@@ -53,7 +54,8 @@ export default defineComponent({
   data() {
     return {
       store: { connected: false, address: "", nfts: [], pullCost: 0,
-        funOptedIn: true, funOptingIn: false, funBalance: "", },
+        funOptedIn: true, funOptingIn: false, funBalance: "",
+        poolMetas: defaultPoolMetas },
       secondaryColors: {
         'not_connected': 'forange',
         'connected_not_opted_in': 'fyellow',
@@ -73,7 +75,8 @@ export default defineComponent({
     walletState() {
       if (!this.store.connected) return 'not_connected'
       if (!this.store.funOptedIn) return 'connected_not_opted_in'
-      if (this.store.funBalance < this.store.pullCost) return 'connected_needs_fun'
+      if (this.store.funBalance < (this.store?.poolMetas?.current_pull_cost || 6969696969))
+        return 'connected_needs_fun'
       return 'connected'
     },
   },

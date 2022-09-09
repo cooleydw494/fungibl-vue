@@ -37,7 +37,7 @@ const AuthMixin = defineComponent({
         await Promise.all([
           await this.initWalletStuff(),
           isAuthed ? await this.postAuthInit()
-              : await this.authForApi().then(() => this.postAuthInit())
+              : await this.authForApi().then(async () => await this.postAuthInit())
         ])
         store.connecting(false)
       }).catch(err => this.oop(err, 'Error re-connecting wallet'))
@@ -51,7 +51,7 @@ const AuthMixin = defineComponent({
         await Promise.all([
             await this.initWalletStuff(),
             isAuthed ? await this.postAuthInit()
-                : await this.authForApi().then(() => this.postAuthInit())
+                : await this.authForApi().then(async () => await this.postAuthInit())
         ])
       }).catch(err => this.oop(err, 'Error connecting wallet'))
       store.connecting(false)
@@ -117,6 +117,7 @@ const AuthMixin = defineComponent({
     },
 
     async postAuthInit(): Promise<any> {
+      this.sleep(300);
       const needsNftSync = this.getState('needsPostAuthNftSync')
       // it may not resolve but at this point we stop trying
       store.needsPostAuthNftSync(false)

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex justify-center">
     <div class="w-full min-h-76 md:min-h-96 flex flex-col" :class="{'justify-between': store.selectedNftId, 'justify-around': !store.selectedNftId }">
-      <select class="select" id="selectNft" :disabled="!enabled" @change="setSelected(parseInt($event.target.value))">
+      <select class="select" id="selectNft" v-model="selected" :disabled="!enabled" @change="setSelected(parseInt($event.target.value))">
         <option v-if="!store.selectedNft" value="null" class="option">{{ $t('SELECT AN NFT') }}</option>
         <!--      <option v-if="store.selectedNft.length" value="null" class="option">{{ $t('SELECT ANOTHER NFT') }}</option>-->
         <option v-for="nft in selectableNfts" :key="nft['asset-id']" :value="nft['asset-id']" class="option">{{ nft.label }}</option>
@@ -20,23 +20,72 @@
         </div>
       </div>
 
-      <styled-button v-if="store.selectedNftId" button-style="connect">{{ $t('SUBMIT') }}</styled-button>
+      <div v-if="store.selectedNftId" class="w-full text-center">
+<!--        <styled-button button-style="connect" @click="reInitialize()" class="mb-6 md:mb-0">-->
+<!--          {{ $t('CANCEL') }}-->
+<!--        </styled-button>-->
+        <styled-button button-style="connect" @click="initSubmission()" class="md:ml-8">
+          {{ $t('SUBMIT') }}
+        </styled-button>
+      </div>
     </div>
+
+    <modal v-if="showSubmissionModal" @close="closeSubmissionModal()" center>
+      <div class="max-w-2xl text-center">
+
+        <h2 v-if="submissionState === 'not_submitting'" class="text-fblue font-extrabold mb-6">ARE YOU SURE?</h2>
+        <h2 v-if="submissionState === 'creating'" class="text-fblue font-extrabold mb-6">CREATING CONTRACT</h2>
+        <h2 v-if="submissionState === 'publishing'" class="text-fblue font-extrabold mb-6">PUBLISHING ASSET ID</h2>
+        <h2 v-if="submissionState === 'transferring'" class="text-fblue font-extrabold mb-6">TRANSFERRING</h2>
+        <h2 v-if="submissionState === 'done'" class="text-fblue font-extrabold mb-6">SUCCESS!</h2>
+
+
+        <div v-if="submissionState !== 'done'" class="text-fblue mb-12">
+          <h5>You'll send 1 NFT to a smart contract</h5>
+          <h5>and will receive <span class="text-fpink">~{{ rewardShort }} {{ $t('$FUN') }}</span></h5>
+        </div>
+        <div v-if="submissionState !== 'done'" class="text-fyellow mb-12">
+          <h5>Be aware that while estimates are based on</h5>
+          <h5>very recent information, outcomes may vary</h5>
+        </div>
+
+        <div v-if="submissionState === 'not_submitting'">
+          <styled-button button-style="connect" @click="closeSubmissionModal()">
+            {{ $t('CANCEL') }}
+          </styled-button>
+          <styled-button button-style="connect" @click="submitSelectedNft" class="mt-6 md:mt-0 md:ml-8">
+            {{ $t('SUBMIT') }}
+          </styled-button>
+        </div>
+        <h2 v-if="submissionState !== 'not_submitting' && submissionState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>
+
+        <div v-if="submissionState === 'done'">
+          <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ rewardShort }} {{ $t('$FUN') }} momentarily</span></h5>
+          <styled-button button-style="connect" @click="closeSubmissionModal(true)">
+            {{ $t('DONE') }}
+          </styled-button>
+        </div>
+
+      </div>
+    </modal>
   </div>
 </template>
 
 <script>
 import { defineComponent } from "@vue/runtime-core"
-import StyledButton from "@/components/utilities/StyledButton";
-// import vSelect from 'vue-select'
+import StyledButton from "@/components/utilities/StyledButton"
 import StoreMixin from "@/mixins/Store.mixin"
 import store from "@/state"
+import {nftImageLoading} from "@/state"
 import {defaultPoolMetas} from "@/defaults"
 import {formatNumberShort} from "@jackcom/reachduck";
+import * as backend from "@/reach/contracts/build/index.main.mjs"
+import {post} from "@/api"
+import Modal from "@/components/utilities/Modal";
 
 export default defineComponent({
   name: "SelectNft",
-  components: { StyledButton },
+  components: { StyledButton, Modal },
 
 
   // components: { vSelect },
@@ -48,8 +97,18 @@ export default defineComponent({
       store: {
         address: "", nfts: [], selectedNft: null, selectedNftId: null,
         selectedNftEstimates: { estAlgo: 0 }, poolMetas: defaultPoolMetas,
+        account: null,
       },
+      selected: null,
+      showSubmissionModal: false,
+      submissionState: 'not_submitting', // 'creating', 'publishing', 'transferring'
+      contractInfo: null,
+      ctc: null,
     }
+  },
+
+  mounted() {
+    this.selected = this.store.selectedNftId
   },
 
   computed: {
@@ -75,11 +134,61 @@ export default defineComponent({
   },
 
   methods: {
+    closeSubmissionModal(force = false) {
+      this.showSubmissionModal =
+          !(['not_submitting', 'done'].includes(this.submissionState) || force)
+    },
+    reInitialize() {
+      this.sleep(5000).then(() => this.getFunUserInfo())
+      store.selectedNft(null)
+      store.selectedNftId(null)
+      store.selectedNftEstimates({ estAlgo: 0 })
+      this.selected = null
+      this.contractInfo = null
+      this.closeSubmissionModal(true)
+    },
     setSelected(nftId) {
-      store.selectedNftLoading(true)
+      nftImageLoading(nftId)
       store.selectedNftId(nftId)
       store.selectedNft((this.store.nfts.filter(nft => nft['asset-id'] === nftId))[0])
       store.selectedNftEstimates({ estAlgo: Math.floor(Math.random() * 250) })
+    },
+    initSubmission() {
+      this.showSubmissionModal = true
+    },
+    async submitSelectedNft() {
+      this.submissionState = 'creating'
+      this.ctc = this.store.account.contract(backend)
+      await backend.Submitter(this.ctc, this)
+          .catch((err) => {
+            this.oop(err, 'Contract incomplete')
+            this.reInitialize()
+          })
+    },
+
+    // The rest of these methods are triggered by Reach
+    publishingAssetId() { this.submissionState = 'publishing' },
+    signingTransfer() { this.submissionState = 'transfer' },
+    async submitSuccess(assetId) {
+      this.contractInfo = JSON.stringify(await this.ctc.getInfo(), null, 2)
+      console.log('assetId', assetId)
+      console.log('selectedNftId', this.store.selectedNftId)
+      console.log('contractInfo', this.contractInfo);
+      if (assetId != this.store.selectedNftId) {
+        this.oop(null,`Asset ID of selected nft does not match asset id from contract. Contact support. IMPORTANT! Save this contract info and include in support ticket (also in console): ${this.contractInfo}`)
+        return
+      }
+      post('nfts/add-to-pool',
+          { nfts: [{...this.store.selectedNft, estimated_value: this.store.selectedNftEstimates.estAlgo, contract_info: this.contractInfo }] })
+          .then(() => {
+            this.submissionState = 'done'
+          }).catch((err) => {
+            this.oop(null,`Failed to sync NFT add with database / send $FUN. Contact support. IMPORTANT! Save this contract info and include in support ticket (also in console): ${this.contractInfo}`)
+            this.reInitialize()
+          })
+    },
+    getNftAssetId() {
+      return this.store.selectedNftId
     },
   }
 
