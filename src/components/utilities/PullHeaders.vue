@@ -43,6 +43,7 @@ import {defaultPoolMetas} from "@/defaults"
 import TwoRectangles from "@/components/utilities/TwoRectangles"
 import StyledButton from "@/components/utilities/StyledButton"
 import StoreMixin from "@/mixins/Store.mixin"
+import {formatNumberShort} from "@jackcom/reachduck";
 
 export default defineComponent({
   name: "PullHeaders",
@@ -53,7 +54,7 @@ export default defineComponent({
 
   data() {
     return {
-      store: { connected: false, address: "", nfts: [], pullCost: 0,
+      store: { connected: false, address: "", nfts: [],
         funOptedIn: true, funOptingIn: false, funBalance: "",
         poolMetas: defaultPoolMetas },
       secondaryColors: {
@@ -71,6 +72,9 @@ export default defineComponent({
     },
     secondaryColor() {
       return this.secondaryColors[this.walletState]
+    },
+    pullCostShort() {
+      return formatNumberShort(this.store.poolMetas.current_pull_cost)
     },
     walletState() {
       if (!this.store.connected) return 'not_connected'

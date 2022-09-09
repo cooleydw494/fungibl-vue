@@ -101,7 +101,8 @@ export default defineComponent({
       },
       selected: null,
       showSubmissionModal: false,
-      submissionState: 'not_submitting', // 'creating', 'initializing', 'transferring'
+      // 'creating', 'initializing', 'transferring', 'done'
+      submissionState: 'not_submitting',
       contractInfo: null,
       ctc: null,
     }
@@ -154,9 +155,7 @@ export default defineComponent({
       store.selectedNft((this.store.nfts.filter(nft => nft['asset-id'] === nftId))[0])
       store.selectedNftEstimates({ estAlgo: Math.floor(Math.random() * 250) })
     },
-    initSubmission() {
-      this.showSubmissionModal = true
-    },
+    initSubmission() { this.showSubmissionModal = true },
     async submitSelectedNft() {
       this.submissionState = 'creating'
       this.ctc = this.store.account.contract(backend)

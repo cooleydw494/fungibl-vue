@@ -8,8 +8,13 @@ export const main = Reach.App(() => {
     submitSuccess: Fun([Token], Null)
   })
   const Puller = Participant('Puller', {
-    getVerification: Fun([], UInt),
-    pullSuccess: Fun([Token], Null)
+    getPullCost: Fun([], UInt),
+    getFungiblAppWallet: Fun([], Address),
+    getFunToken: Fun([], Token),
+    pullSuccess: Fun([Token], Null),
+    sendingTokenToContract: Fun([], Null),
+    transferringTokenToFungiblApp: Fun([], Null),
+    transferringNftToPuller: Fun([], Null),
   })
 
   init()
@@ -28,11 +33,21 @@ export const main = Reach.App(() => {
 
 
   Puller.only(() => {
-    const verification = declassify(interact.getVerification())
+    const pullCost = declassify(interact.getPullCost())
+    const fungiblAppWallet = declassify(interact.getFungiblAppWallet())
+    const funToken = declassify(interact.getFunToken())
+    assume(funToken != nftAssetId)
   })
 
-  Puller.publish(verification)
+  Puller.publish(pullCost, fungiblAppWallet, funToken)
 
+  commit()
+
+  Puller.interact.sendingTokenToContract()
+  Puller.pay([[pullCost, funToken]])
+  Puller.interact.transferringTokenToFungiblApp()
+  transfer(pullCost, funToken).to(fungiblAppWallet)
+  Puller.interact.transferringNftToPuller()
   transfer(1, nftAssetId).to(Puller)
   commit()
 
