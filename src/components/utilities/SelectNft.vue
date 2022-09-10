@@ -60,7 +60,7 @@
         <h2 v-if="submissionState !== 'not_submitting' && submissionState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>
 
         <div v-if="submissionState === 'done'">
-          <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ rewardShort }} {{ $t('$FUN') }} momentarily</span></h5>
+          <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ finalizedRewardShort }} {{ $t('$FUN') }} momentarily</span></h5>
           <styled-button button-style="connect" @click="reInitialize()">
             {{ $t('DONE') }}
           </styled-button>
@@ -103,6 +103,7 @@ export default defineComponent({
       showSubmissionModal: false,
       // 'creating', 'initializing', 'transferring', 'done'
       submissionState: 'not_submitting',
+      finalizedReward: null,
       contractInfo: null,
       ctc: null,
     }
@@ -132,6 +133,7 @@ export default defineComponent({
       return Math.floor(reward)
     },
     rewardShort() { return formatNumberShort(this.reward) },
+    finalizedRewardShort() { return formatNumberShort(this.finalizedReward) }
   },
 
   methods: {
@@ -141,12 +143,14 @@ export default defineComponent({
       if (!this.showSubmissionModal) this.submissionState = 'not_submitting'
     },
     reInitialize() {
+      this.getPoolMetas(false)
       this.sleep(5000).then(() => this.getFunUserInfo())
       store.selectedNft(null)
       store.selectedNftId(null)
       store.selectedNftEstimates({ estAlgo: 0 })
       this.selected = null
       this.contractInfo = null
+      this.finalizedReward = null
       this.closeSubmissionModal(true)
     },
     setSelected(nftId) {
@@ -155,7 +159,10 @@ export default defineComponent({
       store.selectedNft((this.store.nfts.filter(nft => nft['asset-id'] === nftId))[0])
       store.selectedNftEstimates({ estAlgo: Math.floor(Math.random() * 250) })
     },
-    initSubmission() { this.showSubmissionModal = true },
+    initSubmission() {
+      this.finalizedReward = this.reward // TODO: this needs to happen after database stuff
+      this.showSubmissionModal = true
+    },
     async submitSelectedNft() {
       this.submissionState = 'creating'
       this.ctc = this.store.account.contract(backend)

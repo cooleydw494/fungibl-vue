@@ -9,7 +9,7 @@
     <template #secondary>
       <!-- Connected -->
       <p v-if="walletState === 'connected'" class="font-bold w-38">
-        {{ $t('Trade in') }} {{ store.poolMetas.current_pull_cost }} {{ $t('$FUN') }} {{ $t('to get a randomized NFT') }}
+        {{ $t('Trade in') }} {{ pullCostShort }} {{ $t('$FUN') }} {{ $t('to get a randomized NFT') }}
       </p>
       <!-- Connected - Not Enough $FUN -->
       <p v-if="walletState === 'connected_needs_fun'" class="font-bold w-20">

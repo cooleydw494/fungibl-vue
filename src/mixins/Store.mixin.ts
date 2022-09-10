@@ -134,6 +134,7 @@ const StoreMixin = defineComponent({
     },
 
     async syncNftsToBackend(nfts: Array<{[k:string]: any}>): Promise<any> {
+      if (nfts.length === 0) return
       if (this.getState('authConfirmed')) {
         post(`nfts/sync`, {nfts})
             .then((res) => {
@@ -184,11 +185,11 @@ const StoreMixin = defineComponent({
     //   store.appFunBalance(appFunInfo['asset-holding'].amount)
     // },
 
-    async getPoolMetas(): Promise<any> {
+    async getPoolMetas(repeat = true): Promise<any> {
       get('pool-metas')
           .then((res) => { store.poolMetas(res.pool_metas) })
           .catch((err) => { this.oop(err, 'Problem fetching pool metas') })
-      setTimeout(this.getPoolMetas, 15000);
+      if (repeat) setTimeout(this.getPoolMetas, 15000)
     }
 
   },

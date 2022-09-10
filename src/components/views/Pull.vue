@@ -12,7 +12,7 @@
           </h3>
         </div>
         <div class="w-full text-center">
-          <styled-button button-style="connect" :disabled="walletState !== 'connected'"
+          <styled-button button-style="connect"
                          @click="initPull">
             {{ $t('PULL') }}
           </styled-button>
@@ -23,7 +23,7 @@
     <modal v-if="showPullModal" @close="closePullModal()" center>
       <div class="max-w-2xl text-center">
 
-        <div v-if="pullState === 'done'">
+        <div v-if="pullState === 'done'" class="w-full flex justify-center">
           <nft-image :nft="pulledNftShim" class="mb-2"
                      :nft-image-loading="!!store.nftImagesLoading[pulledNftId]"
                      :image-width="pulledNftImageWidth"
@@ -34,6 +34,7 @@
         <h2 v-if="pullState === 'not_pulling'" class="text-fblue font-extrabold mb-6">ARE YOU SURE?</h2>
         <h2 v-if="pullState === 'attaching'" class="text-fblue font-extrabold mb-6">ATTACHING TO CONTRACT</h2>
         <h2 v-if="pullState === 'sending_fun'" class="text-fblue font-extrabold mb-6">FUNDING CONTRACT WITH $FUN</h2>
+        <h2 v-if="pullState === 'opting_in'" class="text-fblue font-extrabold mb-6">OPTING IN</h2>
         <h2 v-if="pullState === 'transferring_fun'" class="text-fblue font-extrabold mb-6">TRANSFERRING $FUN TO <span class="text-fpink">FUNGIBL</span></h2>
         <h2 v-if="pullState === 'transferring_nft'" class="text-fblue font-extrabold mb-6">TRANSFERRING ?NFT? TO YOU</h2>
         <h2 v-if="pullState === 'done'" class="text-fblue font-extrabold mb-6"><span class="text-fpink">♥</span> SAY HELLO TO <span class="text-fgreen">{{ pulledNftId }}</span> <span class="text-fpink">♥</span></h2>
@@ -79,7 +80,7 @@ import {defaultPoolMetas} from "@/defaults"
 import {formatNumberShort} from "@jackcom/reachduck"
 import StoreMixin from "@/mixins/Store.mixin"
 import {nftImageLoading} from "@/state"
-import {post} from "@/api"
+import {get, post} from "@/api"
 import * as backend from "@/reach/contracts/build/index.main.mjs"
 
 export default defineComponent({
@@ -91,13 +92,14 @@ export default defineComponent({
 
   data() {
     return {
-      store: { connected: false, funBalance: 0, funOptedIn: true,
-        poolMetas: defaultPoolMetas},
+      store: { connected: false, funBalance: 0, funOptedIn: true, account: null,
+        poolMetas: defaultPoolMetas, nftImagesLoading: {}, },
       showPullModal: false,
       // attaching, sending_fun, transferring_fun, transferring_nft, done
       pullState: 'not_pulling',
       pulledNftId: null,
       finalizedPullCost: null,
+      optInToken: null,
     }
   },
 
@@ -122,7 +124,7 @@ export default defineComponent({
     pulledNftImageKitUrl() {
       return this.imageKitUrl(
           `${this.pulledNftId}.png`,
-          this.spacingToPixels(this.selectedNftImageWidth)
+          this.spacingToPixels(this.pulledNftImageWidth)
       )
     }
   },
@@ -142,13 +144,14 @@ export default defineComponent({
       }
       this.pulledNftId = null
       this.finalizedPullCost = null
+      this.optInToken = null
       this.closePullModal(true)
     },
     initPull() { this.showPullModal = true },
     async pull() {
       this.pullState = 'attaching'
-      const contractInfo = await this.getRandomContractInfo()
-      this.ctc = this.store.account.contract(contractInfo)
+      const contractInfo = JSON.parse(await this.getRandomContractInfo())
+      this.ctc = this.store.account.contract(backend, contractInfo)
       await backend.Puller(this.ctc, this)
           .catch((err) => {
             this.oop(err, 'Contract incomplete')
@@ -160,13 +163,19 @@ export default defineComponent({
         this.oop(err, 'Failed to fetch random NFT contract')
       })
       this.finalizedPullCost = res.finalized_pull_cost
+      this.optInToken = res.opt_in_token
       return res.contract_info
     },
 
     // The rest of these methods are triggered by Reach
     sendingTokenToContract() { this.pullState = 'sending_fun' },
     transferringTokenToFungiblApp() { this.pullState = 'transferring_fun' },
-    transferringNftToPuller() { this.pullState = 'transferring_nft' },
+    async transferringNftToPuller() {
+      this.pullState = 'opting_in'
+      const acceptsToken = await this.store.account.tokenAccepted(this.optInToken)
+      if (!acceptsToken) await this.store.account.tokenAccept(this.optInToken)
+      this.pullState = 'transferring_nft'
+    },
     getPullCost() { return this.finalizedPullCost },
     getFunToken() { return this.FUN_ASSET_ID },
     getFungiblAppWallet() { return this.FUNGIBL_APP_WALLET },
