@@ -12,7 +12,7 @@
           </h3>
         </div>
         <div class="w-full text-center">
-          <styled-button button-style="connect"
+          <styled-button button-style="connect" :disabled="walletState !== 'connected'"
                          @click="initPull">
             {{ $t('PULL') }}
           </styled-button>
@@ -41,7 +41,7 @@
 
 
         <div v-if="pullState !== 'done'" class="text-fblue mb-12">
-          <h5>You'll trade in <span class="text-fpink">~{{ pullCostShort }} {{ $t('$FUN') }}</span></h5>
+          <h5>You'll trade in <span class="text-fpink">~{{ finalizedPullCostShort || pullCostShort }} {{ $t('$FUN') }}</span></h5>
           <h5>for 1 randomized NFT</h5>
         </div>
 
@@ -56,8 +56,8 @@
         <h2 v-if="pullState !== 'not_pulling' && pullState !== 'done'" class="text-faqua font-extrabold mb-6">LANDING A BIG ONE!</h2>
 
         <div v-if="pullState === 'done'">
-          <h5 class="text-fblue mb-12">You will receive <span class="text-fgreen">{{ pulledNftId }} momentarily</span></h5>
-          <styled-button button-style="connect" @click="reInitialize()">
+          <h5 class="text-fblue mb-12">You will receive <span class="text-fgreen">{{ pulledNftId }}</span> momentarily</h5>
+          <styled-button button-style="connect" @click="reInitialize(true)">
             {{ $t('DONE') }}
           </styled-button>
         </div>
@@ -78,22 +78,23 @@ import Modal from "@/components/utilities/Modal"
 import NftImage from "@/components/utilities/NftImage"
 import {defaultPoolMetas} from "@/defaults"
 import {formatNumberShort} from "@jackcom/reachduck"
-import StoreMixin from "@/mixins/Store.mixin"
 import {nftImageLoading} from "@/state"
 import {get, post} from "@/api"
 import * as backend from "@/reach/contracts/build/index.main.mjs"
+import ImageKitMixin from "@/mixins/ImageKit.mixin";
 
 export default defineComponent({
   components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, PullHeaders,
   StyledButton, Modal, NftImage },
   name: "Pull",
 
-  mixins: [StoreMixin],
+  mixins: [ImageKitMixin],
 
   data() {
     return {
       store: { connected: false, funBalance: 0, funOptedIn: true, account: null,
-        poolMetas: defaultPoolMetas, nftImagesLoading: {}, },
+        poolMetas: defaultPoolMetas, nftImagesLoading: {}, address: "",
+        assets: [], },
       showPullModal: false,
       // attaching, sending_fun, transferring_fun, transferring_nft, done
       pullState: 'not_pulling',
@@ -110,6 +111,9 @@ export default defineComponent({
       if (this.store.funBalance < this.store.poolMetas.current_pull_cost)
         return 'connected_needs_fun'
       return 'connected'
+    },
+    finalizedPullCostShort() {
+      return this.finalizedPullCost ? formatNumberShort(this.finalizedPullCost) : null
     },
     pullCostShort() {
       return formatNumberShort(this.store.poolMetas.current_pull_cost)
@@ -168,12 +172,19 @@ export default defineComponent({
     },
 
     // The rest of these methods are triggered by Reach
-    sendingTokenToContract() { this.pullState = 'sending_fun' },
-    transferringTokenToFungiblApp() { this.pullState = 'transferring_fun' },
-    async transferringNftToPuller() {
+    async sendingTokenToContract() {
+      console.log('sendingTokenToContract')
       this.pullState = 'opting_in'
       const acceptsToken = await this.store.account.tokenAccepted(this.optInToken)
       if (!acceptsToken) await this.store.account.tokenAccept(this.optInToken)
+      this.pullState = 'sending_fun'
+    },
+    transferringTokenToFungiblApp() {
+      console.log('transferringTokenToFungiblApp')
+      this.pullState = 'transferring_fun'
+    },
+    transferringNftToPuller() {
+      console.log('transferringNftToPuller')
       this.pullState = 'transferring_nft'
     },
     getPullCost() { return this.finalizedPullCost },

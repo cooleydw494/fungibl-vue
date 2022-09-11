@@ -1,6 +1,6 @@
 import { defineComponent } from "@vue/runtime-core";
 import store from "../state/index";
-import {checkSessionExists} from "@jackcom/reachduck";
+import {checkSessionExists, disconnectUser} from "@jackcom/reachduck";
 import {reconnectWallet, connectWallet} from "../reach";
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
 import {get, post} from "../api.js"
@@ -37,7 +37,12 @@ const AuthMixin = defineComponent({
         await Promise.all([
           await this.initWalletStuff(),
           isAuthed ? await this.postAuthInit()
-              : await this.authForApi().then(async () => await this.postAuthInit())
+              : await this.authForApi()
+                  .then(async () => await this.postAuthInit())
+                  .catch((err: any) => {
+                    this.oop(err, 'Auth failed, disconnecting wallet')
+                    disconnectUser()
+                  })
         ])
         store.connecting(false)
       }).catch(err => this.oop(err, 'Error re-connecting wallet'))
@@ -51,7 +56,12 @@ const AuthMixin = defineComponent({
         await Promise.all([
             await this.initWalletStuff(),
             isAuthed ? await this.postAuthInit()
-                : await this.authForApi().then(async () => await this.postAuthInit())
+                : await this.authForApi()
+                    .then(async () => await this.postAuthInit())
+                    .catch((err: any) => {
+                      this.oop(err, 'Auth failed, disconnecting wallet')
+                      disconnectUser()
+                    })
         ])
       }).catch(err => this.oop(err, 'Error connecting wallet'))
       store.connecting(false)

@@ -60,7 +60,7 @@
         <h2 v-if="submissionState !== 'not_submitting' && submissionState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>
 
         <div v-if="submissionState === 'done'">
-          <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ finalizedRewardShort }} {{ $t('$FUN') }} momentarily</span></h5>
+          <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ finalizedRewardShort }} {{ $t('$FUN') }}</span> momentarily</h5>
           <styled-button button-style="connect" @click="reInitialize()">
             {{ $t('DONE') }}
           </styled-button>
@@ -79,6 +79,7 @@ import store from "@/state"
 import {nftImageLoading} from "@/state"
 import {defaultPoolMetas} from "@/defaults"
 import {formatNumberShort} from "@jackcom/reachduck";
+import {useReach} from "@/reach";
 import * as backend from "@/reach/contracts/build/index.main.mjs"
 import {post} from "@/api"
 import Modal from "@/components/utilities/Modal";
@@ -157,7 +158,7 @@ export default defineComponent({
       nftImageLoading(nftId)
       store.selectedNftId(nftId)
       store.selectedNft((this.store.nfts.filter(nft => nft['asset-id'] === nftId))[0])
-      store.selectedNftEstimates({ estAlgo: Math.floor(Math.random() * 250) })
+      store.selectedNftEstimates({ estAlgo: Math.floor(Math.random() * 240) + 10 })
     },
     initSubmission() {
       this.finalizedReward = this.reward // TODO: this needs to happen after database stuff
@@ -166,11 +167,12 @@ export default defineComponent({
     async submitSelectedNft() {
       this.submissionState = 'creating'
       this.ctc = this.store.account.contract(backend)
-      await backend.Submitter(this.ctc, this)
+      this.stdLib = await useReach()
+      await this.stdLib.withDisconnect(() => backend.Submitter(this.ctc, this)
           .catch((err) => {
             this.oop(err, 'Contract incomplete')
             this.reInitialize()
-          })
+          }))
     },
 
     // The rest of these methods are triggered by Reach
@@ -180,19 +182,21 @@ export default defineComponent({
       this.contractInfo = JSON.stringify(await this.ctc.getInfo(), null, 2)
       console.log('assetId', assetId)
       console.log('selectedNftId', this.store.selectedNftId)
-      console.log('contractInfo', this.contractInfo);
+      console.log('contractInfo', this.contractInfo)
       if (assetId != this.store.selectedNftId) {
         this.oop(null,`Asset ID of selected nft does not match asset id from contract. Contact support. IMPORTANT! Save this contract info and include in support ticket (also in console): ${this.contractInfo}`)
         return
       }
-      post('nfts/add-to-pool',
+      await post('nfts/add-to-pool',
           { nfts: [{...this.store.selectedNft, estimated_value: this.store.selectedNftEstimates.estAlgo, contract_info: this.contractInfo }] })
           .then(() => {
+            store.nfts(this.store.nfts.filter(nft => nft['asset-id'] !== this.store.selectedNftId))
             this.submissionState = 'done'
           }).catch((err) => {
             this.oop(null,`Failed to sync NFT add with database / send $FUN. Contact support. IMPORTANT! Save this contract info and include in support ticket (also in console): ${this.contractInfo}`)
             this.reInitialize()
           })
+      // this.stdLib.disconnect()
     },
     getNftAssetId() {
       return this.store.selectedNftId
