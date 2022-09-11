@@ -93,7 +93,11 @@ const StoreMixin = defineComponent({
           .catch(err => this.oop(err, err.message))
     },
 
-    async getAssets(): Promise<any> {
+    async getAssets(reset = false): Promise<any> {
+      if (reset) {
+        store.assets([])
+        store.nfts([])
+      }
       try {
         let nextToken = ''
         let moreResults = true

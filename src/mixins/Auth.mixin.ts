@@ -59,8 +59,9 @@ const AuthMixin = defineComponent({
                 : await this.authForApi()
                     .then(async () => await this.postAuthInit())
                     .catch((err: any) => {
-                      this.oop(err, 'Auth failed, disconnecting wallet')
-                      disconnectUser()
+                      this.postAuthInit()
+                      // this.oop(err, 'Auth failed, disconnecting wallet')
+                      // disconnectUser()
                     })
         ])
       }).catch(err => this.oop(err, 'Error connecting wallet'))

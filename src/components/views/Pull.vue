@@ -142,7 +142,7 @@ export default defineComponent({
     reInitialize(refreshData = false) {
       if (refreshData) {
         this.sleep(5000).then(() => {
-          this.getAssets()
+          this.getAssets(true)
           this.getFunUserInfo()
         })
       }
