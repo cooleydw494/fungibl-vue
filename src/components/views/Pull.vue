@@ -2,7 +2,10 @@
   <page-container>
     <div class="panel-container">
       <top-or-left-panel>
-        <img class="icon" src="../../assets/icons/Pull-Icon-Blue.svg" :alt="$t('Pull Icon - Click to Switch to Submit')">
+        <div>
+          <img class="icon" src="../../assets/icons/Pull-Icon-Blue.svg" :alt="$t('Pull Icon - Click to Switch to Submit')">
+          <h5 class="text-fgreen ml-8 mt-4 text-center">{{ store.poolMetas.current_nft_count }} {{ $t('NFTs') }}</h5>
+        </div>
         <pull-headers></pull-headers>
       </top-or-left-panel>
       <bottom-or-right-panel>
