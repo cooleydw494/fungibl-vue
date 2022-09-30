@@ -8,7 +8,7 @@ let routes: Array<RouteRecordRaw>;
 const appRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'home',
+    name: 'app',
     redirect: '/submit',
   },
   {
@@ -31,7 +31,7 @@ const appRoutes: Array<RouteRecordRaw> = [
 const marketingRoutes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'home',
+    name: 'marketing',
     component: () => import('../components/views/MarketingSite.vue'), // lazy-loads
   },
 ]

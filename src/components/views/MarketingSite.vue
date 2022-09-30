@@ -1,23 +1,8 @@
 <template>
   <page-container>
-    <div>
-      <top-or-left-panel>
-        <img class="icon" src="../../assets/icons/Submit-Icon-Green.svg" :alt="$t('Submit Icon')">
-        <two-rectangles primary-color="fblue" secondary-color="forange">
-          <template #primary>
-            <h4>Marketing Site</h4>
-            <p class="font-bold">to the pool to get <span class="text-fpink">$FUN</span></p>
-          </template>
-          <template #secondary>
-            <p class="font-bold">Connect your wallet</p>
-            <p class="font-bold">To browse NFTs from</p>
-            <p class="font-bold">your collection</p>
-          </template>
-        </two-rectangles>
-      </top-or-left-panel>
-      <bottom-or-right-panel>
-
-      </bottom-or-right-panel>
+    <div class="principal-image">
+      <img src="../../assets/illustrations/PrincipalLight.png"
+           :alt="$t('Fungibl Principal Illustration - Aquatic Scene')">
     </div>
   </page-container>
 </template>
@@ -39,9 +24,16 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "@/css/mixins.scss";
 
-.icon {
-  width: $sp-32;
-  height: $sp-32;
-  margin-left: $sp-8;
+.principal-image {
+
+  @apply flex justify-center overflow-hidden rounded
+  inline-block relative m-auto
+  w-full md:w-11/12 lg:w-4/5 2xl:w-3/5 3xl:w-1/2 h-80vh;
+
+  img {
+    @apply absolute bottom-0 xl:-bottom-15vh 3xl:-bottom-3;
+    //bottom: -15vh;
+  }
 }
+
 </style>
