@@ -1,30 +1,36 @@
 <template>
   <div class="w-full flex justify-center">
-    <div class="w-full min-h-76 md:min-h-96 flex flex-col" :class="{'justify-between': store.selectedNftId, 'justify-around': !store.selectedNftId }">
-      <select class="select" id="selectNft" v-model="selected" :disabled="!enabled" @change="setSelected(parseInt($event.target.value))">
+    <div class="w-full max-w-96 flex flex-col" :class="{'justify-between': store.selectedNftId, 'justify-around': !store.selectedNftId }">
+      <select class="select mt-16" id="selectNft" v-model="selected" :disabled="!enabled"
+              @change="setSelected(parseInt($event.target.value))"
+              :class="{'md:mt-0': store.selectedNftId, 'md:mt-8': !store.selectedNftId }">
         <option v-if="!store.selectedNft" value="null" class="option">{{ $t('SELECT AN NFT') }}</option>
         <!--      <option v-if="store.selectedNft.length" value="null" class="option">{{ $t('SELECT ANOTHER NFT') }}</option>-->
         <option v-for="nft in selectableNfts" :key="nft['asset-id']" :value="nft['asset-id']" class="option">{{ nft.label }}</option>
       </select>
 
-      <div v-if="store.selectedNftId">
+      <div v-if="store.selectedNftId" class="mt-8 md:min-h-48 flex flex-col justify-center">
         <div class="flex justify-between">
           <div>
-            <p class="text-fblue text-xl font-bolder">{{ store.selectedNftEstimates.estAlgo }} $ALGO</p>
+            <p class="text-fblue text-xl font-bolder">{{ store.selectedNftEstimates.estAlgo }}
+              <img class="inline-block w-3.5 h-4 -mt-1" src="../../assets/icons/Algorand-Icon.svg" alt="$ALGO Symbol">
+            </p>
             <p class="text-fgreen text-xs">ESTIMATED VALUE</p>
           </div>
           <div :title="reward">
-            <p class="text-fpink text-xl font-bolder">~{{ rewardShort }} $FUN</p>
+            <p class="text-fpink text-xl font-bolder">~{{ rewardShort }}
+              <img class="inline-block w-4 h-3.5 -mt-1" src="../../assets/icons/Fungibl-F.svg" alt="$FUN Symbol">
+            </p>
             <p class="text-fgreen text-xs">REWARD</p>
           </div>
         </div>
       </div>
 
-      <div v-if="store.selectedNftId" class="w-full text-center">
-<!--        <styled-button button-style="connect" @click="reInitialize()" class="mb-6 md:mb-0">-->
-<!--          {{ $t('CANCEL') }}-->
-<!--        </styled-button>-->
-        <styled-button button-style="connect" @click="initSubmission()" class="md:ml-8">
+      <div v-if="store.selectedNftId" class="w-full flex justify-between mt-8">
+        <styled-button button-style="cancel" @click="reInitialize()">
+          {{ $t('CANCEL') }}
+        </styled-button>
+        <styled-button button-style="primary" @click="initSubmission()">
           {{ $t('SUBMIT') }}
         </styled-button>
       </div>
@@ -49,19 +55,19 @@
           <h5>very recent information, outcomes may vary</h5>
         </div>
 
-        <div v-if="submissionState === 'not_submitting'">
-          <styled-button button-style="connect" @click="closeSubmissionModal()">
+        <div v-if="submissionState === 'not_submitting'" class="w-full flex justify-between mt-6">
+          <styled-button button-style="cancel" @click="closeSubmissionModal()">
             {{ $t('CANCEL') }}
           </styled-button>
-          <styled-button button-style="connect" @click="submitSelectedNft" class="mt-6 md:mt-0 md:ml-8">
-            {{ $t('SUBMIT') }}
+          <styled-button button-style="primary" @click="submitSelectedNft">
+            {{ $t('SUBMIT') + $t('!') }}
           </styled-button>
         </div>
         <h2 v-if="submissionState !== 'not_submitting' && submissionState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>
 
         <div v-if="submissionState === 'done'">
           <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ finalizedRewardShort }} {{ $t('$FUN') }}</span> momentarily</h5>
-          <styled-button button-style="connect" @click="reInitialize()">
+          <styled-button button-style="primary wide" @click="reInitialize()">
             {{ $t('DONE') }}
           </styled-button>
         </div>
@@ -220,8 +226,8 @@ export default defineComponent({
       calc(100% - $sp-5) $sp-5;
   background-repeat: no-repeat;
 
-  &.disabled {
-    @apply bg-gray-400;
+  &#disabled {
+    @apply bg-gray-400 cursor-not-allowed;
   }
 
   //.option {

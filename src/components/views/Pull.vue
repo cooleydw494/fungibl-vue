@@ -2,22 +2,25 @@
   <page-container>
     <div class="panel-container">
       <top-or-left-panel>
-        <div>
-          <img class="icon" src="../../assets/icons/Pull-Icon-Blue.svg" :alt="$t('Pull Icon - Click to Switch to Submit')">
-          <h5 class="text-fgreen ml-8 mt-4 text-center">{{ store.poolMetas.current_nft_count }} {{ $t('NFTs') }}</h5>
+        <div class="icon-container mobile">
+          <!-- Image Mobile -->
+          <img src="../../assets/illustrations/pull/Pull-1.svg" :alt="$t('Pull Illustration')">
+          <h5 class="pool-count mobile">{{ store.poolMetas.current_nft_count }} {{ $t('NFTs') }}</h5>
         </div>
         <pull-headers></pull-headers>
       </top-or-left-panel>
       <bottom-or-right-panel>
-        <div class="flex justify-center mb-14">
-          <h3 class="text-fpink" :title="store.poolMetas.current_pull_cost">
-            {{ pullCostShort }} {{ $t('$FUN') }}
-          </h3>
+        <!-- Image Desktop -->
+        <div class="icon-container desktop md:-mt-32">
+          <img src="../../assets/illustrations/pull/Pull-1.svg" :alt="$t('Pull Illustration')">
+          <div class="flex justify-center">
+            <h5 class="pool-count desktop">{{ store.poolMetas.current_nft_count }} {{ $t('NFTs') }}</h5>
+          </div>
         </div>
-        <div class="w-full text-center">
-          <styled-button button-style="connect" :disabled="walletState !== 'connected'"
+        <div class="w-full text-center pt-16 md:pt-0">
+          <styled-button button-style="primary wide" :disabled="walletState !== 'connected'"
                          @click="initPull">
-            {{ $t('PULL') }}
+            {{ $t('PULL') + $t('!') }}
           </styled-button>
         </div>
       </bottom-or-right-panel>
@@ -48,19 +51,19 @@
           <h5>for 1 randomized NFT</h5>
         </div>
 
-        <div v-if="pullState === 'not_pulling'">
-          <styled-button button-style="connect" @click="closePullModal()">
+        <div v-if="pullState === 'not_pulling'" class="mt-6 md:mt-0 md:min-w-96 flex justify-between">
+          <styled-button button-style="cancel" @click="closePullModal()">
             {{ $t('CANCEL') }}
           </styled-button>
-          <styled-button button-style="connect" @click="pull()" class="mt-6 md:mt-0 md:ml-8">
-            {{ $t('PULL') }}
+          <styled-button button-style="primary" @click="pull()">
+            {{ $t('PULL') + $t('!') }}
           </styled-button>
         </div>
         <h2 v-if="pullState !== 'not_pulling' && pullState !== 'done'" class="text-faqua font-extrabold mb-6">LANDING A BIG ONE!</h2>
 
         <div v-if="pullState === 'done'">
           <h5 class="text-fblue mb-12">You will receive <span class="text-fgreen">{{ pulledNftId }}</span> momentarily</h5>
-          <styled-button button-style="connect" @click="reInitialize(true)">
+          <styled-button button-style="primary wide" @click="reInitialize(true)">
             {{ $t('DONE') }}
           </styled-button>
         </div>
@@ -214,7 +217,28 @@ export default defineComponent({
 
 @include panel-container();
 
-.icon {
-  @apply w-32 h-32 ml-8;
+.pool-count {
+  @apply text-fgreen mx-auto mt-2 text-center md:mb-6;
+
+  &.mobile {
+    @apply md:hidden;
+  }
+
+  &.desktop {
+    @apply hidden md:inline-block;
+  }
 }
+
+.icon-container {
+  @apply w-5/12 md:w-64 lg:w-76 h-auto ml-4;
+
+  &.mobile {
+    @apply md:hidden;
+  }
+
+  &.desktop {
+    @apply hidden md:inline-block mx-auto;
+  }
+}
+
 </style>

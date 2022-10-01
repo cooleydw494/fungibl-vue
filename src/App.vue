@@ -28,7 +28,8 @@ export default {
     // // We're overriding Store mixin created so we'll include that code here
     // const storeKeys = Object.keys(this.store)
     // this.store = this.subscribe(storeKeys, true)
-    this.initWallet();
+    if (!this.isMarketingSite) this.getPoolMetas(true)
+    this.initWallet()
   },
 
   computed: {

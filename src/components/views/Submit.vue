@@ -3,9 +3,9 @@
     <div class="panel-container">
 
       <top-or-left-panel>
-        <!--No NFT Selected-->
-        <img v-if="!store.selectedNftId" class="icon"
-             src="../../assets/icons/Submit-Icon-Blue.svg"
+        <!--No NFT Selected Mobile -->
+        <img v-if="!store.selectedNftId" class="icon mobile"
+             src="../../assets/illustrations/submit/Submit-1.svg"
              :alt="$t('Submit Icon - Click to Switch to Pull')">
         <submission-headers v-if="!store.selectedNftId"></submission-headers>
         <!--NFT Selected-->
@@ -17,6 +17,10 @@
       </top-or-left-panel>
 
       <bottom-or-right-panel>
+        <!--No NFT Selected Desktop -->
+        <img v-if="!store.selectedNftId" class="icon desktop"
+             src="../../assets/illustrations/submit/Submit-1.svg"
+             :alt="$t('Submit Icon - Click to Switch to Pull')">
         <select-nft></select-nft>
       </bottom-or-right-panel>
 
@@ -70,7 +74,15 @@ export default defineComponent({
 @include panel-container();
 
 .icon {
-  @apply w-32 h-32 ml-8;
+  @apply w-2/5 md:w-62 lg:w-72 h-auto ml-4;
+
+  &.mobile {
+    @apply md:hidden;
+  }
+
+  &.desktop {
+    @apply hidden md:inline-block mx-auto;
+  }
 }
 
 </style>

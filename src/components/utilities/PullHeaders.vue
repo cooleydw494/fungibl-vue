@@ -3,12 +3,16 @@
 
     <template #primary>
       <h4>{{ $t('PULL AN NFT') }}</h4>
-      <p class="font-bold">{{ $t('from the pool') }}</p>
+      <p class="font-bold">{{ $t('from the pool for') }}
+        <span class="pull-cost" :title="store.poolMetas.current_pull_cost">
+          {{ pullCostShort }} {{ $t('$FUN') }}
+        </span>
+      </p>
     </template>
 
     <template #secondary>
       <!-- Connected -->
-      <p v-if="walletState === 'connected'" class="font-bold w-38">
+      <p v-if="walletState === 'connected'" class="font-bold w-40">
         {{ $t('Trade in') }} {{ pullCostShort }} {{ $t('$FUN') }} {{ $t('to get a randomized NFT') }}
       </p>
       <!-- Connected - Not Enough $FUN -->
@@ -89,5 +93,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-//@import "@/css/mixins.scss";
+@import "@/css/mixins.scss";
+
+.pull-cost {
+  @apply md:text-sm text-fpink;
+}
+
 </style>

@@ -21,11 +21,11 @@ export default defineComponent({
   min-height: calc(35vh - $sp-4*2);
 
   @media(min-width: theme('screens.xs')) {
-    @apply justify-around m-4;
+    @apply justify-between m-4;
   }
 
   @media(min-width: theme('screens.md')) {
-    @apply justify-between border-solid border-r-2 border-fblue/25 mr-0;
+    @apply justify-end border-solid border-r-2 border-fblue/25 mr-0;
     min-width: calc(47% - $sp-4);
     min-height: calc(70vh - $sp-4*2);
   }

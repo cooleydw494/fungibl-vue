@@ -45,21 +45,21 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 .two-rectangles {
-  @apply w-72 overflow-hidden -mr-4 md:mr-0 md:mr-0;
+  @apply w-76 sm:w-96 overflow-hidden -mr-4 md:mr-0;
 
 
   .rectangle {
-    @apply flex flex-col justify-center w-72 min-h-24;
+    @apply flex flex-col justify-center w-76 sm:w-96 min-h-24;
     @apply bg-fdark/25 rounded-md border-solid border-2;
 
     &.primary {
       // border/text color set dynamically in template
-      @apply z-10 ml-4 pl-10;
+      @apply z-10 ml-4 pl-10 sm:pl-16;
     }
 
     &.secondary {
       // border/text color set dynamically in template
-      @apply ml-8 -mt-0.5 pl-6 rounded-md rounded-tl-none;
+      @apply ml-8 -mt-0.5 pl-6 sm:pl-18 rounded-md rounded-tl-none;
 
       .secondary-content {
         @apply flex items-center;

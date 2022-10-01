@@ -99,7 +99,8 @@ module.exports = {
         ...theme('spacing'),
       }),
       minWidth: ({ theme }) => ({
-        ...theme('spacing')
+        ...theme('spacing'),
+        ...theme('screens')
       }),
       maxHeight: ({ theme }) => ({
         ...theme('spacing'),

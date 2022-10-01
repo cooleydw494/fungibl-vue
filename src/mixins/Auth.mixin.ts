@@ -132,7 +132,7 @@ const AuthMixin = defineComponent({
       // it may not resolve but at this point we stop trying
       store.needsPostAuthNftSync(false)
       Promise.all([
-        await this.getPoolMetas(),
+        await this.getPoolMetas(false),
         needsNftSync ? await this.syncNftsToBackend() : null
       ]).then(() => console.log('Finished postAuthInit'))
           .catch(err => this.oop(err, err.message))

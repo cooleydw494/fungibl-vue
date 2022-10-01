@@ -41,9 +41,5 @@ export default defineComponent({
   &.center {
     @apply flex flex-col place-content-center place-items-center;
   }
-
-  //.slot {
-  //  @apply p-4 bg-fdarkblue/25;
-  //}
 }
 </style>
