@@ -154,11 +154,14 @@ export default defineComponent({
 
 header {
   @apply w-full p-4;
-  height: 15%;
+
+  @media(max-width: theme('screens.md')) {
+    height: 15%;
+  }
 
   @media(min-width: theme('screens.md')) {
     @apply z-10;
-    //min-height: 15%;
+    min-height: 15%;
   }
 
   .logo-container {
