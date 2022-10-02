@@ -59,10 +59,12 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 footer {
-  @apply w-full min-h-15vh flex flex-col justify-start items-center;
+  @apply w-full flex flex-col justify-start items-center;
+  min-height: 15%;
 
   &.is-mobile {
-    @apply -mt-15vh;
+    @apply pt-6;
+    bottom: 15%;
   }
 }
 </style>

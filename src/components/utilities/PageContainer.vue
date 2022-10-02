@@ -1,5 +1,5 @@
 <template>
-  <section class="page">
+  <section class="page" :class="{'marketing': isMarketingSite, 'mobile': mobile}">
     <slot />
   </section>
 </template>
@@ -9,13 +9,52 @@ import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "PageContainer",
-});
+
+  data() {
+    return { innerWidth: window.innerWidth }
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+    })
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('resize', this.onResize);
+  },
+
+  computed: {
+    isMarketingSite() {
+      return window.location.hostname.indexOf('app') === -1
+    },
+    mobile() {
+      return this.innerWidth < 768
+    }
+  },
+
+  methods: {
+    onResize() {
+      this.innerWidth = window.innerWidth
+    },
+  },
+})
 </script>
 
 <style lang="scss">
 @import "@/css/mixins.scss";
 
 .page {
+  height: 70%;
+  &.mobile {
+    height: 65%;
+  }
+  &.marketing {
+    height: 80%;
+    &.mobile {
+      height: 100%;
+    }
+  }
   justify-content: flex-start;
   margin: 0 auto;
   padding: 0;

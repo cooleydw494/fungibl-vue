@@ -1,5 +1,6 @@
 <template>
-  <header :class="{'-mb-15vh': mobile, 'menu-open': showMobileMenu || store.showPreviewModal}">
+  <header :class="{'mobile': mobile, 'menu-open': showMobileMenu || store.showPreviewModal}"
+          :style="mobile ? `margin-bottom: -${innerHeight*.15}px`:``">
 
     <div v-if="mobile" class="flex justify-between place-items-center z-50">
       <img v-if="showMobileMenu || store.showPreviewModal" class="w-22 pt-2 pl-2"
@@ -11,7 +12,7 @@
       <img v-if="showMobileMenu || store.showPreviewModal" class="w-16 -mt-2 pr-2 hover:cursor-pointer"
            @click="toggleMobileMenu"
            src="../assets/icons/Close-Icon.svg" :alt="$t('Close Menu')">
-      <img v-else class="w-16 -mt-3 pr-2 hover:cursor-pointer"
+      <img v-else class="w-18 -mt-2.5 pr-1 hover:cursor-pointer"
            @click="toggleMobileMenu"
            src="../assets/icons/Hamburger.svg" :alt="$t('Open Menu')">
     </div>
@@ -31,10 +32,10 @@
       </styled-button>
     </div>
 
-    <modal v-if="showMobileMenu" @close="toggleMobileMenu"
+    <modal v-show="showMobileMenu" @close="toggleMobileMenu"
            center mobile-menu>
-      <div class="button-container mobile">
-        <styled-button class="mt-16"
+      <div class="button-container mobile pb-12">
+        <styled-button class="mb-12"
                        v-for="(item, index) in navItems" :key="index"
                        :button-style="item.label === 'LAUNCH!' ? 'nav-filled-mobile' : 'nav-mobile'"
                        @click="takeAction(item.action)">
@@ -50,18 +51,6 @@
         <p class="mt-12">We're pumped to be launching the full site soon!</p>
         <p>In the meantime be sure to follow us on Twitter</p>
         <p>and check out the blog post.</p>
-      </div>
-      <div v-if="store.showPreviewModal === '#about'">
-
-      </div>
-      <div v-if="store.showPreviewModal === '#fun'">
-
-      </div>
-      <div v-if="store.showPreviewModal === '#faq'">
-
-      </div>
-      <div v-if="store.showPreviewModal === '#contact'">
-
       </div>
       <div class="font-semibold text-base text-fblue text-center hover:cursor-pointer mt-12"
            @click="openTwitter">
@@ -106,6 +95,7 @@ export default defineComponent({
       showMobileMenu: false,
       store: { showPreviewModal: false, },
       innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
     }
   },
 
@@ -128,8 +118,9 @@ export default defineComponent({
   methods: {
     takeAction(action) {
       if (action === 'launch') {
-        const appUrl = `https://${this.isStaging()?'staging-':''}app.fungibl.fun`
-        window.open(appUrl, '_blank')
+        state.showPreviewModal('launch')
+        // const appUrl = `https://${this.isStaging()?'staging-':''}app.fungibl.fun`
+        // window.open(appUrl, '_blank')
         return
       }
       if (action === '#blog') {
@@ -162,10 +153,12 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 header {
-  @apply w-full min-h-15vh p-4;
+  @apply w-full p-4;
+  height: 15%;
 
   @media(min-width: theme('screens.md')) {
-    @apply min-h-15vh z-10;
+    @apply z-10;
+    //min-height: 15%;
   }
 
   .logo-container {

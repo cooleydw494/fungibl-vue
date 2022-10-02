@@ -30,12 +30,15 @@ export default defineComponent({
 
   @apply flex justify-center overflow-y-hidden rounded
   inline-block relative m-auto
-  w-full md:w-11/12 lg:w-4/5 2xl:w-3/5 3xl:w-1/2 h-100vh md:h-80vh;
+  w-full md:w-11/12 lg:w-4/5 2xl:w-3/5 3xl:w-1/2 h-full;
 
   img {
-    @apply absolute bottom-0 xl:-bottom-15vh 3xl:-bottom-3;
-    @apply h-100vh md:h-auto w-full;
-    //bottom: -15vh;
+    @apply absolute bottom-0 3xl:-bottom-3;
+    @apply h-full md:h-auto w-full;
+
+    @media(min-width: theme('screens.xl')) {
+      bottom: -15%;
+    }
   }
 
   //.twitter-icon {
