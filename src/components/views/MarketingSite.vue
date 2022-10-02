@@ -3,6 +3,8 @@
     <div class="principal-image">
       <img src="../../assets/illustrations/PrincipalLight.png"
            :alt="$t('Fungibl Principal Illustration - Aquatic Scene')">
+<!--      <img class="twitter-icon"-->
+<!--           src="../../assets/icons/Twitter-Icon.svg" :alt="$t('Twitter Icon')" />-->
     </div>
   </page-container>
 </template>
@@ -26,14 +28,19 @@ export default defineComponent({
 
 .principal-image {
 
-  @apply flex justify-center overflow-hidden rounded
+  @apply flex justify-center overflow-y-hidden rounded
   inline-block relative m-auto
-  w-full md:w-11/12 lg:w-4/5 2xl:w-3/5 3xl:w-1/2 h-80vh;
+  w-full md:w-11/12 lg:w-4/5 2xl:w-3/5 3xl:w-1/2 h-100vh md:h-80vh;
 
   img {
     @apply absolute bottom-0 xl:-bottom-15vh 3xl:-bottom-3;
+    @apply h-100vh md:h-auto w-full;
     //bottom: -15vh;
   }
+
+  //.twitter-icon {
+  //  @apply hidden md:inline-block w-8 fixed bottom-2;
+  //}
 }
 
 </style>

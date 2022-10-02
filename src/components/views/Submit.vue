@@ -55,7 +55,7 @@ export default defineComponent({
 
   computed: {
     selectedNftImageWidth() {
-      return window.innerWidth < 768 ? 76 : 96
+      return window.innerWidth < 768 ? 76 : (window.innerWidth < 1024 ? 88 : 96)
     },
     selectedNftImageKitUrl() {
       return this.imageKitUrl(

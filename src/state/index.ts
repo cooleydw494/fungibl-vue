@@ -70,6 +70,8 @@ const store = createState({
   // showAuthModal: false,
 
   authConfirmed: false,
+
+  showPreviewModal: <boolean|string> false,
 })
 
 export default store
@@ -110,9 +112,9 @@ export function clearNotification(m?: string) {
   if (note) removeNotification(note)
 }
 
-export function nftImageLoading(assetId: number, isLoading: boolean = true) {
+export function nftImageLoading(assetId: number, isLoading = true) {
   const { nftImagesLoading } = store.getState()
-  let newLoading: {[k:number]: boolean} = {...nftImagesLoading}
+  const newLoading: {[k:number]: boolean} = {...nftImagesLoading}
   newLoading[assetId] = isLoading
   store.nftImagesLoading(newLoading)
 }

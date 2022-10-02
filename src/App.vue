@@ -2,8 +2,8 @@
   <marketing-nav v-if="isMarketingSite" />
   <app-nav v-else />
   <router-view />
-  <marketing-footer v-if="isMarketingSite" />
-  <app-footer v-else />
+  <marketing-footer v-if="isMarketingSite && mobile && !store.showPreviewModal" />
+  <app-footer v-if="!isMarketingSite" />
   <modal v-if="store.connecting" center>
     <h1 class="text-faqua">{{ store.account ? `Authorizing`: `Connecting...` }}</h1>
   </modal>
@@ -24,17 +24,37 @@ export default {
 
   mixins: [AuthMixin],
 
+  data() { return { innerWidth: window.innerWidth, store: { showPreviewModal: false } } },
+
   created() {
     // // We're overriding Store mixin created so we'll include that code here
     // const storeKeys = Object.keys(this.store)
     // this.store = this.subscribe(storeKeys, true)
+    const storeKeys = Object.keys(this.store)
+    this.store = this.subscribe(storeKeys, true)
     if (!this.isMarketingSite) this.getPoolMetas(true)
-    this.initWallet()
+    if (!this.isMarketingSite) this.initWallet()
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize)
+    })
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('resize', this.onResize)
   },
 
   computed: {
     isMarketingSite() {
-      return this.$route.name === 'marketing'
+      return window.location.hostname.indexOf('app') === -1
+    },
+    mobile() {
+      return this.innerWidth < 768
+    }
+  },
+
+  methods: {
+    onResize() {
+      this.innerWidth = window.innerWidth
     }
   }
 

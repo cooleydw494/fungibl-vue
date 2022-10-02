@@ -37,25 +37,41 @@
     </div>
 
     <modal v-if="showSubmissionModal" @close="closeSubmissionModal()" center>
-      <div class="max-w-2xl text-center">
+      <div class="max-w-2xl text-center min-h-60vh">
 
-        <h2 v-if="submissionState === 'not_submitting'" class="text-fblue font-extrabold mb-6">ARE YOU SURE?</h2>
-        <h2 v-if="submissionState === 'creating'" class="text-fblue font-extrabold mb-6">CREATING CONTRACT</h2>
-        <h2 v-if="submissionState === 'initializing'" class="text-fblue font-extrabold mb-6">INITIALIZING</h2>
-        <h2 v-if="submissionState === 'transferring'" class="text-fblue font-extrabold mb-6">TRANSFERRING</h2>
-        <h2 v-if="submissionState === 'done'" class="text-fblue font-extrabold mb-6">SUCCESS!</h2>
+        <img v-if="['not_submitting'].includes(submitState)" class="illustration"
+             src="../../assets/illustrations/submit/Submit-1.svg"
+             :alt="`${$t('Submit Illustration')} 1`">
+        <img v-if="['creating', 'initializing'].includes(submitState)" class="illustration animate-pulse"
+             src="../../assets/illustrations/submit/Submit-2.svg"
+             :alt="`${$t('Submit Illustration')} 2`">
+<!--        <img v-if="['initializing'].includes(submitState)" class="illustration animate-pulse"-->
+<!--             src="../../assets/illustrations/submit/Submit-3.svg"-->
+<!--             :alt="`${$t('Submit Illustration')} 3`">-->
+        <img v-if="['transferring'].includes(submitState)" class="illustration animate-pulse"
+             src="../../assets/illustrations/submit/Submit-3.svg"
+             :alt="`${$t('Submit Illustration')} 3`">
+        <img v-if="['done'].includes(submitState)" class="illustration"
+             src="../../assets/illustrations/submit/Submit-5.svg"
+             :alt="`${$t('Submit Illustration')} 5`">
+
+        <h2 v-if="submitState === 'not_submitting'" class="text-fblue font-extrabold mb-6">ARE YOU SURE?</h2>
+        <h2 v-if="submitState === 'creating'" class="text-fblue font-extrabold mb-6">CREATING CONTRACT</h2>
+        <h2 v-if="submitState === 'initializing'" class="text-fblue font-extrabold mb-6">INITIALIZING</h2>
+        <h2 v-if="submitState === 'transferring'" class="text-fblue font-extrabold mb-6">TRANSFERRING</h2>
+        <h2 v-if="submitState === 'done'" class="text-fblue font-extrabold mb-6">SUCCESS!</h2>
 
 
-        <div v-if="submissionState !== 'done'" class="text-fblue mb-12">
+        <div v-if="submitState !== 'done'" class="text-fblue mb-8">
           <h5>You'll send 1 NFT to a smart contract</h5>
           <h5>and will receive <span class="text-fpink">~{{ rewardShort }} {{ $t('$FUN') }}</span></h5>
         </div>
-        <div v-if="submissionState !== 'done'" class="text-fyellow mb-12">
-          <h5>Be aware that while estimates are based on</h5>
-          <h5>very recent information, outcomes may vary</h5>
+        <div v-if="submitState !== 'done'" class="text-fyellow text-sm font-semibold mb-12">
+          <p>Be aware that while estimates are based on</p>
+          <p>very recent information, outcomes may vary</p>
         </div>
 
-        <div v-if="submissionState === 'not_submitting'" class="w-full flex justify-between mt-6">
+        <div v-if="submitState === 'not_submitting'" class="w-full flex justify-between mt-6">
           <styled-button button-style="cancel" @click="closeSubmissionModal()">
             {{ $t('CANCEL') }}
           </styled-button>
@@ -63,9 +79,9 @@
             {{ $t('SUBMIT') + $t('!') }}
           </styled-button>
         </div>
-        <h2 v-if="submissionState !== 'not_submitting' && submissionState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>
+        <h2 v-if="submitState !== 'not_submitting' && submitState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>
 
-        <div v-if="submissionState === 'done'">
+        <div v-if="submitState === 'done'">
           <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ finalizedRewardShort }} {{ $t('$FUN') }}</span> momentarily</h5>
           <styled-button button-style="primary wide" @click="reInitialize()">
             {{ $t('DONE') }}
@@ -109,7 +125,7 @@ export default defineComponent({
       selected: null,
       showSubmissionModal: false,
       // 'creating', 'initializing', 'transferring', 'done'
-      submissionState: 'not_submitting',
+      submitState: 'not_submitting',
       finalizedReward: null,
       contractInfo: null,
       ctc: null,
@@ -146,8 +162,8 @@ export default defineComponent({
   methods: {
     closeSubmissionModal(force = false) {
       this.showSubmissionModal =
-          !(['not_submitting', 'done'].includes(this.submissionState) || force)
-      if (!this.showSubmissionModal) this.submissionState = 'not_submitting'
+          !(['not_submitting', 'done'].includes(this.submitState) || force)
+      if (!this.showSubmissionModal) this.submitState = 'not_submitting'
     },
     reInitialize() {
       this.getPoolMetas(false)
@@ -171,7 +187,7 @@ export default defineComponent({
       this.showSubmissionModal = true
     },
     async submitSelectedNft() {
-      this.submissionState = 'creating'
+      this.submitState = 'creating'
       this.ctc = this.store.account.contract(backend)
       this.stdLib = await useReach()
       await this.stdLib.withDisconnect(() => backend.Submitter(this.ctc, this)
@@ -182,8 +198,8 @@ export default defineComponent({
     },
 
     // The rest of these methods are triggered by Reach
-    initializing() { this.submissionState = 'initializing' },
-    signingTransfer() { this.submissionState = 'transferring' },
+    initializing() { this.submitState = 'initializing' },
+    signingTransfer() { this.submitState = 'transferring' },
     async submitSuccess(assetId) {
       this.contractInfo = JSON.stringify(await this.ctc.getInfo(), null, 2)
       console.log('assetId', assetId)
@@ -197,7 +213,7 @@ export default defineComponent({
           { nfts: [{...this.store.selectedNft, estimated_value: this.store.selectedNftEstimates.estAlgo, contract_info: this.contractInfo }] })
           .then(() => {
             store.nfts(this.store.nfts.filter(nft => nft['asset-id'] !== this.store.selectedNftId))
-            this.submissionState = 'done'
+            this.submitState = 'done'
           }).catch((err) => {
             this.oop(null,`Failed to sync NFT add with database / send $FUN. Contact support. IMPORTANT! Save this contract info and include in support ticket (also in console): ${this.contractInfo}`)
             this.reInitialize()
@@ -237,6 +253,10 @@ export default defineComponent({
   //    @apply bg-fgreen;
   //  }
   //}
+}
+
+.illustration {
+  @apply w-64 h-auto mx-auto mb-8;
 }
 
 </style>

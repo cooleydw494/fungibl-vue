@@ -29,6 +29,19 @@
     <modal v-if="showPullModal" @close="closePullModal()" center>
       <div class="max-w-2xl text-center">
 
+        <img v-if="['not_pulling'].includes(pullState)" class="illustration"
+             src="../../assets/illustrations/pull/Pull-1.svg"
+             :alt="`${$t('Pull Illustration')} 1`">
+        <img v-if="['attaching'].includes(pullState)" class="illustration animate-pulse"
+             src="../../assets/illustrations/pull/Pull-2.svg"
+             :alt="`${$t('Pull Illustration')} 2`">
+        <img v-if="['opting_in'].includes(pullState)" class="illustration animate-pulse"
+             src="../../assets/illustrations/pull/Pull-3.svg"
+             :alt="`${$t('Pull Illustration')} 3`">
+        <img v-if="['sending_fun', 'transferring_fun', 'transferring_nft'].includes(pullState)" class="illustration animate-pulse"
+             src="../../assets/illustrations/pull/Pull-4.svg"
+             :alt="`${$t('Pull Illustration')} 4`">
+
         <div v-if="pullState === 'done'" class="w-full flex justify-center">
           <nft-image :nft="pulledNftShim" class="mb-2"
                      :nft-image-loading="!!store.nftImagesLoading[pulledNftId]"
@@ -39,7 +52,7 @@
 
         <h2 v-if="pullState === 'not_pulling'" class="text-fblue font-extrabold mb-6">ARE YOU SURE?</h2>
         <h2 v-if="pullState === 'attaching'" class="text-fblue font-extrabold mb-6">ATTACHING TO CONTRACT</h2>
-        <h2 v-if="pullState === 'sending_fun'" class="text-fblue font-extrabold mb-6">FUNDING CONTRACT WITH $FUN</h2>
+        <h2 v-if="pullState === 'sending_fun'" class="text-fblue font-extrabold mb-6">EXCHANGING $FUN AND ?NFT?</h2>
         <h2 v-if="pullState === 'opting_in'" class="text-fblue font-extrabold mb-6">OPTING IN</h2>
         <h2 v-if="pullState === 'transferring_fun'" class="text-fblue font-extrabold mb-6">TRANSFERRING $FUN TO <span class="text-fpink">FUNGIBL</span></h2>
         <h2 v-if="pullState === 'transferring_nft'" class="text-fblue font-extrabold mb-6">TRANSFERRING ?NFT? TO YOU</h2>
@@ -239,6 +252,10 @@ export default defineComponent({
   &.desktop {
     @apply hidden md:inline-block mx-auto;
   }
+}
+
+.illustration {
+  @apply w-76 h-auto mx-auto mb-8;
 }
 
 </style>

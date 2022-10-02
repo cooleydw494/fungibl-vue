@@ -70,7 +70,7 @@ export default defineComponent({
   @apply block w-full;
 
   .nft-image {
-    @apply w-76 md:w-96 h-auto mx-auto rounded border-2 border-solid border-fgreen;
+    @apply w-76 md:w-88 lg:w-96 h-auto mx-auto rounded border-2 border-solid border-fgreen;
   }
 }
 

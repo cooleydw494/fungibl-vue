@@ -1,5 +1,7 @@
 <template>
-  <section class="modal" :class="{'center': center}" tabindex="0" @keydown.esc="close">
+  <section class="modal" tabindex="0" @keydown.esc="close"
+           :class="{'center': center, 'full-dark': fullDark, 'mobile-menu': mobileMenu}"
+  >
     <div class="slot">
       <slot />
     </div>
@@ -14,6 +16,14 @@ export default defineComponent({
 
   props: {
     center: {
+      type: Boolean,
+      default: false,
+    },
+    fullDark: {
+      type: Boolean,
+      default: false,
+    },
+    mobileMenu: {
       type: Boolean,
       default: false,
     }
@@ -40,6 +50,18 @@ export default defineComponent({
 
   &.center {
     @apply flex flex-col place-content-center place-items-center;
+  }
+
+  &.full-dark {
+    @apply bg-fdarkblue;
+  }
+
+  &.mobile-menu {
+    @apply bg-fdarkblue/5;
+    //background: url("../../assets/illustrations/PrincipalDark.png") center, center;
+    background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url("../../assets/illustrations/PrincipalDark.png") center, center;
+    background-size: 100% 100%;
+    //background-size: cover;
   }
 }
 </style>

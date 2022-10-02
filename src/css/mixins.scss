@@ -103,7 +103,7 @@ $border-radius-md: theme('borderRadius.md');
 @mixin sticky($top: 0) {
   position: sticky;
   top: $top;
-  z-index: 999;
+  z-index: 99;
 }
 
 @mixin app-font {

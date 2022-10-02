@@ -71,13 +71,22 @@ export default defineComponent({
     font-stretch: 100%;
   }
 
-  &.button-nav, &.button-nav-filled {
-    @apply mx-0 px-2 py-1 min-w-0 bg-fdarkblue border-fdarkblue
+  &.button-nav, &.button-nav-filled, &.button-nav-mobile, &.button-nav-filled-mobile {
+    @apply mx-0 px-2 py-1 min-w-0 bg-fdarkblue border-fdarkblue border-0
     text-base md:text-base lg:text-xl text-fgreen;
     font-stretch: 100%;
 
-    &.button-nav-filled {
+    &.button-nav-filled, &.button-nav-filled-mobile {
       @apply px-4 bg-fgreen text-fdarkblue;
+
+      &.button-nav-filled-mobile {
+        font-stretch: 115%;
+        @apply text-4xl py-2 px-8 font-extrabold border-2;
+      }
+    }
+    &.button-nav-mobile {
+      font-stretch: 115%;
+      @apply text-4xl bg-transparent font-extrabold;
     }
   }
 
