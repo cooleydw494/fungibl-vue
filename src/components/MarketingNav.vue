@@ -47,11 +47,11 @@
 
     <modal v-if="store.showPreviewModal" @close="closePreviewModal" center>
       <div class="text-lg font-bold text-center">
-        <p><span class="font-bolder">Curious?</span> We're getting ready to tell you</p>
-        <p>E V E R Y T H I N G you want to know.</p>
-        <p class="mt-12">We're pumped to be launching the full site soon!</p>
-        <p>In the meantime be sure to follow us on Twitter</p>
-        <p>and check out the blog post.</p>
+        <p><span class="font-bolder">Curious?</span> We're getting ready to tell</p>
+        <p class="mb-12">you ALL THE THINGS you want to know.</p>
+<!--        <p>We're pumped to be launching the full site soon!</p>-->
+        <p>In the meantime be sure to follow us on</p>
+        <p><span class="text-fblue hover:cursor-pointer" @click="openTwitter">Twitter</span> and check out the <span class="text-fgreen hover:cursor-pointer" @click="takeAction('#blog')">BLOG</span> post.</p>
       </div>
       <div class="font-semibold text-base text-fblue text-center hover:cursor-pointer mt-12"
            @click="openTwitter">
@@ -141,8 +141,11 @@ export default defineComponent({
       // document.getElementById(action).scrollIntoView({ behavior: "smooth" })
     },
     toggleMobileMenu() {
-      this.showMobileMenu = !this.showMobileMenu
-      state.showPreviewModal(false)
+      if (this.store.showPreviewModal) {
+        state.showPreviewModal(false)
+      } else {
+        this.showMobileMenu = !this.showMobileMenu
+      }
     },
     onResize() {
       this.innerWidth = window.innerWidth
