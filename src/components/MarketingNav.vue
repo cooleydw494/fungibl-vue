@@ -188,7 +188,7 @@ header {
     flex justify-between items-center mx-auto mt-8 pb-12 md:pb-0;
 
     @media(max-height: theme('screens.sm')) {
-      @apply pb-36;
+      @apply pb-24;
     }
 
     &.mobile {
