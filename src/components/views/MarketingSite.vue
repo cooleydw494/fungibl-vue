@@ -27,6 +27,7 @@ export default defineComponent({
   data() {
     return {
       principalIllustrationWidth: null,
+      innerWidth: window.innerWidth,
     }
   },
 
@@ -42,10 +43,13 @@ export default defineComponent({
       if (!this.principalIllustrationWidth) return null
       return this.imageKitUrl(
           `PrincipalLight.png`,
-          `${this.principalIllustrationWidth}`,
+          this.mobile ? `${this.innerWidth}` : `${this.principalIllustrationWidth}`,
           'https://ik.imagekit.io/fungibl/web-resources',
           { aspectRatio: 'auto' }
       )
+    },
+    mobile() {
+      return this.innerWidth < 768
     },
   },
 
@@ -53,6 +57,7 @@ export default defineComponent({
     onResize() {
       this.principalIllustrationWidth = document.querySelector('#principal-image')
           .offsetWidth
+      this.innerWidth = window.innerWidth
     },
   },
 });
