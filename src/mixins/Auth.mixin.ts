@@ -13,10 +13,6 @@ const AuthMixin = defineComponent({
 
   data(): any {
     return {
-      store: {
-        connected: false, connecting: false, disconnecting: false,
-        account: null, address: "", assets: [],
-      },
       txns: [],
     };
   },
@@ -33,7 +29,7 @@ const AuthMixin = defineComponent({
       if (!exists || addr === null) return
       store.connecting(true)
       reconnectWallet(addr).then(async (/*res*/) => {
-        const isAuthed = await this.userIsAuthenticated(this.store.address)
+        const isAuthed = await this.userIsAuthenticated(this.getState('address'))
         await Promise.all([
           await this.initWalletStuff(),
           isAuthed ? await this.postAuthInit()
@@ -52,7 +48,7 @@ const AuthMixin = defineComponent({
     async connectTo(provider: string) {
       store.connecting(true)
       await connectWallet(provider).then(async () => {
-        const isAuthed = await this.userIsAuthenticated(this.store.address)
+        const isAuthed = await this.userIsAuthenticated(this.getState('address'))
         await Promise.all([
             await this.initWalletStuff(),
             isAuthed ? await this.postAuthInit()
@@ -75,7 +71,7 @@ const AuthMixin = defineComponent({
       localStorage.removeItem('funAuthWallet')
       try {
         let challenge = ''
-        await get(`auth/request-challenge/${this.store.address}`)
+        await get(`auth/request-challenge/${this.getState('address')}`)
             .then(async res => { challenge = res.challenge })
             .catch(err => this.oop(err, 'Problem requesting auth challenge'))
 
@@ -91,25 +87,25 @@ const AuthMixin = defineComponent({
         //   reserve: 'D7277RRGZ6PJZ2WA4BTWJGZ43BGCSTAKZ4ZUBVWNFELJTYAPHKVD2IURDQ',
         //   note: this.str2arr('Creating the $FUN token for Fungibl App on the Algorand Testnet Network'),
         // }
-        // const tokenResponse = await reach.launchToken(this.store.account, 'FUN', 'FUN', opts)
+        // const tokenResponse = await reach.launchToken(this.getState('account'), 'FUN', 'FUN', opts)
         // console.log(tokenResponse)
 
         reach.setSigningMonitor(async (evt, pre, post) =>
             this.txns.push({evt, pre: await pre, post: await post}))
-        await reach.transfer(this.store.account, this.store.account, 0, null, {note: this.str2arr(challenge)})
+        await reach.transfer(this.getState('account'), this.getState('account'), 0, null, {note: this.str2arr(challenge)})
         do {
           await this.sleep(100)
         } while (this.txns.length === 0)
         const reachTxn = this.txns[0].evt[0].txn
         const accountTxns = await useIndexerClient()
-            .lookupAccountTransactions(this.store.address).limit(1).do()
+            .lookupAccountTransactions(this.getState('address')).limit(1).do()
         const txn = accountTxns.transactions[0]
         txn.txn = reachTxn
         await post('auth/login', {
-          algorand_address: this.store.address, signed_tx: JSON.stringify(txn)
+          algorand_address: this.getState('address'), signed_tx: JSON.stringify(txn)
         }).then((res) => {
           localStorage.setItem('funJwt', res.access_token)
-          localStorage.setItem('funAuthWallet', this.store.address)
+          localStorage.setItem('funAuthWallet', this.getState('address'))
           store.authConfirmed(true)
         }).catch(err => this.oop(err, 'Call to API login failed'))
       } catch (err) { this.oop(err, 'ALGO wallet auth transaction failed') }

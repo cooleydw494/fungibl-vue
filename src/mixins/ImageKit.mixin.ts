@@ -21,19 +21,25 @@ const ImageKitMixin = defineComponent({
 
   methods: {
 
-    getImageKitClient(): ImageKit {
-      if (this.getState('imageKitClient')) return this.getState('imageKitClient')
+    getImageKitClient(overrideUrl: string|null = null): ImageKit {
+      if (this.getState('imageKitClient') && !overrideUrl) return this.getState('imageKitClient')
       // If local, testnet is set in the env var, if built for prod, need to sniff in URL
       const stagingOrNot = this.isStaging() ? '/testnet' : ''
       const imageKitClient = new ImageKit({
-        urlEndpoint: `${process.env.VUE_APP_IMAGE_KIT_ENDPOINT}${stagingOrNot}`,
+        urlEndpoint: overrideUrl ? overrideUrl : `${process.env.VUE_APP_IMAGE_KIT_ENDPOINT}${stagingOrNot}`,
       })
       store.imageKitClient(imageKitClient)
       return this.getState('imageKitClient')
     },
 
-    imageKitUrl(path: string, w: string|null = null, params: {[k:string]: any}|null = null) {
-      return this.getImageKitClient().url({
+    imageKitUrl(path: string, w: string|null = null, overrideUrl: string|null = null, params: {[k:string]: any}|null = null) {
+      let client = null;
+      if (overrideUrl) {
+        client = this.getImageKitClient(overrideUrl)
+      } else {
+        client = this.getImageKitClient()
+      }
+      return client.url({
         path: path,
         transformation: [{
           "width": w || this.defaultWidth,

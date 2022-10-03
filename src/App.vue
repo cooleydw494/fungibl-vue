@@ -4,8 +4,15 @@
   <router-view />
   <marketing-footer v-if="isMarketingSite && mobile && !store.showPreviewModal" />
   <app-footer v-if="!isMarketingSite" />
-  <modal v-if="store.connecting" center>
-    <h1 class="text-faqua">{{ store.account ? `Authorizing`: `Connecting...` }}</h1>
+  <modal v-if="store.connecting" center low-z>
+    <div class="text-center">
+      <h1 class="text-faqua">{{ store.account ? `Authorizing...`: `Connecting...` }}</h1>
+      <h6 v-if="store.walletType" class="mt-8">{{ $t('Awaiting Confirmation From') }}
+        <span v-if="store.walletType === 'MyAlgo'"> MyAlgo</span>
+        <span v-if="store.walletType === 'PeraConnect'"> Pera Wallet</span>
+        <span v-if="store.walletType === 'WalletConnect'"> WalletConnect</span>
+      </h6>
+    </div>
   </modal>
 </template>
 
@@ -24,7 +31,15 @@ export default {
 
   mixins: [AuthMixin],
 
-  data() { return { innerWidth: window.innerWidth, store: { showPreviewModal: false } } },
+  data() {
+    return {
+      innerWidth: window.innerWidth,
+      store: {
+        connecting: false, account: null, walletType: null,
+        showPreviewModal: false,
+      }
+    }
+  },
 
   created() {
     // // We're overriding Store mixin created so we'll include that code here

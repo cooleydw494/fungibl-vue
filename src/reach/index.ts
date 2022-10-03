@@ -48,10 +48,10 @@ async function setWalletFallback(walletFallback: any) {
 }
 
 /** Set wallet options for a string representation of a provider */
-async function configureWalletProvider(provider: string) {
-  if (!["WalletConnect", "PeraConnect", "MyAlgo"].includes(provider)) return;
+async function configureWalletProvider(walletType: string) {
+  if (!["WalletConnect", "PeraConnect", "MyAlgo"].includes(walletType)) return;
 
-  switch (provider) {
+  switch (walletType) {
     case "PeraConnect": {
       await usePera()
       break;
@@ -67,12 +67,12 @@ async function configureWalletProvider(provider: string) {
 }
 
 /** Connect user Wallet  */
-export async function connectWallet(provider = 'MyAlgo') {
+export async function connectWallet(walletType = 'MyAlgo') {
   try {
     store.loading(true)
     addNotification("🔑 Connecting Account ... ")
-    await configureWalletProvider(provider)
-    return onConnected(await connectUser())
+    await configureWalletProvider(walletType)
+    return onConnected(await connectUser(), walletType)
   } catch (e: any) {
     store.error(e.message || e)
     return null
@@ -82,16 +82,26 @@ export async function connectWallet(provider = 'MyAlgo') {
 /** Reconnect user session */
 export async function reconnectWallet(addr: string) {
   try {
+    let walletType = null
     store.loading(true)
     addNotification("🔑 Resuming session ... ")
     const { addr = undefined, isWCSession } = checkSessionExists()
     if (isWCSession) {
       debugger
-      if (isWCSession) await useWalletConnect()
-      else await usePera()
+      if (isWCSession) {
+        walletType = 'WalletConnect'
+        await useWalletConnect()
+      }
+      else {
+        walletType = 'PeraConnect'
+        await usePera()
+      }
       // PeraConnect
-    } else await useMyAlgo()
-    return onConnected(await reconnectUser(addr))
+    } else {
+      walletType = 'MyAlgo'
+      await useMyAlgo()
+    }
+    return onConnected(await reconnectUser(addr), walletType)
   } catch (e: any) {
     store.error(e.message || e)
     return null
@@ -105,11 +115,12 @@ export function disconnectWallet() {
 }
 
 /** @internal Connect user Wallet (MyAlgoWallet) */
-function onConnected(data: ConnectedUserData) {
+function onConnected(data: ConnectedUserData, walletType: string) {
   try {
     const { account, address, balance } = data
     // Update global state
     store.multiple({
+      walletType,
       address,
       account,
       balance,

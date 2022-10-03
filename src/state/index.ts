@@ -22,6 +22,8 @@ const store = createState({
   /** Reach `networkAccount` instance */
   account: null as any | null,
 
+  walletType: null as string | null,
+
   /** Reach `networkAccount` balance */
   balance: "0",
 

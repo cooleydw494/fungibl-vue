@@ -28,12 +28,14 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "AppNav",
   components: { /**/ },
+
   computed: {
     isSubmit() { return this.$route.name === 'submit' },
     analyticsAlt() { return this.$root.$t('Switch to Analytics') },
     pullAlt() { return this.$root.$t('Switch to Submit') },
     submitAlt() { return this.$root.$t('Switch to Pull') },
   },
+
   methods: {
     analyticsComingSoon() {
       alert('Coming Soon :)')
@@ -49,10 +51,14 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 header {
-  @apply w-full min-h-15vh p-4;
+  @apply w-full p-4;
+
+  @media(max-width: theme('screens.md')) {
+    height: 15%;
+  }
 
   @media(min-width: theme('screens.md')) {
-    @apply min-h-15vh;
+    min-height: 15%;
   }
 
   .logo-icons-container {

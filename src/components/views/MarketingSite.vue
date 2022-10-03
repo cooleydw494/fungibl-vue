@@ -1,8 +1,9 @@
 <template>
   <page-container>
-    <div class="principal-image">
-      <img src="../../assets/illustrations/PrincipalLight.png"
-           :alt="$t('Fungibl Principal Illustration - Aquatic Scene')">
+    <div id="principal-image" class="principal-image">
+      <img :src="imageKitPrincipalLightUrl"
+           :alt="$t('Fungibl Principal Illustration - Aquatic Scene')"
+           rel="preload">
 <!--      <img class="twitter-icon"-->
 <!--           src="../../assets/icons/Twitter-Icon.svg" :alt="$t('Twitter Icon')" />-->
     </div>
@@ -15,10 +16,45 @@ import PageContainer from "../utilities/PageContainer.vue";
 import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel";
 import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel";
 import TwoRectangles from "@/components/utilities/TwoRectangles";
+import ImageKitMixin from "@/mixins/ImageKit.mixin";
 
 export default defineComponent({
   components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, TwoRectangles },
   name: "MarketingSite",
+
+  mixins: [ImageKitMixin,],
+
+  data() {
+    return {
+      principalIllustrationWidth: null,
+    }
+  },
+
+  mounted() {
+    this.onResize()
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize);
+    })
+  },
+
+  computed: {
+    imageKitPrincipalLightUrl() {
+      if (!this.principalIllustrationWidth) return null
+      return this.imageKitUrl(
+          `PrincipalLight.png`,
+          `${this.principalIllustrationWidth}`,
+          'https://ik.imagekit.io/fungibl/web-resources',
+          { aspectRatio: 'auto' }
+      )
+    },
+  },
+
+  methods: {
+    onResize() {
+      this.principalIllustrationWidth = document.querySelector('#principal-image')
+          .offsetWidth
+    },
+  },
 });
 </script>
 

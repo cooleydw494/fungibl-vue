@@ -85,6 +85,9 @@ const StoreMixin = defineComponent({
     },
 
     async initWalletStuff(): Promise<any> {
+      do {
+        this.sleep(100)
+      } while (!this.getState('address'))
       Promise.all([
         await this.getAssets(),
         await this.getFunUserInfo(),
@@ -96,7 +99,6 @@ const StoreMixin = defineComponent({
     async getAssets(reset = false): Promise<any> {
       if (reset) {
         store.assets([])
-        store.nfts([])
       }
       try {
         let nextToken = ''
@@ -104,18 +106,18 @@ const StoreMixin = defineComponent({
         const limit = 5
         do {
           const assetsRes = await useIndexerClient()
-              .lookupAccountAssets(this.store.address)
+              .lookupAccountAssets(this.getState('address'))
               .limit(limit).nextToken(nextToken).do()
           // @ts-ignore
-          store.assets([...this.store.assets, ...assetsRes.assets])
+          store.assets([...this.getState('assets'), ...assetsRes.assets])
           nextToken = assetsRes['next-token']
           moreResults = assetsRes.assets.length === limit
         } while (moreResults)
-        store.assets(this.store.assets.filter((asset: {[k: string]: any}) => {
+        store.assets(this.getState('assets').filter((asset: {[k: string]: any}) => {
           return asset.amount > 0 && !asset['is-frozen'] && !asset.deleted
         }))
         const algod = await this.getAlgodClient()
-        store.assets(await Promise.all(this.store.assets.map(async (asset: {[k: string]: any}) => {
+        store.assets(await Promise.all(this.getState('assets').map(async (asset: {[k: string]: any}) => {
           const assetInfo = await algod.getAssetByID(asset['asset-id']).do()
           // const base = 'https://gateway.pinata.cloud/ipfs/'
           const base = 'https://nftstorage.link/ipfs/'
@@ -127,12 +129,12 @@ const StoreMixin = defineComponent({
           return {...asset, ...assetInfo, imageUrl, label}
         })))
         store.nfts(
-            await Promise.all(this.store.assets.filter(
+            await Promise.all(this.getState('assets').filter(
                 (asset: {[k: string]: any}) => {
                   return asset.amount === 1
                 }))
         )
-        this.syncNftsToBackend(this.getState('nfts'))
+        await this.syncNftsToBackend(this.getState('nfts'))
       } catch (err) { this.oop(err, 'There was an error getting assets/nfts')}
       console.log('Finished fetching assets/nfts')
     },

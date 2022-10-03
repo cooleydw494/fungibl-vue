@@ -40,7 +40,8 @@ import {
   } from "@/reach"
 import StyledButton from "./StyledButton.vue"
 import Modal from "./Modal"
-import AuthMixin from "@/mixins/Auth.mixin";
+import AuthMixin from "@/mixins/Auth.mixin"
+import store from "@/state"
 
 export default defineComponent({
   name: "ConnectWallet",
@@ -52,8 +53,7 @@ export default defineComponent({
   data: () => ({
     store: {
       connected: false, connecting: false, disconnecting: false,
-      address: "", account: null, assets: [], nfts: [],
-      balance: "0", funBalance: "0",
+      address: "", nfts: [], balance: "0", funBalance: "0",
     },
     showWalletSelect: false,
     providers: [
@@ -92,6 +92,7 @@ export default defineComponent({
     },
     async connectToProvider(provider) {
       this.showWalletSelect = false
+      store.walletType(provider)
       await this.connectTo(provider)
     },
   },

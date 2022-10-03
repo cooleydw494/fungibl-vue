@@ -1,6 +1,7 @@
 <template>
   <section class="modal" tabindex="0" @keydown.esc="close"
-           :class="{'center': center, 'full-dark': fullDark, 'mobile-menu': mobileMenu}"
+           :class="{'center': center, 'full-dark': fullDark, 'low-z': lowZ}"
+           :style="bgUrlStyle"
   >
     <div class="slot">
       <slot />
@@ -23,9 +24,20 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    mobileMenu: {
+    bgUrl: {
+      type: String,
+      default: null,
+    },
+    lowZ: {
       type: Boolean,
       default: false,
+    }
+  },
+
+  computed: {
+    bgUrlStyle() {
+      if (!this.bgUrl) return ''
+      return `background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url("${this.bgUrl}") center, center; background-size: 100% 100%;`
     }
   },
 
@@ -56,12 +68,8 @@ export default defineComponent({
     @apply bg-fdarkblue;
   }
 
-  &.mobile-menu {
-    @apply bg-fdarkblue/5;
-    //background: url("../../assets/illustrations/PrincipalDark.png") center, center;
-    background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url("../../assets/illustrations/PrincipalDark.png") center, center;
-    background-size: 100% 100%;
-    //background-size: cover;
+  &.low-z {
+    z-index: 9;
   }
 }
 </style>

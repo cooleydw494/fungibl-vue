@@ -54,7 +54,8 @@ export default defineComponent({
 
     &.primary {
       // border/text color set dynamically in template
-      @apply z-10 ml-4 pl-10 sm:pl-16;
+      @apply ml-4 pl-10 sm:pl-16;
+      z-index: 8;
     }
 
     &.secondary {

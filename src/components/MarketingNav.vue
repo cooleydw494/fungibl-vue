@@ -33,8 +33,8 @@
     </div>
 
     <modal v-show="showMobileMenu" @close="toggleMobileMenu"
-           center mobile-menu>
-      <div class="button-container mobile pb-12">
+           center mobile-menu :bg-url="imageKitPrincipalDarkUrl">
+      <div class="button-container mobile">
         <styled-button class="mb-12"
                        v-for="(item, index) in navItems" :key="index"
                        :button-style="item.label === 'LAUNCH!' ? 'nav-filled-mobile' : 'nav-mobile'"
@@ -42,6 +42,7 @@
           {{ $t(item.label) }}
         </styled-button>
       </div>
+      <img :src="imageKitPrincipalDarkUrl" style="display:none;" alt="hidden" rel="prefetch">
     </modal>
 
     <modal v-if="store.showPreviewModal" @close="closePreviewModal" center>
@@ -74,14 +75,14 @@
 import { defineComponent } from "vue"
 import Modal from "@/components/utilities/Modal"
 import StyledButton from "@/components/utilities/StyledButton"
-import StoreMixin from "@/mixins/Store.mixin"
 import state from "@/state"
+import ImageKitMixin from "@/mixins/ImageKit.mixin";
 
 export default defineComponent({
   name: "MarketingNav",
   components: { StyledButton, Modal, },
 
-  mixins: [StoreMixin],
+  mixins: [ImageKitMixin],
 
   data() {
     return {
@@ -112,6 +113,14 @@ export default defineComponent({
   computed: {
     mobile() {
       return this.innerWidth < 768
+    },
+    imageKitPrincipalDarkUrl() {
+      return this.imageKitUrl(
+          `PrincipalDark.png`,
+          `${this.innerWidth}`,
+          'https://ik.imagekit.io/fungibl/web-resources',
+          { aspectRatio: 'auto' }
+      )
     }
   },
 
@@ -176,7 +185,11 @@ header {
 
   .button-container {
     @apply w-11/12 lg:w-4/5 2xl:w-3/5 3xl:w-1/2
-    flex justify-between items-center mx-auto mt-8;
+    flex justify-between items-center mx-auto mt-8 pb-12 md:pb-0;
+
+    @media(max-height: theme('screens.sm')) {
+      @apply pb-36;
+    }
 
     &.mobile {
       @apply flex-col;
