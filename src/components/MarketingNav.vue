@@ -2,7 +2,7 @@
   <header :class="{'mobile': mobile, 'menu-open': showMobileMenu || store.showPreviewModal}"
           :style="mobile ? `margin-bottom: -${innerHeight*.15}px`:``">
 
-    <div v-if="mobile" class="flex justify-between place-items-center z-50">
+    <div v-if="mobile && store.loadedMarketingBg" class="flex justify-between place-items-center z-50">
       <img v-if="showMobileMenu || store.showPreviewModal" class="w-22 pt-2 pl-2"
            src="../assets/icons/Fungibl-Logo-Stacked-White.svg"
            :alt="$t('Fungibl Logo Square')">
@@ -94,7 +94,7 @@ export default defineComponent({
         { label: 'CONTACT', action: '#contact' },
       ],
       showMobileMenu: false,
-      store: { showPreviewModal: false, },
+      store: { showPreviewModal: false, loadedMarketingBg: false, },
       innerWidth: window.innerWidth,
       innerHeight: window.innerHeight,
     }
@@ -117,7 +117,7 @@ export default defineComponent({
     imageKitPrincipalDarkUrl() {
       return this.imageKitUrl(
           `PrincipalDark.png`,
-          `${this.innerWidth}`,
+          `auto`,//${this.innerWidth}`,
           'https://ik.imagekit.io/fungibl/web-resources',
           { aspectRatio: 'auto' }
       )

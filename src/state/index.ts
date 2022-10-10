@@ -74,6 +74,8 @@ const store = createState({
   authConfirmed: false,
 
   showPreviewModal: <boolean|string> false,
+
+  loadedMarketingBg: <boolean> false,
 })
 
 export default store

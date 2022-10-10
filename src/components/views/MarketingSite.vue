@@ -3,7 +3,7 @@
     <div id="principal-image" class="principal-image">
       <img :src="imageKitPrincipalLightUrl"
            :alt="$t('Fungibl Principal Illustration - Aquatic Scene')"
-           rel="preload">
+           rel="preload" @load="loadedMarketingBg()">
 <!--      <img class="twitter-icon"-->
 <!--           src="../../assets/icons/Twitter-Icon.svg" :alt="$t('Twitter Icon')" />-->
     </div>
@@ -11,15 +11,13 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import PageContainer from "../utilities/PageContainer.vue";
-import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel";
-import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel";
-import TwoRectangles from "@/components/utilities/TwoRectangles";
-import ImageKitMixin from "@/mixins/ImageKit.mixin";
+import { defineComponent } from "vue"
+import PageContainer from "../utilities/PageContainer.vue"
+import ImageKitMixin from "@/mixins/ImageKit.mixin"
+import state from "@/state"
 
 export default defineComponent({
-  components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, TwoRectangles },
+  components: { PageContainer },
   name: "MarketingSite",
 
   mixins: [ImageKitMixin,],
@@ -43,7 +41,7 @@ export default defineComponent({
       if (!this.principalIllustrationWidth) return null
       return this.imageKitUrl(
           `PrincipalLight.png`,
-          this.mobile ? `${this.innerWidth}` : `${this.principalIllustrationWidth}`,
+          this.mobile ? `auto`/*`${this.innerWidth}`*/ : `${this.principalIllustrationWidth}`,
           'https://ik.imagekit.io/fungibl/web-resources',
           { aspectRatio: 'auto' }
       )
@@ -59,6 +57,10 @@ export default defineComponent({
           .offsetWidth
       this.innerWidth = window.innerWidth
     },
+    loadedMarketingBg() {
+      console.log('loaded')
+      state.loadedMarketingBg(true)
+    }
   },
 });
 </script>
