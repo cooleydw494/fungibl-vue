@@ -1,8 +1,8 @@
 <template>
-  <header :class="{'mobile': mobile, 'menu-open': showMobileMenu || store.showPreviewModal}"
-          :style="mobile ? `margin-bottom: -${innerHeight*.15}px`:``">
+  <header :class="{'mobile': store.isMobile, 'menu-open': showMobileMenu || store.showPreviewModal}"
+          :style="store.isMobile ? `margin-bottom: -${innerHeight*.15}px`:``">
 
-    <div v-if="mobile && store.loadedMarketingBg" class="flex justify-between place-items-center z-50">
+    <div v-if="store.isMobile && store.loadedMarketingBg" class="flex justify-between place-items-center z-50">
       <img v-if="showMobileMenu || store.showPreviewModal" class="w-22 pt-2 pl-2"
            src="../assets/icons/Fungibl-Logo-Stacked-White.svg"
            :alt="$t('Fungibl Logo Square')">
@@ -18,12 +18,12 @@
     </div>
 
     <!-- DESKTOP -->
-    <div v-if="!mobile" class="logo-container">
+    <div v-if="!store.isMobile" class="logo-container">
       <div class="logo">
         <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" />
       </div>
     </div>
-    <div v-if="!mobile" class="button-container">
+    <div v-if="!store.isMobile" class="button-container">
       <styled-button v-for="(item, index) in [...navItems, { label: 'LAUNCH!', action: 'launch' }]"
                      :key="index" @click="takeAction(item.action)"
                      :button-style="item.label === 'LAUNCH!' ? 'nav-filled' : 'nav'"
@@ -62,7 +62,7 @@
         <p>{{ $t('it encourages us to work hard for #algofam') }}</p>
       </div>
       <div class="w-full flex justify-center">
-        <styled-button v-if="!mobile" button-style="primary mt-12" @click="closePreviewModal">
+        <styled-button v-if="!store.isMobile" button-style="primary mt-12" @click="closePreviewModal">
           {{ $t('CLOSE') }}
         </styled-button>
       </div>
@@ -94,30 +94,16 @@ export default defineComponent({
         { label: 'CONTACT', action: '#contact' },
       ],
       showMobileMenu: false,
-      store: { showPreviewModal: false, loadedMarketingBg: false, },
-      innerWidth: window.innerWidth,
-      innerHeight: window.innerHeight,
+      store: { showPreviewModal: false, loadedMarketingBg: false,
+        isMobile: window.innerWidth < 768, innerHeight: window.innerHeight, },
     }
   },
 
-  mounted() {
-    this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
-    })
-  },
-
-  beforeUnmount() {
-    window.removeEventListener('resize', this.onResize);
-  },
-
   computed: {
-    mobile() {
-      return this.innerWidth < 768
-    },
     imageKitPrincipalDarkUrl() {
       return this.imageKitUrl(
           `PrincipalDark.png`,
-          `auto`,//${this.innerWidth}`,
+          `auto`,
           'https://ik.imagekit.io/fungibl/web-resources',
           { aspectRatio: 'auto' }
       )
@@ -146,9 +132,6 @@ export default defineComponent({
       } else {
         this.showMobileMenu = !this.showMobileMenu
       }
-    },
-    onResize() {
-      this.innerWidth = window.innerWidth
     },
     openTwitter() {
       window.open('https://twitter.com/FungiblApp', '_blank')

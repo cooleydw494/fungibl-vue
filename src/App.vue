@@ -2,7 +2,7 @@
   <marketing-nav v-if="isMarketingSite" />
   <app-nav v-else />
   <router-view />
-  <marketing-footer v-if="isMarketingSite && mobile && !store.showPreviewModal" />
+  <marketing-footer v-if="isMarketingSite && store.isMobile && !store.showPreviewModal" />
   <app-footer v-if="!isMarketingSite" />
   <modal v-if="store.connecting" center low-z>
     <div class="text-center">
@@ -23,6 +23,7 @@ import AppNav from "./components/AppNav.vue"
 import AppFooter from "./components/AppFooter.vue"
 import Modal from "@/components/utilities/Modal"
 import AuthMixin from "@/mixins/Auth.mixin"
+import state from "@/state"
 
 export default {
   name: "App",
@@ -33,10 +34,10 @@ export default {
 
   data() {
     return {
-      innerWidth: window.innerWidth,
       store: {
         connecting: false, account: null, walletType: null,
         showPreviewModal: false,
+        isMobile: window.innerWidth < 768,
       }
     }
   },
@@ -62,14 +63,13 @@ export default {
     isMarketingSite() {
       return window.location.hostname.indexOf('app') === -1
     },
-    mobile() {
-      return this.innerWidth < 768
-    }
   },
 
   methods: {
     onResize() {
-      this.innerWidth = window.innerWidth
+      state.innerWidth(window.innerWidth)
+      state.innerHeight(window.innerHeight)
+      state.isMobile(window.innerWidth < 768)
     }
   }
 

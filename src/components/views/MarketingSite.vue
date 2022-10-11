@@ -7,17 +7,21 @@
 <!--      <img class="twitter-icon"-->
 <!--           src="../../assets/icons/Twitter-Icon.svg" :alt="$t('Twitter Icon')" />-->
     </div>
+
+  <about-one></about-one>
+
   </page-container>
 </template>
 
 <script>
 import { defineComponent } from "vue"
 import PageContainer from "../utilities/PageContainer.vue"
+import AboutOne from "@/components/marketing-sections/AboutOne"
 import ImageKitMixin from "@/mixins/ImageKit.mixin"
 import state from "@/state"
 
 export default defineComponent({
-  components: { PageContainer },
+  components: { PageContainer, AboutOne, },
   name: "MarketingSite",
 
   mixins: [ImageKitMixin,],
@@ -25,15 +29,8 @@ export default defineComponent({
   data() {
     return {
       principalIllustrationWidth: null,
-      innerWidth: window.innerWidth,
+      store: { isMobile: window.innerWidth < 768}
     }
-  },
-
-  mounted() {
-    this.onResize()
-    this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
-    })
   },
 
   computed: {
@@ -41,13 +38,10 @@ export default defineComponent({
       if (!this.principalIllustrationWidth) return null
       return this.imageKitUrl(
           `PrincipalLight.png`,
-          this.mobile ? `auto`/*`${this.innerWidth}`*/ : `${this.principalIllustrationWidth}`,
+          this.mobile ? `auto` : `${this.principalIllustrationWidth}`,
           'https://ik.imagekit.io/fungibl/web-resources',
           { aspectRatio: 'auto' }
       )
-    },
-    mobile() {
-      return this.innerWidth < 768
     },
   },
 
@@ -55,7 +49,6 @@ export default defineComponent({
     onResize() {
       this.principalIllustrationWidth = document.querySelector('#principal-image')
           .offsetWidth
-      this.innerWidth = window.innerWidth
     },
     loadedMarketingBg() {
       console.log('loaded')

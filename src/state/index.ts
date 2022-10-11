@@ -76,6 +76,12 @@ const store = createState({
   showPreviewModal: <boolean|string> false,
 
   loadedMarketingBg: <boolean> false,
+
+  innerWidth: <number> window.innerWidth,
+
+  innerHeight: <number> window.innerHeight,
+
+  isMobile: <boolean|null> null,
 })
 
 export default store

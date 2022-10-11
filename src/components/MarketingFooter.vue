@@ -1,5 +1,5 @@
 <template>
-  <footer :class="{'is-mobile' : mobile}">
+  <footer :class="{'is-mobile' : store.isMobile}">
     <div class="flex justify-center z-50">
       <styled-button button-style="nav-filled-mobile"
                      @click="launchApp">
@@ -22,23 +22,7 @@ export default defineComponent({
   mixins: [StoreMixin],
 
   data() {
-    return { innerWidth: window.innerWidth, store: { showPreviewModal: false } }
-  },
-
-  mounted() {
-    this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
-    })
-  },
-
-  beforeUnmount() {
-    window.removeEventListener('resize', this.onResize);
-  },
-
-  computed: {
-    mobile() {
-      return this.innerWidth < 768
-    }
+    return { store: { showPreviewModal: false, isMobile: window.innerWidth < 768, } }
   },
 
   methods: {
@@ -47,9 +31,6 @@ export default defineComponent({
       // const appUrl = `https://${this.isStaging()?'staging-':''}app.fungibl.fun`
       // window.open(appUrl, '_blank')
     },
-    onResize() {
-      this.innerWidth = window.innerWidth
-    }
   }
 
 });

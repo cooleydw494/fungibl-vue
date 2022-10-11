@@ -50,12 +50,15 @@ export default defineComponent({
   mixins: [ImageKitMixin],
 
   data: () => ({
-    store: { selectedNft: null, selectedNftId: null, nftImagesLoading: {} },
+    store: { selectedNft: null, selectedNftId: null, nftImagesLoading: {},
+      isMobile: window.innerWidth < 768, innerWidth: window.innerWidth, },
   }),
 
   computed: {
     selectedNftImageWidth() {
-      return window.innerWidth < 768 ? 76 : (window.innerWidth < 1024 ? 88 : 96)
+      return this.store.isMobile < 768
+          ? 76
+          : (this.store.innerWidth < 1024 ? 88 : 96)
     },
     selectedNftImageKitUrl() {
       return this.imageKitUrl(

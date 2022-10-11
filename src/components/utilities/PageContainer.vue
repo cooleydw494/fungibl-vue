@@ -1,5 +1,5 @@
 <template>
-  <section class="page" :class="{'marketing': isMarketingSite, 'mobile': mobile}">
+  <section class="page" :class="{'marketing': isMarketingSite, 'mobile': store.isMobile}">
     <slot />
   </section>
 </template>
@@ -11,31 +11,12 @@ export default defineComponent({
   name: "PageContainer",
 
   data() {
-    return { innerWidth: window.innerWidth }
-  },
-
-  mounted() {
-    this.$nextTick(() => {
-      window.addEventListener('resize', this.onResize);
-    })
-  },
-
-  beforeUnmount() {
-    window.removeEventListener('resize', this.onResize);
+    return { store: { isMobile: window.innerWidth < 768, }, }
   },
 
   computed: {
     isMarketingSite() {
       return window.location.hostname.indexOf('app') === -1
-    },
-    mobile() {
-      return this.innerWidth < 768
-    }
-  },
-
-  methods: {
-    onResize() {
-      this.innerWidth = window.innerWidth
     },
   },
 })

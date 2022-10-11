@@ -98,7 +98,7 @@ import NftImage from "@/components/utilities/NftImage"
 import {defaultPoolMetas} from "@/defaults"
 import {formatNumberShort} from "@jackcom/reachduck"
 import {nftImageLoading} from "@/state"
-import {get, post} from "@/api"
+import {get} from "@/api"
 import * as backend from "@/reach/contracts/build/index.main.mjs"
 import ImageKitMixin from "@/mixins/ImageKit.mixin";
 
@@ -113,7 +113,7 @@ export default defineComponent({
     return {
       store: { connected: false, funBalance: 0, funOptedIn: true, account: null,
         poolMetas: defaultPoolMetas, nftImagesLoading: {}, address: "",
-        assets: [], },
+        assets: [], isMobile: window.innerWidth < 768, },
       showPullModal: false,
       // attaching, sending_fun, transferring_fun, transferring_nft, done
       pullState: 'not_pulling',
@@ -142,7 +142,7 @@ export default defineComponent({
       return id ? { 'asset-id' : id, name: id } : null
     },
     pulledNftImageWidth() {
-      return window.innerWidth < 768 ? 76 : 96
+      return this.store.isMobile ? 76 : 96
     },
     pulledNftImageKitUrl() {
       return this.imageKitUrl(

@@ -1,5 +1,4 @@
 import {spacing, colors} from "./tailwindExports"
-import {formatNumberShort} from "@jackcom/reachduck";
 
 export default {
     methods: {
@@ -29,9 +28,6 @@ export default {
         },
         isStaging(): boolean {
             return window.location.host.includes('staging')
-        },
-        isMobile(): boolean {
-            return window.innerWidth < 768
         },
         oop(err: any, alertTxt: string|null = null, consoleText: string|null = null) {
             if (alertTxt) alert(`${alertTxt}. Check console and file bug report.`)
