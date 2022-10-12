@@ -1,10 +1,5 @@
 <template>
   <section id="about" class="section-wrapper" :class="{'mobile': isMobile}">
-    <div class="arrow">
-      <img src="../../assets/marketing-elements/Right-Loop-Arrow.svg"
-           alt="Right Loop Arrow">
-    </div>
-
 
     <div class="content">
       <div class="main-text">
@@ -12,11 +7,6 @@
       </div>
     </div>
 
-
-    <div class="blobs">
-      <img src="../../assets/marketing-elements/Stacked-Blobs.svg"
-           alt="Stacked Colored Blobs">
-    </div>
   </section>
 </template>
 
@@ -24,7 +14,7 @@
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
-  name: "AboutOne",
+  name: "Contact",
 
   props: {
     isMobile: {
@@ -41,19 +31,13 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "@/css/mixins.scss";
 
 .section-wrapper {
 
-  @apply relative w-100vw mt-12 md:mt-32 mx-auto;
+  @apply relative w-100vw mt-12 md:mt-24 mx-auto;
   max-width: 1920px;
-
-  .arrow {
-    @apply absolute -left-5 sm:-left-10 lg:left-0 2xl:left-10
-    w-36 sm:w-46 2xl:w-76 3xl:w-96
-    -rotate-12 md:rotate-0;
-  }
 
   .content {
     @apply w-5/6 2xl:w-2/3 mx-auto;
@@ -65,16 +49,6 @@ export default defineComponent({
       }
       @apply inline-block w-4/5 lg:w-2/3
       mt-24 sm:mt-36 2xl:mt-64;
-    }
-  }
-
-  .blobs {
-    @apply absolute -right-20 md:-right-22 2xl:-right-24 3xl:-right-26
-    -bottom-10 lg:bottom-0
-    w-38 md:w-42 2xl:w-46 3xl:w-50;
-
-    @media(min-width: 1921px) {
-      @apply right-0;
     }
   }
 

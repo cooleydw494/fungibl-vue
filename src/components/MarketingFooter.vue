@@ -1,6 +1,6 @@
 <template>
   <footer :class="{'is-mobile' : store.isMobile}">
-    <div class="flex justify-center z-50">
+    <div class="button-container" :class="{'hidden': !topOfPage && !store.showMobileMenu}">
       <styled-button button-style="nav-filled-mobile"
                      @click="launchApp">
         {{ $t('LAUNCH APP') + $t('!') }}
@@ -21,8 +21,16 @@ export default defineComponent({
 
   mixins: [StoreMixin],
 
+  props: {
+    topOfPage: {
+      type: Boolean,
+      default: true,
+    }
+  },
+
   data() {
-    return { store: { showPreviewModal: false, isMobile: window.innerWidth < 768, } }
+    return { store: { showPreviewModal: false, showMobileMenu: false,
+        isMobile: window.innerWidth < 768, } }
   },
 
   methods: {
@@ -44,8 +52,15 @@ footer {
   min-height: 15%;
 
   &.is-mobile {
-    @apply pt-6;
-    bottom: 15%;
+    @apply fixed -bottom-5 z-10 pt-6;
+
+    .button-container {
+      @apply flex justify-center z-50 opacity-100;
+      transition: opacity 0.25s linear;
+      &.hidden {
+        @apply opacity-0 pointer-events-none;
+      }
+    }
   }
 }
 </style>

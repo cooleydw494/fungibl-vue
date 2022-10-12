@@ -8,8 +8,8 @@
 <!--           src="../../assets/icons/Twitter-Icon.svg" :alt="$t('Twitter Icon')" />-->
     </div>
 
-  <about-one></about-one>
-
+    <about-one :is-mobile="store.isMobile"></about-one>
+    <about-two :is-mobile="store.isMobile"></about-two>
   </page-container>
 </template>
 
@@ -17,11 +17,12 @@
 import { defineComponent } from "vue"
 import PageContainer from "../utilities/PageContainer.vue"
 import AboutOne from "@/components/marketing-sections/AboutOne"
+import AboutTwo from "@/components/marketing-sections/AboutTwo"
 import ImageKitMixin from "@/mixins/ImageKit.mixin"
 import state from "@/state"
 
 export default defineComponent({
-  components: { PageContainer, AboutOne, },
+  components: { PageContainer, AboutOne, AboutTwo, },
   name: "MarketingSite",
 
   mixins: [ImageKitMixin,],
@@ -31,6 +32,17 @@ export default defineComponent({
       principalIllustrationWidth: null,
       store: { isMobile: window.innerWidth < 768}
     }
+  },
+
+  mounted() {
+    this.onResize()
+    this.$nextTick(() => {
+      window.addEventListener('resize', this.onResize)
+    })
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('resize', this.onResize)
   },
 
   computed: {

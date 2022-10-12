@@ -1,18 +1,20 @@
 <template>
-  <header :class="{'mobile': store.isMobile, 'menu-open': showMobileMenu || store.showPreviewModal}"
-          :style="store.isMobile ? `margin-bottom: -${innerHeight*.15}px`:``">
+  <header :class="{'mobile': store.isMobile, 'menu-open': store.showMobileMenu || store.showPreviewModal}"
+          :style="store.isMobile ? `margin-bottom: -${store.innerHeight*.15}px`:``">
 
-    <div v-if="store.isMobile && store.loadedMarketingBg" class="flex justify-between place-items-center z-50">
-      <img v-if="showMobileMenu || store.showPreviewModal" class="w-22 pt-2 pl-2"
+    <div v-if="store.isMobile && store.loadedMarketingBg" class="mobile-nav-header">
+      <img v-if="store.showMobileMenu || store.showPreviewModal" class="stacked-logo"
            src="../assets/icons/Fungibl-Logo-Stacked-White.svg"
            :alt="$t('Fungibl Logo Square')">
-      <img v-else class="w-22 pt-2 pl-2"
+      <img v-else class="stacked-logo"
+           :class="{'scrolled-down': !topOfPage}"
            src="../assets/icons/Fungibl-Logo-Stacked-Black.svg"
            :alt="$t('Fungibl Logo Square')">
-      <img v-if="showMobileMenu || store.showPreviewModal" class="w-16 -mt-2 pr-2 hover:cursor-pointer"
+      <img v-if="store.showMobileMenu || store.showPreviewModal" class="close-mobile-menu"
            @click="toggleMobileMenu"
            src="../assets/icons/Close-Icon.svg" :alt="$t('Close Menu')">
-      <img v-else class="w-18 -mt-2.5 pr-1 hover:cursor-pointer"
+      <img v-else class="open-mobile-menu"
+           :class="{'scrolled-down': !topOfPage}"
            @click="toggleMobileMenu"
            src="../assets/icons/Hamburger.svg" :alt="$t('Open Menu')">
     </div>
@@ -32,7 +34,7 @@
       </styled-button>
     </div>
 
-    <modal v-show="showMobileMenu" @close="toggleMobileMenu"
+    <modal v-show="store.showMobileMenu" @close="toggleMobileMenu"
            center mobile-menu :bg-url="imageKitPrincipalDarkUrl">
       <div class="button-container mobile">
         <styled-button class="mb-12"
@@ -84,6 +86,13 @@ export default defineComponent({
 
   mixins: [ImageKitMixin],
 
+  props: {
+    topOfPage: {
+      type: Boolean,
+      default: true,
+    }
+  },
+
   data() {
     return {
       navItems: [
@@ -93,9 +102,9 @@ export default defineComponent({
         { label: 'FAQ', action: '#faq' },
         { label: 'CONTACT', action: '#contact' },
       ],
-      showMobileMenu: false,
       store: { showPreviewModal: false, loadedMarketingBg: false,
-        isMobile: window.innerWidth < 768, innerHeight: window.innerHeight, },
+        isMobile: window.innerWidth < 768, innerHeight: window.innerHeight,
+        showMobileMenu: false, },
     }
   },
 
@@ -130,7 +139,7 @@ export default defineComponent({
       if (this.store.showPreviewModal) {
         state.showPreviewModal(false)
       } else {
-        this.showMobileMenu = !this.showMobileMenu
+        state.showMobileMenu(!this.store.showMobileMenu)
       }
     },
     openTwitter() {
@@ -148,7 +157,7 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 header {
-  @apply w-full p-4;
+  @apply fixed top-0 md:relative z-10 w-full p-4;
 
   @media(max-width: theme('screens.md')) {
     height: 15%;
@@ -179,6 +188,32 @@ header {
 
     &.mobile {
       @apply flex-col;
+    }
+  }
+
+  .mobile-nav-header {
+    @apply flex justify-between place-items-center z-50;
+
+    .stacked-logo {
+      @apply w-23 h-23 p-1 bg-none rounded;
+      transition: background-color 0.5s linear;
+      &.scrolled-down {
+        @apply bg-fgreen/95 /*border-2 border-fdarkblue*/;
+        //border-style: inset;
+      }
+    }
+
+    .open-mobile-menu {
+      @apply w-23 h-23 hover:cursor-pointer bg-none rounded;
+      transition: background-color 0.5s linear;
+      &.scrolled-down {
+        @apply bg-fgreen/95 /*border-2 border-fdarkblue*/;
+        //border-style: inset;
+      }
+    }
+
+    .close-mobile-menu {
+      @apply w-21 h-20 py-3 px-2 mr-1 hover:cursor-pointer;
     }
   }
 }

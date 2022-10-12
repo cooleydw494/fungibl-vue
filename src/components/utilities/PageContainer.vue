@@ -5,10 +5,13 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core"
+import StoreMixin from "@/mixins/Store.mixin"
 
 export default defineComponent({
   name: "PageContainer",
+
+  mixins: [StoreMixin, ],
 
   data() {
     return { store: { isMobile: window.innerWidth < 768, }, }

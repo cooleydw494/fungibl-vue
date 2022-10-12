@@ -75,16 +75,22 @@ const store = createState({
 
   showPreviewModal: <boolean|string> false,
 
+  showMobileMenu: <boolean> false,
+
   loadedMarketingBg: <boolean> false,
 
   innerWidth: <number> window.innerWidth,
 
   innerHeight: <number> window.innerHeight,
 
-  isMobile: <boolean|null> null,
+  isMobile: <boolean> isMobile(),
 })
 
 export default store
+
+function isMobile() {
+  return window.innerWidth < 768
+}
 
 export type Alert = { msg: string; time: number }
 

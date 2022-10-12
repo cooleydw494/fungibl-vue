@@ -39,6 +39,11 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "Connecting...": "Connecting...",
         "NFT Image for": "NFT Image for",
 
+
+        // Marketing Copy
+        "whatIsFungibl": "<strong class=\"text-fpink\">Fungibl</strong> is a liquidity provider for Algorand NFTs which will allow users to exchange NFTs for <strong class=\"text-fpink\">$FUN</strong> which can then be exchanged for <strong>randomized</strong> NFTs.<br><br>This gives <strong class=\"text-fblue\">#algofam</strong> a new and hassle-free way to get new NFTs, catalyzes ecosystem activity, and cross-pollinates collectors' wallets.",
+        "HISTORY": "HISTORY",
+        "fungiblHistory": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.<br><br>Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk."
     },
     "es": {
         // Ejemplos
@@ -79,6 +84,12 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "Disconnecting...": "Disconnecting...",
         "Connecting...": "Connecting...",
         "NFT Image for": "NFT Image for",
+
+
+        // Marketing Copy
+        "whatIsFungibl": "<strong class=\"text-fpink\">Fungibl</strong> is a liquidity provider for Algorand NFTs which will allow users to exchange NFTs for <strong class=\"text-fpink\">$FUN</strong> which can then be exchanged for <strong>randomized</strong> NFTs.<br><br>This gives <strong class=\"text-fblue\">#algofam</strong> a new and hassle-free way to get new NFTs, catalyzes ecosystem activity, and cross-pollinates collectors' wallets.",
+        "HISTORY": "HISTORY",
+        "fungiblHistory": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.<br><br>Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk."
 
     }
 }
