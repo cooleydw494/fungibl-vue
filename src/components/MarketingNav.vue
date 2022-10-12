@@ -1,5 +1,5 @@
 <template>
-  <header :class="{'mobile': store.isMobile, 'menu-open': store.showMobileMenu || store.showPreviewModal}"
+  <header :class="{'mobile': store.isMobile, 'menu-open': store.showMobileMenu || store.showPreviewModal, 'scrolled-down': !topOfPage}"
           :style="store.isMobile ? `margin-bottom: -${store.innerHeight*.15}px`:``">
 
     <div v-if="store.isMobile && store.loadedMarketingBg" class="mobile-nav-header">
@@ -177,6 +177,11 @@ header {
 
   @media(min-width: theme('screens.md')) {
     min-height: 15%;
+    &.scrolled-down {
+      min-height: 8%;
+      background: linear-gradient(rgba(112, 112, 112, 0.15), rgba(112, 112, 112, 0.25)),
+      linear-gradient(rgba(29, 25, 52), rgba(29, 25, 52));
+    }
   }
 
   .logo-container {
@@ -192,6 +197,10 @@ header {
         width: 300px;
         @apply h-auto;
       }
+    }
+
+    &.scrolled-down {
+      @apply pt-0;
     }
   }
 

@@ -26,6 +26,7 @@ module.exports = {
         'faqua': '#10CFC9',
         'fblurple': "#6069F2",
         'fdarkblue': '#1D1934',
+        'fgray': '#707070',
         'fdark': 'rgba(26,26,26)',
       },
       fontSize: {
@@ -94,6 +95,7 @@ module.exports = {
         '4xl': '1920px',
       },
       opacity: {
+        15: '0.15',
         97: '0.97',
         98: '0.98',
       },
