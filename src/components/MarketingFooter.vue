@@ -1,6 +1,6 @@
 <template>
   <footer :class="{'is-mobile' : store.isMobile}">
-    <div class="button-container" :class="{'hidden': !topOfPage && !store.showMobileMenu}">
+    <div class="button-container" :class="{'hide': !topOfPage && !store.showMobileMenu}">
       <styled-button button-style="nav-filled-mobile"
                      @click="launchApp">
         {{ $t('LAUNCH APP') + $t('!') }}
@@ -56,8 +56,8 @@ footer {
 
     .button-container {
       @apply flex justify-center z-50 opacity-100;
-      transition: opacity 0.25s linear;
-      &.hidden {
+      transition: opacity 0.5s linear;
+      &.hide {
         @apply opacity-0 pointer-events-none;
       }
     }

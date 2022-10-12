@@ -1,7 +1,7 @@
 <template>
   <section class="modal" tabindex="0" @keydown.esc="close"
            :class="{'center': center, 'full-dark': fullDark, 'low-z': lowZ}"
-           :style="bgUrlStyle"
+           :style="`${bgUrlStyle} transition: opacity ${opacityTime} linear; ${opacityStyle}`"
   >
     <div class="slot">
       <slot />
@@ -31,7 +31,19 @@ export default defineComponent({
     lowZ: {
       type: Boolean,
       default: false,
+    },
+    opacityTime: {
+      type: String,
+      default: '0.25s',
     }
+  },
+
+  data() {
+    return { opacityStyle: 'opacity: 0;' }
+  },
+
+  mounted() {
+    setTimeout(() => { this.opacityStyle = 'opacity: 1' }, 25)
   },
 
   computed: {
@@ -46,8 +58,10 @@ export default defineComponent({
       // If you open from within, use to handle effects in parent component
       this.$emit('open')
     },
-    close() {
+    async close() {
       // If you close from within, use to handle effects in parent component
+      this.opacityStyle = 'opacity: 0'
+      await this.sleep(parseFloat(this.opacityTime) * 1000)
       this.$emit('close')
     },
   }

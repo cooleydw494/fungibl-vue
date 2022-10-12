@@ -1,5 +1,6 @@
 <template>
   <page-container>
+    <div v-if="!store.isMobile" style="height: 23%;">&nbsp;</div>
     <div id="principal-image" class="principal-image">
       <img :src="imageKitPrincipalLightUrl"
            :alt="$t('Fungibl Principal Illustration - Aquatic Scene')"

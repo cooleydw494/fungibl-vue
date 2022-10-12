@@ -1,20 +1,20 @@
 <template>
-  <intersection-observer v-if="isMobileMarketing" sentinal-name="top-of-page"
+  <intersection-observer v-if="isMarketingSite" sentinal-name="top-of-page"
                          @intersect="topOfPage = true" class="intersection-top one">
   </intersection-observer>
-  <intersection-observer v-if="isMobileMarketing" sentinal-name="top-of-page"
+  <intersection-observer v-if="isMarketingSite" sentinal-name="top-of-page"
                          @intersect="topOfPage = true" class="intersection-top two">
   </intersection-observer>
-  <intersection-observer v-if="isMobileMarketing" sentinal-name="top-of-page"
+  <intersection-observer v-if="isMarketingSite" sentinal-name="top-of-page"
                          @intersect="topOfPage = true" class="intersection-top three">
   </intersection-observer>
-  <intersection-observer v-if="isMobileMarketing" sentinal-name="scroll-down"
+  <intersection-observer v-if="isMarketingSite" sentinal-name="scroll-down"
                          @intersect="topOfPage = false" class="intersection-down one">
   </intersection-observer>
-  <intersection-observer v-if="isMobileMarketing" sentinal-name="scroll-down"
+  <intersection-observer v-if="isMarketingSite" sentinal-name="scroll-down"
                          @intersect="topOfPage = false" class="intersection-down two">
   </intersection-observer>
-  <intersection-observer v-if="isMobileMarketing" sentinal-name="scroll-down"
+  <intersection-observer v-if="isMarketingSite" sentinal-name="scroll-down"
                          @intersect="topOfPage = false" class="intersection-down three">
   </intersection-observer>
   <marketing-nav v-if="isMarketingSite" :top-of-page="topOfPage" />
