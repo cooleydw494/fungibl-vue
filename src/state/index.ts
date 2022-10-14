@@ -73,9 +73,7 @@ const store = createState({
 
   authConfirmed: false,
 
-  showPreviewModal: <boolean|string> false,
-
-  showMobileMenu: <boolean> false,
+  currentModal: <string|null> null,
 
   loadedMarketingBg: <boolean> false,
 

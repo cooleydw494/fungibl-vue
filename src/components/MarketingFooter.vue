@@ -1,6 +1,7 @@
 <template>
   <footer :class="{'is-mobile' : store.isMobile}">
-    <div class="button-container" :class="{'hide': !topOfPage && !store.showMobileMenu}">
+    <div class="button-container"
+         :class="{'hide': !topOfPage && store.currentModal !== 'mobile-menu'}">
       <styled-button button-style="nav-filled-mobile"
                      @click="launchApp">
         {{ $t('LAUNCH APP') + $t('!') }}
@@ -29,13 +30,12 @@ export default defineComponent({
   },
 
   data() {
-    return { store: { showPreviewModal: false, showMobileMenu: false,
-        isMobile: window.innerWidth < 768, } }
+    return { store: { currentModal: null, isMobile: window.innerWidth < 768, }, }
   },
 
   methods: {
     launchApp() {
-      state.showPreviewModal('launch')
+      this.$emit('open-preview')
       // const appUrl = `https://${this.isStaging()?'staging-':''}app.fungibl.fun`
       // window.open(appUrl, '_blank')
     },
@@ -56,7 +56,7 @@ footer {
 
     .button-container {
       @apply flex justify-center z-50 opacity-100;
-      transition: opacity 0.5s linear;
+      transition: opacity 0.25s ease-out;
       &.hide {
         @apply opacity-0 pointer-events-none;
       }

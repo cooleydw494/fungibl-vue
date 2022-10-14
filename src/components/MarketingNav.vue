@@ -1,22 +1,23 @@
 <template>
-  <header :class="{'mobile': store.isMobile, 'menu-open': store.showMobileMenu || store.showPreviewModal, 'scrolled-down': !topOfPage}"
+  <header :class="{'mobile': store.isMobile, 'menu-open': store.currentModal, 'scrolled-down': !topOfPage}"
           :style="store.isMobile ? `margin-bottom: -${store.innerHeight*.15}px`:``">
 
     <div v-if="store.isMobile && store.loadedMarketingBg" class="mobile-nav-header">
-      <img v-if="store.showMobileMenu || store.showPreviewModal" class="stacked-logo"
-           :class="{'hide': !store.showPreviewModal && !store.showMobileMenu}"
+      <img class="stacked-logo"
+           :class="{'hide': !store.currentModal}"
            src="../assets/icons/Fungibl-Logo-Stacked-White.svg"
            :alt="$t('Fungibl Logo Square')">
       <img class="stacked-logo"
-           :class="{'scrolled-down': !topOfPage, 'hide': store.showPreviewModal || store.showMobileMenu || !topOfPage}"
+           :class="{'scrolled-down': !topOfPage, 'hide': store.currentModal || !topOfPage}"
            src="../assets/icons/Fungibl-Logo-Stacked-Black.svg"
            :alt="$t('Fungibl Logo Square')">
-      <img v-if="store.showMobileMenu || store.showPreviewModal" class="close-mobile-menu"
-           @click="closeMobileMenu"
+      <img class="close-mobile-menu"
+           :class="{'hide': !store.currentModal}"
+           @click="toggleModal(store.currentModal)"
            src="../assets/icons/Close-Icon.svg" :alt="$t('Close Menu')">
       <img class="open-mobile-menu"
-           :class="{'scrolled-down': !topOfPage, 'hide': store.showPreviewModal || store.showMobileMenu}"
-           @click="toggleMobileMenu"
+           :class="{'scrolled-down': !topOfPage, 'hide': store.currentModal}"
+           @click="toggleModal('mobile-menu')"
            src="../assets/icons/Hamburger.svg" :alt="$t('Open Menu')">
     </div>
 
@@ -35,8 +36,8 @@
       </styled-button>
     </div>
 
-    <modal v-if="store.showMobileMenu" ref="mobileMenu" @close="toggleMobileMenu" opacity-time="0.5s"
-           center mobile-menu :bg-url="imageKitPrincipalDarkUrl">
+    <modal ref="mobile-menu" name="mobile-menu" :bg-url="imageKitPrincipalDarkUrl"
+           opacity-time="0.5s" center>
       <div class="button-container mobile">
         <styled-button class="mb-12"
                        v-for="(item, index) in navItems" :key="index"
@@ -48,7 +49,7 @@
       <img :src="imageKitPrincipalDarkUrl" style="display:none;" alt="hidden" rel="prefetch">
     </modal>
 
-    <modal v-if="store.showPreviewModal" ref="previewModal" @close="closePreviewModal(true)" center>
+    <modal ref="preview" name="preview" center>
       <div class="text-lg font-bold text-center">
         <p><span class="font-bolder">Curious?</span> We're getting ready to tell</p>
         <p class="mb-12">you ALL THE THINGS you want to know.</p>
@@ -65,7 +66,7 @@
         <p>{{ $t('it encourages us to work hard for #algofam') }}</p>
       </div>
       <div class="w-full flex justify-center">
-        <styled-button v-if="!store.isMobile" button-style="primary mt-12" @click="closePreviewModal">
+        <styled-button v-if="!store.isMobile" button-style="primary mt-12" @click="toggleModal('preview')">
           {{ $t('CLOSE') }}
         </styled-button>
       </div>
@@ -103,9 +104,8 @@ export default defineComponent({
         { label: 'FAQ', action: '#faq' },
         { label: 'CONTACT', action: '#contact' },
       ],
-      store: { showPreviewModal: false, loadedMarketingBg: false,
-        isMobile: window.innerWidth < 768, innerHeight: window.innerHeight,
-        showMobileMenu: false, },
+      store: { loadedMarketingBg: false, currentModal: null,
+        isMobile: window.innerWidth < 768, innerHeight: window.innerHeight, },
     }
   },
 
@@ -123,7 +123,7 @@ export default defineComponent({
   methods: {
     takeAction(action) {
       if (action === 'launch') {
-        state.showPreviewModal('launch')
+        state.currentModal('preview')
         // const appUrl = `https://${this.isStaging()?'staging-':''}app.fungibl.fun`
         // window.open(appUrl, '_blank')
         return
@@ -133,33 +133,16 @@ export default defineComponent({
         window.open(blogUrl, '_blank')
         return
       }
-      state.showPreviewModal(action)
-      // document.getElementById(action).scrollIntoView({ behavior: "smooth" })
+      if (this.store.currentModal === 'mobile-menu') this.toggleModal('mobile-menu')
+      document.querySelector(action).scrollIntoView({ behavior: "smooth" })
     },
-    closeMobileMenu() {
-      if (this.store.showPreviewModal) {
-        this.$refs.previewModal.close()
-      } else {
-        this.$refs.mobileMenu.close()
-      }
-    },
-    toggleMobileMenu() {
-      if (this.store.showPreviewModal) {
-        state.showPreviewModal(false)
-      } else {
-        state.showMobileMenu(!this.store.showMobileMenu)
-      }
+    toggleModal(name) {
+      const current = this.store.currentModal
+      current === name ? this.$refs[name].close() : this.$refs[name].open()
     },
     openTwitter() {
       window.open('https://twitter.com/FungiblApp', '_blank')
     },
-    closePreviewModal(final = false) {
-      if (final) {
-        state.showPreviewModal(false)
-      } else {
-        this.$refs.previewModal.close()
-      }
-    }
   },
 
 })
@@ -171,14 +154,14 @@ export default defineComponent({
 header {
   @apply fixed top-0 z-10 w-full p-4 md:bg-fdarkblue;
 
-  @media(max-width: theme('screens.md')) {
-    height: 15%;
-  }
+  height: 15%;
 
   @media(min-width: theme('screens.md')) {
+    height: unset;
     min-height: 15%;
     &.scrolled-down {
-      min-height: 8%;
+      @apply pt-0 lg:-mt-1;
+      min-height: theme('spacing.20');
       background: linear-gradient(rgba(112, 112, 112, 0.15), rgba(112, 112, 112, 0.25)),
       linear-gradient(rgba(29, 25, 52), rgba(29, 25, 52));
     }
@@ -190,17 +173,16 @@ header {
       @apply z-50 my-0 mx-8 relative;
       left: calc(50% - theme('spacing.8') - 150px);
       transition: left 0.5s ease-out;
-      &.scrolled-down {
-        left: 0;
-      }
       img {
         width: 300px;
         @apply h-auto;
       }
-    }
-
-    &.scrolled-down {
-      @apply pt-0;
+      &.scrolled-down {
+        left: -.75rem;
+        img {
+          @apply md:w-52 lg:w-62;
+        }
+      }
     }
   }
 
@@ -210,7 +192,14 @@ header {
 
     transition: margin-top 0.5s ease-out, margin-left 0.5s ease-out, margin-right 0.5s ease-out;
     &.desktop.scrolled-down {
-      @apply -mt-10 mr-6;
+      @apply -mt-7-5 lg:-mt-9 mr-6 pl-6;
+      width: calc(100% - theme('spacing.66'));
+      @media(min-width: theme('screens.lg')) {
+        width: calc(100% - theme('spacing.76'));
+      }
+      @media(min-width: theme('screens.xl')) {
+        @apply w-3/5;
+      }
     }
 
     @media(max-height: theme('screens.sm')) {
@@ -226,7 +215,7 @@ header {
     @apply flex justify-between place-items-center z-50;
 
     .stacked-logo {
-      transition: background-color 0.5s ease-out, opacity 0.5s ease-in;
+      transition: background-color 0.25s ease-out, opacity 0.25s ease-in;
       @apply w-23 h-23 p-1 bg-none rounded opacity-100;
       &.scrolled-down {
         //@apply bg-fgreen/95 /*border-2 border-fdarkblue*/;
@@ -238,7 +227,7 @@ header {
     }
 
     .open-mobile-menu {
-      transition: background-color 0.5s ease-out, opacity 0.5s ease-in;
+      transition: background-color 0.25s ease-out, opacity 0.25s ease-in;
       @apply w-23 h-23 hover:cursor-pointer bg-none rounded opacity-100;
       &.scrolled-down {
         @apply bg-fgreen/95 ml-auto /*border-2 border-fdarkblue*/;
@@ -250,7 +239,11 @@ header {
     }
 
     .close-mobile-menu {
-      @apply w-21 h-20 py-3 px-2 mr-1 hover:cursor-pointer;
+      @apply w-21 h-20 py-3 px-2 mr-1 opacity-100 hover:cursor-pointer;
+
+      &.hide {
+        @apply opacity-0 pointer-events-none absolute;
+      }
     }
   }
 }

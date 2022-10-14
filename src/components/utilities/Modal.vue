@@ -1,7 +1,7 @@
 <template>
-  <section class="modal" tabindex="0" @keydown.esc="close"
+  <section v-if="store.currentModal === name || animatingOut" class="modal" tabindex="0" @keydown.esc="close"
            :class="{'center': center, 'full-dark': fullDark, 'low-z': lowZ}"
-           :style="`${bgUrlStyle} transition: opacity ${opacityTime} linear; ${opacityStyle}`"
+           :style="`${bgUrlStyle} transition: opacity ${opacityTime} ease-out; ${opacityStyle}`"
   >
     <div class="slot">
       <slot />
@@ -10,12 +10,20 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core"
+import state from "@/state"
+import StoreMixin from "@/mixins/Store.mixin"
 
 export default defineComponent({
   name: "Modal",
 
+  mixins: [StoreMixin],
+
   props: {
+    name: {
+      type: String,
+      required: true,
+    },
     center: {
       type: Boolean,
       default: false,
@@ -32,18 +40,23 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    simple: {
+      type: Boolean,
+      default: false,
+    },
     opacityTime: {
       type: String,
       default: '0.25s',
+    },
+    opacityTimeClose: {
+      type: String,
+      required: false,
     }
   },
 
   data() {
-    return { opacityStyle: 'opacity: 0;' }
-  },
-
-  mounted() {
-    setTimeout(() => { this.opacityStyle = 'opacity: 1' }, 25)
+    return { opacityStyle: 'opacity: 0;', animatingOut: false,
+      store: { currentModal: null, }, }
   },
 
   computed: {
@@ -55,14 +68,19 @@ export default defineComponent({
 
   methods: {
     open() {
-      // If you open from within, use to handle effects in parent component
+      state.currentModal(this.name)
+      setTimeout(() => { this.opacityStyle = 'opacity: 1' }, 25)
       this.$emit('open')
     },
     async close() {
-      // If you close from within, use to handle effects in parent component
-      this.opacityStyle = 'opacity: 0'
-      await this.sleep(parseFloat(this.opacityTime) * 1000)
+      if (!this.simple) {
+        this.opacityStyle = 'opacity: 0'
+      }
+      this.animatingOut = true
+      state.currentModal(null)
       this.$emit('close')
+      await this.sleep(parseFloat(this.opacityTimeClose || this.opacityTime) * 1000)
+      this.animatingOut = false
     },
   }
 });

@@ -37,6 +37,7 @@ module.exports = {
         'bolder': '750',
       },
       spacing: {
+        '7-5': '1.875rem',
         18: '4.5rem',
         21: '5.25rem',
         22: '5.5rem',
@@ -51,6 +52,7 @@ module.exports = {
         54: '13.5rem',
         58: '14.5rem',
         62: '15.5rem',
+        66: '16.5rem',
         68: '17rem',
         76: '19rem',
         88: '22rem',

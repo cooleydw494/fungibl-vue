@@ -53,11 +53,10 @@ export default defineComponent({
 header {
   @apply w-full p-4;
 
-  @media(max-width: theme('screens.md')) {
-    height: 15%;
-  }
+  height: 15%;
 
   @media(min-width: theme('screens.md')) {
+    height: unset;
     min-height: 15%;
   }
 

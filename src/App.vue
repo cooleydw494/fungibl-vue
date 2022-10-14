@@ -17,12 +17,12 @@
   <intersection-observer v-if="isMarketingSite" sentinal-name="scroll-down"
                          @intersect="topOfPage = false" class="intersection-down three">
   </intersection-observer>
-  <marketing-nav v-if="isMarketingSite" :top-of-page="topOfPage" />
+  <marketing-nav v-if="isMarketingSite" :top-of-page="topOfPage" ref="marketingNav" />
   <app-nav v-else />
   <router-view />
-  <marketing-footer v-if="isMobileMarketing && !store.showPreviewModal" :top-of-page="topOfPage" />
+  <marketing-footer v-if="isMobileMarketing && !store.showPreviewModal" :top-of-page="topOfPage" @open-preview="openMobilePreview" />
   <app-footer v-if="!isMarketingSite" />
-  <modal v-if="store.connecting" center low-z>
+  <modal v-if="store.connecting" name="wallet-connect" center low-z simple>
     <div class="text-center">
       <h1 class="text-faqua">{{ store.account ? `Authorizing...`: `Connecting...` }}</h1>
       <h6 v-if="store.walletType" class="mt-8">{{ $t('Awaiting Confirmation From') }}
@@ -90,6 +90,9 @@ export default {
   },
 
   methods: {
+    openMobilePreview() {
+      this.$refs.marketingNav.toggleModal('preview')
+    },
     onResize() {
       state.innerWidth(window.innerWidth)
       state.innerHeight(window.innerHeight)
