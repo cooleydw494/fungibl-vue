@@ -35,7 +35,7 @@ export default defineComponent({
 
   methods: {
     launchApp() {
-      this.$emit('open-preview')
+      this.setModal('preview')
       // const appUrl = `https://${this.isStaging()?'staging-':''}app.fungibl.fun`
       // window.open(appUrl, '_blank')
     },

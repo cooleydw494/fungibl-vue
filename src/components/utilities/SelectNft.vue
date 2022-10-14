@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <modal v-if="showSubmissionModal" @close="closeSubmissionModal()" center>
+    <modal :override-show="showSubmissionModal" name="submission" @close="closeSubmissionModal()" center>
       <div class="max-w-2xl text-center min-h-60vh">
 
         <img v-if="['not_submitting'].includes(submitState)" class="illustration"

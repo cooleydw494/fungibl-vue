@@ -20,9 +20,9 @@
   <marketing-nav v-if="isMarketingSite" :top-of-page="topOfPage" ref="marketingNav" />
   <app-nav v-else />
   <router-view />
-  <marketing-footer v-if="isMobileMarketing && !store.showPreviewModal" :top-of-page="topOfPage" @open-preview="openMobilePreview" />
+  <marketing-footer v-if="isMobileMarketing" :top-of-page="topOfPage" />
   <app-footer v-if="!isMarketingSite" />
-  <modal v-if="store.connecting" name="wallet-connect" center low-z simple>
+  <modal :override-show="store.connecting" name="wallet-connect" center low-z>
     <div class="text-center">
       <h1 class="text-faqua">{{ store.account ? `Authorizing...`: `Connecting...` }}</h1>
       <h6 v-if="store.walletType" class="mt-8">{{ $t('Awaiting Confirmation From') }}
@@ -56,7 +56,6 @@ export default {
     return {
       store: {
         connecting: false, account: null, walletType: null,
-        showPreviewModal: false,
         isMobile: window.innerWidth < 768,
       },
       topOfPage: true,
@@ -90,9 +89,6 @@ export default {
   },
 
   methods: {
-    openMobilePreview() {
-      this.$refs.marketingNav.toggleModal('preview')
-    },
     onResize() {
       state.innerWidth(window.innerWidth)
       state.innerHeight(window.innerHeight)

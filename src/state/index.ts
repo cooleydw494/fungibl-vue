@@ -69,8 +69,6 @@ const store = createState({
   /** DO NOT ACCESS DIRECTLY, CALL StoreMixin.getImageKit */
   imageKitClient: <ImageKit|null> null,
 
-  // showAuthModal: false,
-
   authConfirmed: false,
 
   currentModal: <string|null> null,

@@ -13,11 +13,11 @@
            :alt="$t('Fungibl Logo Square')">
       <img class="close-mobile-menu"
            :class="{'hide': !store.currentModal}"
-           @click="toggleModal(store.currentModal)"
+           @click="setModal(null)"
            src="../assets/icons/Close-Icon.svg" :alt="$t('Close Menu')">
       <img class="open-mobile-menu"
            :class="{'scrolled-down': !topOfPage, 'hide': store.currentModal}"
-           @click="toggleModal('mobile-menu')"
+           @click="setModal('mobile-menu')"
            src="../assets/icons/Hamburger.svg" :alt="$t('Open Menu')">
     </div>
 
@@ -49,7 +49,7 @@
       <img :src="imageKitPrincipalDarkUrl" style="display:none;" alt="hidden" rel="prefetch">
     </modal>
 
-    <modal ref="preview" name="preview" center simple>
+    <modal ref="preview" name="preview" center>
       <div class="text-lg font-bold text-center">
         <p><span class="font-bolder">Curious?</span> We're getting ready to tell</p>
         <p class="mb-12">you ALL THE THINGS you want to know.</p>
@@ -66,7 +66,7 @@
         <p>{{ $t('it encourages us to work hard for #algofam') }}</p>
       </div>
       <div class="w-full flex justify-center">
-        <styled-button v-if="!store.isMobile" button-style="primary mt-12" @click="toggleModal('preview')">
+        <styled-button v-if="!store.isMobile" button-style="primary mt-12" @click="setModal(null)">
           {{ $t('CLOSE') }}
         </styled-button>
       </div>
@@ -133,12 +133,8 @@ export default defineComponent({
         window.open(blogUrl, '_blank')
         return
       }
-      if (this.store.currentModal === 'mobile-menu') this.toggleModal('mobile-menu')
+      this.setModal(null)
       document.querySelector(action).scrollIntoView({ behavior: "smooth" })
-    },
-    toggleModal(name) {
-      const current = this.store.currentModal
-      current === name ? this.$refs[name].close() : this.$refs[name].open()
     },
     openTwitter() {
       window.open('https://twitter.com/FungiblApp', '_blank')

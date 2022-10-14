@@ -24,7 +24,7 @@
         </div>
       </div>
     </styled-button>
-    <modal v-if="showWalletSelect" @close="showWalletSelect = false" center>
+    <modal :override-show="showWalletSelect" name="wallet-select" @close="showWalletSelect = false" center>
       <div v-for="(provider, index) in providers" :key="index" class="mb-8">
         <styled-button button-style="connect" darker-bg @click="connectToProvider(provider.value)">{{ provider.name }}</styled-button>
       </div>

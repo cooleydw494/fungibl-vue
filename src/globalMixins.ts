@@ -1,4 +1,5 @@
 import {spacing, colors} from "./tailwindExports"
+import state from "./state"
 
 export default {
     methods: {
@@ -28,6 +29,9 @@ export default {
         },
         isStaging(): boolean {
             return window.location.host.includes('staging')
+        },
+        setModal(modalName: string|null): void {
+            state.currentModal(modalName)
         },
         oop(err: any, alertTxt: string|null = null, consoleText: string|null = null) {
             if (alertTxt) alert(`${alertTxt}. Check console and file bug report.`)

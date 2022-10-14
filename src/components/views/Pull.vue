@@ -26,7 +26,7 @@
       </bottom-or-right-panel>
     </div>
 
-    <modal v-if="showPullModal" @close="closePullModal()" center>
+    <modal :override-show="showPullModal" name="pull" @close="closePullModal()" center>
       <div class="max-w-2xl text-center">
 
         <img v-if="['not_pulling'].includes(pullState)" class="illustration"

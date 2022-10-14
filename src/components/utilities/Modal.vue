@@ -1,6 +1,6 @@
 <template>
-  <section v-if="store.currentModal === name || animatingOut" class="modal" tabindex="0" @keydown.esc="close"
-           :class="{'center': center, 'full-dark': fullDark, 'low-z': lowZ}"
+  <section v-show="showModal" class="modal" tabindex="0" @keydown.esc="close"
+           :class="{'center': center, 'full-dark': fullDark, 'low-z': lowZ, 'off': !currentlyShowing}"
            :style="`${bgUrlStyle} transition: opacity ${opacityTime} ease-out; ${opacityStyle}`"
   >
     <div class="slot">
@@ -24,6 +24,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    overrideShow: {
+      type: Boolean,
+      default: false,
+    },
     center: {
       type: Boolean,
       default: false,
@@ -40,10 +44,6 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
-    simple: {
-      type: Boolean,
-      default: false,
-    },
     opacityTime: {
       type: String,
       default: '0.25s',
@@ -56,17 +56,19 @@ export default defineComponent({
 
   data() {
     return { opacityStyle: 'opacity: 0;', animatingOut: false,
-      store: { currentModal: null, }, }
-  },
-
-  mounted() {
-    console.log('mounted')
-    if (this.simple) {
-      this.opacityStyle = 'opacity: 1;'
-    }
+      currentlyShowing: false, store: { currentModal: null, }, }
   },
 
   computed: {
+    showModal() {
+      const justOpened = (this.store.currentModal === this.name || this.overrideShow)
+          && !this.currentlyShowing
+      const justClosed = (this.store.currentModal !== this.name && !this.overrideShow)
+          && this.currentlyShowing
+      if (justOpened) this.justOpened()
+      if (justClosed) this.justClosed()
+      return this.store.currentModal || this.overrideShow || this.animatingOut
+    },
     bgUrlStyle() {
       if (!this.bgUrl) return ''
       return `background: linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), url("${this.bgUrl}") center, center; background-size: 100% 100%;`
@@ -75,17 +77,23 @@ export default defineComponent({
 
   methods: {
     open() {
+      // this can be done elsewhere, just one way to do it
       state.currentModal(this.name)
-      setTimeout(() => { this.opacityStyle = 'opacity: 1' }, 25)
-      this.$emit('open')
     },
-    async close() {
-      if (!this.simple) {
-        this.opacityStyle = 'opacity: 0'
-      }
-      this.animatingOut = true
+    close() {
+      // this can be done elsewhere, just one way to do it
       state.currentModal(null)
+    },
+    justOpened() {
+      this.currentlyShowing = true
+      this.$emit('open')
+      setTimeout(() => { this.opacityStyle = 'opacity: 1' }, 25)
+    },
+    async justClosed() {
+      this.currentlyShowing = false
       this.$emit('close')
+      this.animatingOut = true
+      this.opacityStyle = 'opacity: 0'
       await this.sleep(parseFloat(this.opacityTimeClose || this.opacityTime) * 1000)
       this.animatingOut = false
     },
@@ -109,6 +117,10 @@ export default defineComponent({
 
   &.low-z {
     z-index: 9;
+  }
+
+  &.off {
+    @apply z-0 pointer-events-none;
   }
 }
 </style>
