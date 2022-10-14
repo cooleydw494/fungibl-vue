@@ -1,7 +1,7 @@
 <template>
   <footer :class="{'is-mobile' : store.isMobile}">
     <div class="button-container"
-         :class="{'hide': !topOfPage && store.currentModal !== 'mobile-menu'}">
+         :class="{'hide': !(store.currentModal === 'mobile-menu' || (topOfPage && store.currentModal !== 'preview'))}">
       <styled-button button-style="nav-filled-mobile"
                      @click="launchApp">
         {{ $t('LAUNCH APP') + $t('!') }}

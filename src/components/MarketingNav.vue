@@ -49,7 +49,7 @@
       <img :src="imageKitPrincipalDarkUrl" style="display:none;" alt="hidden" rel="prefetch">
     </modal>
 
-    <modal ref="preview" name="preview" center>
+    <modal ref="preview" name="preview" center simple>
       <div class="text-lg font-bold text-center">
         <p><span class="font-bolder">Curious?</span> We're getting ready to tell</p>
         <p class="mb-12">you ALL THE THINGS you want to know.</p>

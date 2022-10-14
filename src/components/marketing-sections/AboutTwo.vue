@@ -1,5 +1,5 @@
 <template>
-  <section id="about" class="section-wrapper">
+  <section id="about-two" class="section-wrapper">
 
     <div class="content">
       <div class="image-container small">
@@ -65,7 +65,9 @@ export default defineComponent({
       }
     }
     .image-container {
-      @apply block lg:inline-block w-full md:w-4/5 lg:w-3/5 lg:pl-6 mx-auto;
+      @apply block lg:inline-block
+      mx-auto lg:pl-12 xl:-mr-12 2xl:-mr-24
+      w-full md:w-4/5 lg:w-3/5;
       &.small {
         @apply inline-block lg:hidden mb-16;
       }

@@ -59,6 +59,13 @@ export default defineComponent({
       store: { currentModal: null, }, }
   },
 
+  mounted() {
+    console.log('mounted')
+    if (this.simple) {
+      this.opacityStyle = 'opacity: 1;'
+    }
+  },
+
   computed: {
     bgUrlStyle() {
       if (!this.bgUrl) return ''
