@@ -149,17 +149,17 @@ export default defineComponent({
 
 header {
   @apply fixed top-0 z-10 w-full p-4 md:bg-fdarkblue;
-
+  transition: background-color 0.5s ease-out;
   height: 15%;
 
   @media(min-width: theme('screens.md')) {
     height: unset;
     min-height: 15%;
     &.scrolled-down {
-      @apply pt-0 lg:-mt-1;
+      @apply pt-0 lg:-mt-1 bg-fbluegray;
       min-height: theme('spacing.20');
-      background: linear-gradient(rgba(112, 112, 112, 0.15), rgba(112, 112, 112, 0.25)),
-      linear-gradient(rgba(29, 25, 52), rgba(29, 25, 52));
+      //background: linear-gradient(rgba(112, 112, 112, 0.20), rgba(112, 112, 112, 0.20)),
+      //linear-gradient(rgba(29, 25, 52), rgba(29, 25, 52));
     }
   }
 

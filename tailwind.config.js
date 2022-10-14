@@ -27,6 +27,7 @@ module.exports = {
         'fblurple': "#6069F2",
         'fdarkblue': '#1D1934',
         'fgray': '#707070',
+        'fbluegray': '#292738',
         'fdark': 'rgba(26,26,26)',
       },
       fontSize: {

@@ -69,7 +69,7 @@ export default defineComponent({
   }
 
   .blobs {
-    @apply absolute -right-20 md:-right-22 2xl:-right-24 3xl:-right-26
+    @apply absolute -right-20 md:-right-24 2xl:-right-26 3xl:-right-28
     -bottom-10 lg:bottom-0
     w-38 md:w-42 2xl:w-46 3xl:w-50;
 
