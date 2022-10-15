@@ -59,7 +59,7 @@ export default defineComponent({
     @apply w-5/6 2xl:w-2/3 mx-auto;
     .main-text {
       span, strong {
-        @apply text-2xl lg:text-3xl 3xl:text-4xl font-medium;
+        @apply text-2xl lg:text-3xl 4xl:text-4xl font-medium;
         font-stretch: 115%;
         line-height: 1.5;
       }

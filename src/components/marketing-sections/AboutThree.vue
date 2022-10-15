@@ -1,17 +1,36 @@
 <template>
-  <section id="about" class="section-wrapper" :class="{'mobile': isMobile}">
+  <section id="about-two" class="section-wrapper">
 
     <div class="content">
-      <div class="main-text">
-        <span v-html="$t('whatIsFungibl')"></span>
+
+      <div class="image-container small">
+        <img src="../../assets/illustrations/Beach-Party.svg"
+             alt="Beach Chilling Illustration">
       </div>
+      <div class="flex flex-row justify-between items-center">
+        <div class="image-container large">
+          <img src="../../assets/illustrations/Beach-Party.svg"
+               alt="Beach Party Illustration">
+        </div>
+        <div class="main-text">
+          <h1 class="text-fpink mb-6">{{ $t('MISSION') }}</h1>
+          <div class="mb-12">
+            <span v-html="$t('fungiblMission')"></span>
+          </div>
+          <h1 class="text-fpink mb-6">{{ $t('VISION') }}</h1>
+          <div>
+            <span v-html="$t('fungiblVision')"></span>
+          </div>
+        </div>
+      </div>
+
     </div>
 
   </section>
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core";
 
 export default defineComponent({
   name: "AboutThree",
@@ -23,32 +42,49 @@ export default defineComponent({
     }
   },
 
-  data() { /* */ },
+  data() { /* */
+  },
 
-  computed: { /* */ },
+  computed: { /* */},
 
-  methods: { /* */ },
+  methods: { /* */},
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/css/mixins.scss";
 
 .section-wrapper {
 
-  @apply relative w-100vw mt-12 md:mt-24 mx-auto;
+  @apply relative w-100vw mt-24 lg:mt-42 mx-auto;
   max-width: 1920px;
 
   .content {
-    @apply w-5/6 2xl:w-2/3 mx-auto;
+    @apply w-5/6 2xl:w-2/3 mx-auto text-center lg:text-left;
+
     .main-text {
-      span, strong {
-        @apply text-2xl lg:text-3xl 3xl:text-4xl font-medium;
-        font-stretch: 115%;
-        line-height: 1.5;
+      @apply block lg:inline-block w-full lg:w-2/5;
+      * {
+        @apply lg:ml-auto;
       }
-      @apply inline-block w-4/5 lg:w-2/3
-      mt-24 sm:mt-36 2xl:mt-64;
+      span, strong {
+        @apply text-xl xl:text-2xl 3xl:text-3xl font-medium;
+        line-height: 1.5;
+        font-stretch: 90%;
+      }
+    }
+
+    .image-container {
+      @apply block
+      mx-auto
+      w-full md:w-4/5 lg:w-3/5;
+      &.small {
+        @apply inline-block lg:hidden mb-16 px-28;
+      }
+
+      &.large {
+        @apply hidden lg:inline-block lg:pr-36;
+      }
     }
   }
 

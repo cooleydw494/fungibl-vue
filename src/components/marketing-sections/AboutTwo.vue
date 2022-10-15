@@ -7,11 +7,15 @@
              alt="Beach Chilling Illustration">
       </div>
 
-      <h1 class="text-fpink mb-12">{{ $t('HISTORY') }}</h1>
-
       <div class="flex flex-row justify-between items-center">
         <div class="main-text">
-          <span v-html="$t('fungiblHistory')"></span>
+          <h1 class="text-fpink mb-6">{{ $t('HISTORY') }}</h1>
+          <div class="mb-6">
+            <span v-html="$t('fungiblHistory1')"></span>
+          </div>
+          <div>
+            <span v-html="$t('fungiblHistory2')"></span>
+          </div>
         </div>
         <div class="image-container large">
           <img src="../../assets/illustrations/Beach-Chilling.svg"

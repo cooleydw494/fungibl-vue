@@ -11,6 +11,7 @@
 
     <about-one :is-mobile="store.isMobile"></about-one>
     <about-two :is-mobile="store.isMobile"></about-two>
+    <about-three :is-mobile="store.isMobile"></about-three>
   </page-container>
 </template>
 
@@ -19,11 +20,12 @@ import { defineComponent } from "vue"
 import PageContainer from "../utilities/PageContainer.vue"
 import AboutOne from "@/components/marketing-sections/AboutOne"
 import AboutTwo from "@/components/marketing-sections/AboutTwo"
+import AboutThree from "@/components/marketing-sections/AboutThree"
 import ImageKitMixin from "@/mixins/ImageKit.mixin"
 import state from "@/state"
 
 export default defineComponent({
-  components: { PageContainer, AboutOne, AboutTwo, },
+  components: { PageContainer, AboutOne, AboutTwo, AboutThree, },
   name: "MarketingSite",
 
   mixins: [ImageKitMixin,],
