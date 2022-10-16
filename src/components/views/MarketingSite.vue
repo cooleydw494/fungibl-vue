@@ -12,6 +12,7 @@
     <about-one :is-mobile="store.isMobile"></about-one>
     <about-two :is-mobile="store.isMobile"></about-two>
     <about-three :is-mobile="store.isMobile"></about-three>
+    <why-fungibl :is-mobile="store.isMobile"></why-fungibl>
   </page-container>
 </template>
 
@@ -21,11 +22,12 @@ import PageContainer from "../utilities/PageContainer.vue"
 import AboutOne from "@/components/marketing-sections/AboutOne"
 import AboutTwo from "@/components/marketing-sections/AboutTwo"
 import AboutThree from "@/components/marketing-sections/AboutThree"
+import WhyFungibl from "@/components/marketing-sections/WhyFungibl"
 import ImageKitMixin from "@/mixins/ImageKit.mixin"
 import state from "@/state"
 
 export default defineComponent({
-  components: { PageContainer, AboutOne, AboutTwo, AboutThree, },
+  components: { PageContainer, AboutOne, AboutTwo, AboutThree, WhyFungibl, },
   name: "MarketingSite",
 
   mixins: [ImageKitMixin,],

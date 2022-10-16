@@ -148,9 +148,14 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 header {
-  @apply fixed top-0 z-10 w-full p-4 md:bg-fdarkblue;
+  @apply fixed top-0 z-10 w-full p-4 md:bg-fdarkblue mx-auto;
   transition: background-color 0.5s ease-out;
   height: 15%;
+  max-width: 1920px;
+
+  @media(min-width: 1921px) {
+    left: calc(50% - 960px);
+  }
 
   @media(min-width: theme('screens.md')) {
     height: unset;

@@ -49,7 +49,10 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "VISION": "VISION",
         "fungiblMission": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "fungiblVision": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
-
+        "whyFungibl1": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "whyFungibl2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "whyFungibl3": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "WHY FUNGIBL?": "WHY FUNGIBL?",
     },
     "es": {
         // Ejemplos
@@ -101,7 +104,10 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "VISION": "VISION",
         "fungiblMission": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "fungiblVision": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
-
+        "whyFungibl1": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "whyFungibl2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "whyFungibl3": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "WHY FUNGIBL?": "WHY FUNGIBL?",
     }
 }
 

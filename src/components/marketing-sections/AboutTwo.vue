@@ -54,7 +54,7 @@ export default defineComponent({
 
 .section-wrapper {
 
-  @apply relative w-100vw mt-42 mx-auto;
+  @apply relative w-100vw mt-36 lg:mt-42 mx-auto;
   max-width: 1920px;
 
   .content {
