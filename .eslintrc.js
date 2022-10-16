@@ -25,7 +25,7 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-use-before-define': 'off',
     // Optional.
-    '@intlify/vue-i18n/no-dynamic-keys': 'error',
+    // '@intlify/vue-i18n/no-dynamic-keys': 'error',
     '@intlify/vue-i18n/no-unused-keys': [
       'error',
       {

@@ -50,13 +50,13 @@
     </modal>
 
     <modal ref="preview" name="preview" center>
-      <div class="text-lg font-bold text-center">
-        <p><span class="font-bolder">Curious?</span> We're getting ready to tell</p>
-        <p class="mb-12">you ALL THE THINGS you want to know.</p>
-<!--        <p>We're pumped to be launching the full site soon!</p>-->
-        <p>In the meantime be sure to follow us on</p>
-        <p><span class="text-fblue hover:cursor-pointer" @click="openTwitter">Twitter</span> and check out the <span class="text-fgreen hover:cursor-pointer" @click="takeAction('#blog')">BLOG</span> post.</p>
-      </div>
+<!--      <div class="text-lg font-bold text-center">-->
+<!--        <p><span class="font-bolder">Curious?</span> We're getting ready to tell</p>-->
+<!--        <p class="mb-12">you ALL THE THINGS you want to know.</p>-->
+<!--&lt;!&ndash;        <p>We're pumped to be launching the full site soon!</p>&ndash;&gt;-->
+<!--        <p>In the meantime be sure to follow us on</p>-->
+<!--        <p><span class="text-fblue hover:cursor-pointer" @click="openTwitter">Twitter</span> and check out the <span class="text-fgreen hover:cursor-pointer" @click="takeAction('#blog')">BLOG</span> post.</p>-->
+<!--      </div>-->
       <div class="font-semibold text-base text-fblue text-center hover:cursor-pointer mt-12"
            @click="openTwitter">
         <p>
