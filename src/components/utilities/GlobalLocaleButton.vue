@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core"
 import StoreMixin from "@/mixins/Store.mixin";
 import store from "@/state";
 import StyledButton from "./StyledButton.vue";

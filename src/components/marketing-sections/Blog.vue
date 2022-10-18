@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core"
 
 export default defineComponent({
   name: "Blog",
@@ -23,7 +23,7 @@ export default defineComponent({
     }
   },
 
-  data() { /* */ },
+  // data() { return {} },
 
   computed: { /* */ },
 
@@ -31,7 +31,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/css/mixins.scss";
 
 .section-wrapper {

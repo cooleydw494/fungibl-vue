@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import {defineComponent} from "@vue/runtime-core";
+import {defineComponent} from "@vue/runtime-core"
 
 export default defineComponent({
   name: "AboutThree",
@@ -42,8 +42,7 @@ export default defineComponent({
     }
   },
 
-  data() { /* */
-  },
+  // data() { return {} },
 
   computed: { /* */},
 

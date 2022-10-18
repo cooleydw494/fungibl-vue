@@ -1,4 +1,4 @@
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core"
 import ImageKit from "imagekit-javascript"
 import store from "../state/index";
 import StoreMixin from "./Store.mixin";

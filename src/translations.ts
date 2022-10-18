@@ -41,7 +41,7 @@ const messages: {[k:string]: {[k:string]: string}} = {
 
 
         // Marketing Copy
-        "whatIsFungibl": "<strong class=\"text-fpink\">Fungibl</strong> is a liquidity provider for Algorand NFTs which will allow users to exchange NFTs for <strong class=\"text-fpink\">$FUN</strong> which can then be exchanged for <strong>randomized</strong> NFTs.<br><br>This gives <strong class=\"text-fblue\">#algofam</strong> a new and hassle-free way to get new NFTs, catalyzes ecosystem activity, and cross-pollinates collectors' wallets.",
+        "whatIsFungibl": "<h1 class=\"text-fpink inline-block\">FUNGIBL</h1> is a liquidity provider for Algorand NFTs which will allow users to exchange NFTs for <strong class=\"text-fpink\">$FUN</strong> which can then be exchanged for <strong>randomized</strong> NFTs.<br><br>This gives <strong class=\"text-fblue\">#algofam</strong> a new and hassle-free way to get new NFTs, catalyzes ecosystem activity, and cross-pollinates collectors' wallets.",
         "HISTORY": "HISTORY",
         "fungiblHistory1": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "fungiblHistory2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
@@ -53,6 +53,13 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "whyFungibl2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "whyFungibl3": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "WHY FUNGIBL?": "WHY FUNGIBL?",
+        "FOUNDER": "FOUNDER",
+        "founderBio": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk. Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "funInfo1": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "funInfo2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "funInfo3": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+
+
     },
     "es": {
         // Ejemplos
@@ -96,7 +103,7 @@ const messages: {[k:string]: {[k:string]: string}} = {
 
 
         // Marketing Copy
-        "whatIsFungibl": "<strong class=\"text-fpink\">Fungibl</strong> is a liquidity provider for Algorand NFTs which will allow users to exchange NFTs for <strong class=\"text-fpink\">$FUN</strong> which can then be exchanged for <strong>randomized</strong> NFTs.<br><br>This gives <strong class=\"text-fblue\">#algofam</strong> a new and hassle-free way to get new NFTs, catalyzes ecosystem activity, and cross-pollinates collectors' wallets.",
+        "whatIsFungibl": "<h1 class=\"text-fpink inline-block\">FUNGIBL</h1> is a liquidity provider for Algorand NFTs which will allow users to exchange NFTs for <strong class=\"text-fpink\">$FUN</strong> which can then be exchanged for <strong>randomized</strong> NFTs.<br><br>This gives <strong class=\"text-fblue\">#algofam</strong> a new and hassle-free way to get new NFTs, catalyzes ecosystem activity, and cross-pollinates collectors' wallets.",
         "HISTORY": "HISTORY",
         "fungiblHistory1": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "fungiblHistory2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
@@ -108,6 +115,12 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "whyFungibl2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "whyFungibl3": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "WHY FUNGIBL?": "WHY FUNGIBL?",
+        "FOUNDER": "FOUNDER",
+        "founderBio": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk. Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "funInfo1": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "funInfo2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "funInfo3": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+
     }
 }
 

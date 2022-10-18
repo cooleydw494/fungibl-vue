@@ -13,6 +13,10 @@
     <about-two :is-mobile="store.isMobile"></about-two>
     <about-three :is-mobile="store.isMobile"></about-three>
     <why-fungibl :is-mobile="store.isMobile"></why-fungibl>
+    <founder :is-mobile="store.isMobile"></founder>
+    <fun-info :is-mobile="store.isMobile"></fun-info>
+    <blog :is-mobile="store.isMobile"></blog>
+    <contact :is-mobile="store.isMobile"></contact>
   </page-container>
 </template>
 
@@ -23,11 +27,16 @@ import AboutOne from "@/components/marketing-sections/AboutOne"
 import AboutTwo from "@/components/marketing-sections/AboutTwo"
 import AboutThree from "@/components/marketing-sections/AboutThree"
 import WhyFungibl from "@/components/marketing-sections/WhyFungibl"
+import Founder from "@/components/marketing-sections/Founder"
+import FunInfo from "@/components/marketing-sections/FunInfo"
+import Blog from "@/components/marketing-sections/Blog"
+import Contact from "@/components/marketing-sections/Contact"
 import ImageKitMixin from "@/mixins/ImageKit.mixin"
 import state from "@/state"
 
 export default defineComponent({
-  components: { PageContainer, AboutOne, AboutTwo, AboutThree, WhyFungibl, },
+  components: { PageContainer, AboutOne, AboutTwo, AboutThree, WhyFungibl,
+  Founder, FunInfo, Blog, Contact, },
   name: "MarketingSite",
 
   mixins: [ImageKitMixin,],

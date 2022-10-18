@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core"
 import TwoRectangles from "@/components/utilities/TwoRectangles";
 import StyledButton from "@/components/utilities/StyledButton";
 import StoreMixin from "@/mixins/Store.mixin";

@@ -1,5 +1,5 @@
 <template>
-  <section id="about" class="section-wrapper" :class="{'mobile': isMobile}">
+  <section id="why-fungibl" class="section-wrapper" :class="{'mobile': isMobile}">
     <div class="lilypad">
       <img src="../../assets/marketing-elements/PinkyLilypad.svg"
            :alt="$t('Pink Lilypad')">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core"
 
 export default defineComponent({
   name: "WhyFungibl",
@@ -45,7 +45,7 @@ export default defineComponent({
     }
   },
 
-  data() { /* */ },
+  // data() { return {} },
 
   computed: { /* */ },
 

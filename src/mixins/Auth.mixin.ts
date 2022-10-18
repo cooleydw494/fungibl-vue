@@ -1,4 +1,4 @@
-import { defineComponent } from "@vue/runtime-core";
+import { defineComponent } from "@vue/runtime-core"
 import store from "../state/index";
 import {checkSessionExists, disconnectUser} from "@jackcom/reachduck";
 import {reconnectWallet, connectWallet} from "../reach";
