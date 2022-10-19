@@ -1,5 +1,7 @@
 <template>
-  <section id="about" class="section-wrapper" :class="{'mobile': isMobile}">
+  <section class="section-wrapper" :class="{'mobile': isMobile}">
+    <div class="anchor" id="about"></div>
+
     <div class="arrow">
       <img src="../../assets/marketing-elements/Right-Loop-Arrow.svg"
            alt="Right Loop Arrow">
@@ -76,6 +78,10 @@ export default defineComponent({
     @media(min-width: 1921px) {
       @apply right-0;
     }
+  }
+
+  .anchor {
+    @apply absolute -top-12 md:-top-24;
   }
 
 }

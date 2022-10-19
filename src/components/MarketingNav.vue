@@ -128,11 +128,6 @@ export default defineComponent({
         // window.open(appUrl, '_blank')
         return
       }
-      if (action === '#blog') {
-        const blogUrl = 'https://nobody-algo.medium.com/whats-the-deal-with-fungibl-56f370d0e990'
-        window.open(blogUrl, '_blank')
-        return
-      }
       this.setModal(null)
       document.querySelector(action).scrollIntoView({ behavior: "smooth" })
     },

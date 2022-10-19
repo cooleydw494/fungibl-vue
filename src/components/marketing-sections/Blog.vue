@@ -1,5 +1,5 @@
 <template>
-  <section id="about" class="section-wrapper" :class="{'mobile': isMobile}">
+  <section id="blog" class="section-wrapper" :class="{'mobile': isMobile}">
 
     <div class="content">
       <div class="main-text">

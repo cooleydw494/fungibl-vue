@@ -1,6 +1,6 @@
 <template>
-  <section id="about" class="section-wrapper" :class="{'mobile': isMobile}">
-
+  <section class="section-wrapper" :class="{'mobile': isMobile}">
+    <div class="anchor" id="fun"></div>
     <div class="content">
       <div class="main-text">
         <img class="icon" src="../../assets/Logo-Icon.svg" :alt="$t('$FUN Token Icon')">
@@ -48,7 +48,7 @@ export default defineComponent({
 
 .section-wrapper {
 
-  @apply relative w-100vw mt-12 md:mt-24 mx-auto;
+  @apply relative w-100vw mt-24 mx-auto;
   max-width: 1920px;
 
   .content {
@@ -81,6 +81,10 @@ export default defineComponent({
         @apply absolute -right-8 -top-12 w-28 h-28 bg-fdarkblue;
       }
     }
+  }
+
+  .anchor {
+    @apply absolute -top-48;
   }
 
 }
