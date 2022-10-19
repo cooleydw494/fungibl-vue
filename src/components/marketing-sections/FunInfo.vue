@@ -19,6 +19,11 @@
       </div>
     </div>
 
+    <div class="water-border">
+      <img src="../../assets/marketing-elements/Water-Border.svg"
+           :alt="$t('Water Border')">
+    </div>
+
   </section>
 </template>
 
@@ -85,6 +90,13 @@ export default defineComponent({
 
   .anchor {
     @apply absolute -top-48;
+  }
+
+  .water-border {
+    width: 110%;
+    margin-right: -5%;
+    margin-left: -5%;
+    @apply mt-24 lg:mt-40;
   }
 
 }
