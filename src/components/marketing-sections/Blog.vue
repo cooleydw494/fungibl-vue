@@ -10,22 +10,37 @@
           <img :src="blog.imageUrl" :alt="$t('Blog Preview Image')"
                @click="openPost(blog.url)">
         </div>
-        <p class="published-at">{{ blog.publishedAt }}</p>
         <h3 class="title" @click="openPost(blog.url)">{{ blog.title }}</h3>
-        <p class="author">{{ blog.author }}</p>
+        <div class="author-date">
+          <span class="author">Written by {{ blog.author }}</span>
+          <span class="date">{{ blog.publishedAt }}</span>
+        </div>
         <p class="preview-text">{{ blog.previewText }}</p>
       </div>
       <div class="past-posts">
         <div class="header">
+          <img src="../../assets/marketing-elements/PastPostsArrow.svg"
+               class="loop-arrow" :alt="$t('Loop Arrow')">
           <h2>{{ $t('PAST POSTS') }}</h2>
         </div>
         <div v-for="(blog, index) in pastPosts" :key="index" class="text-fblue">
-          <h3 @click="openPost(blog.url)">{{ blog.title }}</h3>
-          <p>{{ blog.author }}</p>
+          <h3 class="title" @click="openPost(blog.url)">{{ blog.title }}</h3>
+          <p>Written by {{ blog.author }}</p>
         </div>
       </div>
       <div class="blog-with-us">
-
+        <div class="header">
+          <img src="../../assets/marketing-elements/StraightYellowArrow.svg"
+               class="arrow" alt="$t('Arrow Left')">
+          <h2 class="title">{{ $t('WANT TO BLOG WITH US?') }}</h2>
+          <img src="../../assets/marketing-elements/StraightYellowArrow.svg"
+               class="arrow right" :alt="$t('Arrow Right')">
+        </div>
+        <div class="click-here">
+          <span>{{ $t('Click Here') }}</span>
+        </div>
+        <img src="../../assets/illustrations/Coconut-Drinks.svg"
+             class="coconut-drinks" :alt="$t('Coconut Drinks')">
       </div>
     </div>
 
@@ -123,15 +138,20 @@ export default defineComponent({
         border-solid border-faqua rounded-xl cursor-pointer;
         img {
           @apply w-full h-auto;
+          max-height: 200%;
         }
       }
 
       .title {
-        @apply mb-6 text-fpink cursor-pointer;
+        @apply text-fpink cursor-pointer;
         font-stretch: 115%;
         @media(max-width: 767px) {
           @apply text-2xl;
         }
+      }
+
+      .author-date {
+        @apply flex justify-between my-4 text-base;
       }
 
       .preview-text {
@@ -143,15 +163,46 @@ export default defineComponent({
 
     .past-posts {
       @apply inline-block flex flex-col justify-between content-center text-center
-      w-full md:w-1/2 min-h-76 md:min-h-76 pr-6 mb-12;
+      w-full md:w-1/2 min-h-76 md:min-h-76 pr-6 mt-24 mb-12;
       .header {
-        @apply inline-block px-4 text-fwhite bg-fblue rounded;
-        h2 { @apply inline-block; }
+        h2 {
+          @apply inline-block px-16 text-fwhite bg-fblue rounded;
+        }
+
+        .loop-arrow {
+          @apply absolute left-0 top-2;
+        }
+      }
+
+      .title {
+        @apply px-24 hover:cursor-pointer;
       }
     }
 
     .blog-with-us {
-      @apply w-1/2 min-h-76 pl-6 mb-12;
+      @apply w-1/2 min-h-76 pl-6 mt-24 mb-12;
+
+      .header {
+        @apply flex content-center w-full text-center;
+        .arrow {
+          @apply inline-block w-1/5;
+          &.right { @apply rotate-180; }
+        }
+        .title {
+          @apply inline-block w-3/5;
+        }
+      }
+
+      .click-here {
+        @apply w-full my-4;
+        span {
+          @apply mx-auto text-xl text-fblurple hover:cursor-pointer;
+        }
+      }
+
+      .coconut-drinks {
+        @apply w-88 mx-auto;
+      }
     }
   }
 
