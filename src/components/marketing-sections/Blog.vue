@@ -11,10 +11,7 @@
                @click="openPost(blog.url)">
         </div>
         <h3 class="title" @click="openPost(blog.url)">{{ blog.title }}</h3>
-        <div class="author-date">
-          <span class="author">Written by {{ blog.author }}</span>
-          <span class="date">{{ blog.publishedAt }}</span>
-        </div>
+        <p class="author-date"><span class="date">{{ blog.publishedAt }}</span> | <span class="author">{{ blog.author }}</span></p>
         <p class="preview-text">{{ blog.previewText }}</p>
       </div>
       <div class="past-posts">
@@ -66,7 +63,7 @@ export default defineComponent({
         {
           title: "What's The Deal With Fungibl?",
           url: "https://nobody-algo.medium.com/whats-the-deal-with-fungibl-56f370d0e990",
-          imageUrl: "https://miro.medium.com/max/720/1*hJ01D3_ool_FDQZ6zLE3gQ.png",
+          imageUrl: "https://nftstorage.link/ipfs/bafybeih6gl7yqbios3thgyg3ps5e53dv7u477d4oue2uwb5tdshyugogza/15.jpeg",
           publishedAt: "Sep 21, 2022",
           author: "nobody.algo",
           previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit.",
@@ -135,10 +132,10 @@ export default defineComponent({
 
       .image-container {
         @apply w-auto h-76 md:h-56 lg:h-76 mb-6 bg-fwhite overflow-hidden flex place-content-center
-        border-solid border-faqua rounded-xl cursor-pointer;
+        border-solid border-2 border-faqua rounded-xl cursor-pointer;
         img {
-          @apply w-full h-auto;
-          max-height: 200%;
+          object-fit: cover;
+          width: 100%;
         }
       }
 
@@ -151,11 +148,17 @@ export default defineComponent({
       }
 
       .author-date {
-        @apply flex justify-between my-4 text-base;
+        @apply mt-1 text-base text-faqua;
+        .date {
+          @apply text-sm text-fwhite;
+        }
+        .author {
+          @apply text-fwhite;
+        }
       }
 
       .preview-text {
-        @apply text-lg lg:text-xl 3xl:text-2xl font-medium;
+        @apply mt-4 text-lg lg:text-xl 3xl:text-2xl font-medium;
         font-stretch: 90%;
         line-height: 1.5;
       }
@@ -170,7 +173,7 @@ export default defineComponent({
         }
 
         .loop-arrow {
-          @apply absolute left-0 top-2;
+          @apply absolute w-24 left-0 top-2;
         }
       }
 
@@ -180,7 +183,7 @@ export default defineComponent({
     }
 
     .blog-with-us {
-      @apply w-1/2 min-h-76 pl-6 mt-24 mb-12;
+      @apply w-full md:w-1/2 min-h-76 pl-6 mt-24 mb-12;
 
       .header {
         @apply flex content-center w-full text-center;
@@ -194,14 +197,14 @@ export default defineComponent({
       }
 
       .click-here {
-        @apply w-full my-4;
+        @apply text-center w-full my-4;
         span {
           @apply mx-auto text-xl text-fblurple hover:cursor-pointer;
         }
       }
 
       .coconut-drinks {
-        @apply w-88 mx-auto;
+        @apply w-76 mx-auto;
       }
     }
   }
