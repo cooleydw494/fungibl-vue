@@ -41,6 +41,12 @@
       </div>
     </div>
 
+    <div class="orange-lines">
+      <div class="line-one"></div>
+      <div class="line-two"></div>
+      <div class="line-three"></div>
+    </div>
+
   </section>
 </template>
 
@@ -206,6 +212,24 @@ export default defineComponent({
       .coconut-drinks {
         @apply w-76 mx-auto;
       }
+    }
+  }
+
+  .orange-lines {
+    @apply w-full mt-32;
+
+    .line-one, .line-two, .line-three {
+      @apply w-full h-3 mt-6 bg-forange rounded-full;
+    }
+
+    .line-one {
+      margin-left: 15%;
+    }
+    .line-two {
+      margin-left: 10%;
+    }
+    .line-three {
+      margin-left: 5%;
     }
   }
 

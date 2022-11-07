@@ -17,6 +17,8 @@
     <fun-info :is-mobile="store.isMobile"></fun-info>
     <blog :is-mobile="store.isMobile"></blog>
     <contact :is-mobile="store.isMobile"></contact>
+
+    <marketing-footer :is-mobile="store.isMobile"></marketing-footer>
   </page-container>
 </template>
 
@@ -31,12 +33,13 @@ import Founder from "@/components/marketing-sections/Founder"
 import FunInfo from "@/components/marketing-sections/FunInfo"
 import Blog from "@/components/marketing-sections/Blog"
 import Contact from "@/components/marketing-sections/Contact"
+import MarketingFooter from "@/components/marketing-sections/MarketingFooter"
 import ImageKitMixin from "@/mixins/ImageKit.mixin"
 import state from "@/state"
 
 export default defineComponent({
   components: { PageContainer, AboutOne, AboutTwo, AboutThree, WhyFungibl,
-  Founder, FunInfo, Blog, Contact, },
+  Founder, FunInfo, Blog, Contact, MarketingFooter },
   name: "MarketingSite",
 
   mixins: [ImageKitMixin,],

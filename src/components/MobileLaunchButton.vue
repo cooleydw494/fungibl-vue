@@ -17,7 +17,7 @@ import StoreMixin from "@/mixins/Store.mixin"
 import state from "@/state"
 
 export default defineComponent({
-  name: "MarketingFooter",
+  name: "MobileLaunchButton",
   components: { StyledButton, },
 
   mixins: [StoreMixin],

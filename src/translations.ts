@@ -58,6 +58,11 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "funInfo1": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "funInfo2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "funInfo3": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "CONTACT US": "CONTACT US",
+        "contactText": "Need to get in touch with us? Do you have comments, requests, or suggestions you would like to share? Let's talk.",
+        "NAME": "NAME*",
+        "EMAIL": "EMAIL*",
+        "MESSAGE": "MESSAGE*",
 
 
     },
@@ -120,6 +125,11 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "funInfo1": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "funInfo2": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
         "funInfo3": "Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.Need to get in touch with us? Do you have comments, requests or suggestions you would like to share? Please, fill out the form and let’s talk.",
+        "CONTACT US": "CONTACT US",
+        "contactText": "Need to get in touch with us? Do you have comments, requests, or suggestions you would like to share? Let's talk.",
+        "NAME": "NAME*",
+        "EMAIL": "EMAIL*",
+        "MESSAGE": "MESSAGE*",
 
     }
 }

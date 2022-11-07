@@ -20,7 +20,7 @@
   <marketing-nav v-if="isMarketingSite" :top-of-page="topOfPage" ref="marketingNav" />
   <app-nav v-else />
   <router-view />
-  <marketing-footer v-if="isMobileMarketing" :top-of-page="topOfPage" />
+  <mobile-launch-button v-if="isMobileMarketing" :top-of-page="topOfPage" />
   <app-footer v-if="!isMarketingSite" />
   <modal :override-show="store.connecting" name="wallet-connect" center low-z>
     <div class="text-center">
@@ -36,7 +36,7 @@
 
 <script>
 import MarketingNav from "@/components/MarketingNav"
-import MarketingFooter from "@/components/MarketingFooter"
+import MobileLaunchButton from "@/components/MobileLaunchButton"
 import AppNav from "./components/AppNav.vue"
 import AppFooter from "./components/AppFooter.vue"
 import Modal from "@/components/utilities/Modal"
@@ -47,7 +47,7 @@ import state from "@/state"
 export default {
   name: "App",
 
-  components: { MarketingNav, MarketingFooter, AppNav, AppFooter, Modal,
+  components: { MarketingNav, MobileLaunchButton, AppNav, AppFooter, Modal,
   IntersectionObserver, },
 
   mixins: [AuthMixin],
