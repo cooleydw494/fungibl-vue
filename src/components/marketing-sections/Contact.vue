@@ -27,6 +27,14 @@
           </div>
         </div>
 
+        <div class="button-container">
+          <vue-recaptcha ref="captcha" sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                         loadRecaptchaScript @verify="submitForm" theme="dark">
+            <styled-button button-style="primary" :disabled="!formFieldsValid">
+              {{ formSent ? $t('SENT') : $t('SUBMIT') }}
+            </styled-button>
+          </vue-recaptcha>
+        </div>
 
         <div class="stalk-us">
           <h4 class="text-fpink">{{ $t('STALK US') }} {{ $t(':') }}</h4>
@@ -36,10 +44,6 @@
                :alt="$t('Discord Icon')">
           <img src="../../assets/icons/Instagram-Icon.svg"
                :alt="$t('Instagram Icon')">
-          <styled-button button-style="primary" :disabled="!formFieldsValid"
-                         @click="submitForm">
-            {{ $t('SUBMIT') }}
-          </styled-button>
         </div>
 
       </div>
@@ -52,11 +56,12 @@
 import { defineComponent } from "@vue/runtime-core"
 import { post } from "../../api"
 import StyledButton from "@/components/utilities/StyledButton"
+import {VueRecaptcha} from 'vue-recaptcha'
 
 export default defineComponent({
   name: "Contact",
 
-  components: {StyledButton,},
+  components: {StyledButton, VueRecaptcha},
 
   props: {
     isMobile: {
@@ -71,7 +76,8 @@ export default defineComponent({
         name: null,
         email: null,
         message: null,
-      }
+      },
+      formSent: false,
     }
   },
 
@@ -80,19 +86,31 @@ export default defineComponent({
       const nameValid = this.formData.name
       const emailValid = this.formData.email
       const messageValid = this.formData.message
-      return nameValid && emailValid && messageValid
+      return nameValid && emailValid && messageValid && !this.formSent
     },
+    siteKey() {
+      return /*window.location.hostname === 'fungibl.fun'
+          ? `6LfVjgkjAAAAABpv-fWFGdVCSvbxqAcqYf44SZIX`
+          :*/ `6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI`
+    }
   },
 
   methods: {
     submitForm() {
       if (!this.formFieldsValid) {
         alert('Check form fields and try again.')
+        this.$refs.captcha.reset()
         return
       }
       post(`process-contact-form`, this.formData)
-          .then((/*res*/) => { alert('Message sent successfully')})
-          .catch((/*err*/) => { alert('There was an error. Please try again later.') } )
+          .then((/*res*/) => {
+            alert('Message sent successfully')
+            this.formSent = true
+          })
+          .catch((/*err*/) => {
+            alert('There was an error. Please try again later.')
+            this.$refs.captcha.reset()
+          } )
     },
     openTwitter() {
       window.open('https://twitter.com/FungiblApp', '_blank')
@@ -147,18 +165,17 @@ export default defineComponent({
 
       .button-container {
         @apply mt-4;
+        .button {
+          @apply absolute right-0 bottom-3;
+        }
       }
 
       .stalk-us {
-        @apply mt-10;
+        @apply mt-4;
         h4, img { @apply inline-block; }
 
         img {
           @apply w-10 ml-3 -mt-2;
-        }
-
-        .button {
-          @apply absolute right-0 -bottom-2;
         }
       }
 
