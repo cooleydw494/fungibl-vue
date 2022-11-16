@@ -99,9 +99,9 @@ export default defineComponent({
     return {
       navItems: [
         { label: 'ABOUT', action: '#about' },
+        { label: 'FOUNDER', action: '#founder' },
         { label: '$FUN', action: '#fun' },
         { label: 'BLOG', action: '#blog' },
-        { label: 'FAQ', action: '#faq' },
         { label: 'CONTACT', action: '#contact' },
       ],
       store: { loadedMarketingBg: false, currentModal: null,

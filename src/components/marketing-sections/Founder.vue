@@ -1,6 +1,6 @@
 <template>
-  <section id="about-two" class="section-wrapper">
-
+  <section class="section-wrapper">
+    <div class="anchor" id="founder"></div>
     <div class="content">
 
       <div class="image-container">
@@ -121,10 +121,14 @@ export default defineComponent({
   }
 
   .blue-lines {
-    @apply mt-16
+    @apply mt-24 md:mt-36
     -mr-12 md:-mr-24 xl:-mr-32
     pr-24 md:pr-12 xl:pr-0;
     width: calc(100% + theme('spacing.32'));
+  }
+
+  .anchor {
+    @apply absolute -top-12 md:-top-42;
   }
 
 }

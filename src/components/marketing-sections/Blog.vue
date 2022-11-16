@@ -28,7 +28,7 @@
       <div class="blog-with-us">
         <div class="header">
           <img src="../../assets/marketing-elements/StraightYellowArrow.svg"
-               class="arrow" alt="$t('Arrow Left')">
+               class="arrow left" alt="$t('Arrow Left')">
           <h2 class="title">{{ $t('WANT TO BLOG WITH US?') }}</h2>
           <img src="../../assets/marketing-elements/StraightYellowArrow.svg"
                class="arrow right" :alt="$t('Arrow Right')">
@@ -126,7 +126,7 @@ export default defineComponent({
 
 .section-wrapper {
 
-  @apply relative w-100vw mt-24 mx-auto xl:px-12;
+  @apply relative w-100vw mt-24 md:mt-42 mx-auto xl:px-12;
   max-width: 1920px;
 
   .content {
@@ -172,29 +172,34 @@ export default defineComponent({
 
     .past-posts {
       @apply inline-block flex flex-col justify-between content-center text-center
-      w-full md:w-1/2 min-h-76 md:min-h-76 pr-6 mt-24 mb-12;
+      w-full md:w-1/2 min-h-76 md:min-h-76 md:pr-6 mt-24 mb-12;
       .header {
         h2 {
-          @apply inline-block px-16 text-fwhite bg-fblue rounded;
+          @apply inline-block px-8 xs:px-16 md:px-8 text-fwhite bg-fblue rounded
+          text-4xl md:text-3xl xl:text-4xl 2xl:text-5xl;
         }
 
         .loop-arrow {
-          @apply absolute w-24 left-0 top-2;
+          @apply absolute w-24 2xl:w-28 left-0 sm:left-6 md:-left-12 lg:left-4 xl:left-6 2xl:-left-6 top-2;
         }
       }
 
       .title {
-        @apply px-24 hover:cursor-pointer;
+        @apply px-24 hover:cursor-pointer text-3xl md:text-2xl xl:text-3xl;
       }
     }
 
     .blog-with-us {
-      @apply w-full md:w-1/2 min-h-76 pl-6 mt-24 mb-12;
+      @apply w-full md:w-1/2 min-h-76 md:pl-6 mt-24 mb-12;
 
       .header {
         @apply flex content-center w-full text-center;
+        h2 {
+          @apply text-4xl md:text-3xl xl:text-4xl 2xl:text-5xl;
+        }
         .arrow {
-          @apply inline-block w-1/5;
+          @apply inline-block w-1/5 animate-pulse;
+          //&.left { @apply invisible md:visible; }
           &.right { @apply rotate-180; }
         }
         .title {
@@ -216,7 +221,7 @@ export default defineComponent({
   }
 
   .orange-lines {
-    @apply w-full mt-32;
+    @apply w-full mt-24 md:mt-42;
 
     .line-one, .line-two, .line-three {
       @apply w-full h-3 mt-6 bg-forange rounded-full;
@@ -234,7 +239,7 @@ export default defineComponent({
   }
 
   .anchor {
-    @apply absolute -top-48;
+    @apply absolute -top-24 md:-top-48;
   }
 
 }

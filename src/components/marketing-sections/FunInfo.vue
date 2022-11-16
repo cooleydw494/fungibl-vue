@@ -53,7 +53,7 @@ export default defineComponent({
 
 .section-wrapper {
 
-  @apply relative w-100vw mt-24 mx-auto;
+  @apply relative w-100vw mt-32 md:mt-24 mx-auto;
   max-width: 1920px;
 
   .content {
@@ -89,7 +89,7 @@ export default defineComponent({
   }
 
   .anchor {
-    @apply absolute -top-48;
+    @apply absolute -top-48 lg:-top-36;
   }
 
   .water-border {

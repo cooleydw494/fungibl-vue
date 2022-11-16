@@ -35,6 +35,10 @@ export async function post(relativePath, data = {}, baseUrl = process.env.VUE_AP
         body: JSON.stringify(data)
     })
     if (response.statusCode === 401) store.authConfirmed(false)
-    if (!response.ok) throw new Error(response.statusMessage)
+    if (!response.ok) {
+        const errorMessage = (await response.json()).message || null
+        throw new Error(errorMessage || response.statusMessage)
+    }
+
     return response.json()
 }

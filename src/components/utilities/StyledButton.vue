@@ -73,7 +73,7 @@ export default defineComponent({
 
   &.button-nav, &.button-nav-filled, &.button-nav-mobile, &.button-nav-filled-mobile {
     @apply mx-0 px-2 py-1 min-w-0 bg-transparent border-fdarkblue border-0
-    text-base lg:text-xl text-fgreen;
+    text-base lg:text-xl text-fgreen hover:text-fblurple;
     font-stretch: 100%;
 
     &.button-nav-filled, &.button-nav-filled-mobile {
