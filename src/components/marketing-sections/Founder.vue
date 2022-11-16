@@ -79,7 +79,7 @@ export default defineComponent({
 
   .content {
     @apply flex flex-row flex-wrap
-    w-5/6 2xl:w-2/3 mx-auto text-center lg:text-left;
+    w-5/6 2xl:w-2/3 mx-auto text-left;
 
     .main-text {
       @apply block lg:inline-flex lg:flex-col lg:justify-between w-full lg:w-1/2;
@@ -104,7 +104,7 @@ export default defineComponent({
     }
 
     .twitter-container {
-      @apply inline-block font-semibold text-center lg:text-left hover:cursor-pointer
+      @apply inline-block font-semibold text-left hover:cursor-pointer
       w-full lg:w-full mt-2 lg:mt-0 mb-12 lg:mb-6;
       h1 {
         @apply mb-2;

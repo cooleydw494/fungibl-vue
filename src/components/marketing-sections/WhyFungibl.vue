@@ -58,12 +58,12 @@ export default defineComponent({
 
 .section-wrapper {
 
-  @apply relative w-100vw mt-32
+  @apply relative w-100vw mt-46 xs:mt-32
   pt-12 md:pt-4 mx-auto;
   max-width: 1920px;
 
   .lilypad {
-    @apply absolute -left-16 sm:-left-10 lg:-left-2 xl:left-5 2xl:left-42 3xl:left-56
+    @apply absolute -left-24 xs:-left-16 sm:-left-10 lg:-left-2 xl:left-5 2xl:left-42 3xl:left-56
     top-12 md:top-24 2xl:top-30
     w-40 sm:w-48 md:w-52 lg:w-72 2xl:w-96 3xl:w-104
     rotate-30 md:rotate-12 lg:rotate-30 3xl:rotate-12;
@@ -94,7 +94,7 @@ export default defineComponent({
 
   .smiley {
     @apply absolute -top-22 md:-top-10 2xl:-top-16
-    -right-6 sm:-right-8 lg:-right-10
+    -right-12 xs:-right-6 sm:-right-8 lg:-right-10
     w-50 sm:w-56 md:w-60 lg:w-80 xl:w-88 2xl:w-96 3xl:w-104
     -rotate-12;
 

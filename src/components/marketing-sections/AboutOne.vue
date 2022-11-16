@@ -62,7 +62,7 @@ export default defineComponent({
     .main-text {
       span, strong {
         @apply text-2xl lg:text-3xl font-medium;
-        font-stretch: 115%;
+        //font-stretch: 115%;
         line-height: 1.5;
       }
       @apply inline-block w-4/5 lg:w-2/3
@@ -81,7 +81,7 @@ export default defineComponent({
   }
 
   .anchor {
-    @apply absolute -top-12 md:-top-24;
+    @apply absolute -top-12 md:-top-50;
   }
 
 }

@@ -63,9 +63,9 @@ export default defineComponent({
     .main-text {
       @apply block lg:inline-block w-full lg:w-2/5;
       span, strong {
-        @apply text-xl xl:text-2xl 3xl:text-3xl font-medium;
+        @apply text-xl xl:text-2xl font-medium;
         line-height: 1.5;
-        font-stretch: 90%;
+        //font-stretch: 90%;
       }
     }
     .image-container {

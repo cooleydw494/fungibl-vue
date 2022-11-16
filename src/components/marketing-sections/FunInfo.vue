@@ -59,7 +59,7 @@ export default defineComponent({
   .content {
     @apply w-5/6 2xl:w-2/3 mx-auto;
     .main-text {
-      @apply inline-block p-16 pt-4 rounded border-solid border-2 border-fyellow;
+      @apply inline-block p-4 xs:p-16 pt-4 rounded border-solid border-2 border-fyellow;
       .yellow-bars {
         @apply p-2 pr-6 mb-8 mt-12 text-left bg-fyellow text-fdark
         rounded-full;

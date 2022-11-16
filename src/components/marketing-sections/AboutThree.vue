@@ -67,9 +67,9 @@ export default defineComponent({
         @apply lg:ml-auto;
       }
       span, strong {
-        @apply text-xl xl:text-2xl 3xl:text-3xl font-medium;
+        @apply text-xl xl:text-2xl /*3xl:text-3xl*/ font-medium;
         line-height: 1.5;
-        font-stretch: 90%;
+        //font-stretch: 90%;
       }
     }
 
@@ -78,7 +78,7 @@ export default defineComponent({
       mx-auto
       w-full md:w-4/5 lg:w-3/5;
       &.small {
-        @apply inline-block lg:hidden mb-16 px-28;
+        @apply inline-block lg:hidden mb-16 px-0 xs:px-28;
       }
 
       &.large {

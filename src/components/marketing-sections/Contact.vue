@@ -135,6 +135,7 @@ export default defineComponent({
 
   .content {
     @apply flex flex-wrap w-5/6 2xl:w-2/3 mx-auto items-center;
+
     .main-text {
       @apply mb-4;
       span, strong {
@@ -144,11 +145,11 @@ export default defineComponent({
     }
 
     .image-container {
-      @apply w-full md:w-1/3 lg:w-1/2 mb-6 md:mb-0 px-28 sm:px-36 md:pl-0 md:pr-0 lg:pr-18 xl:pr-36;
+      @apply w-full md:w-1/3 lg:w-1/2 mb-6 md:mb-0 pr-12 xs:px-16 sm:px-36 md:pl-0 md:pr-0 lg:pr-18 xl:pr-36;
     }
 
     .form-container {
-      @apply w-full md:w-2/3 lg:w-1/2 px-8;
+      @apply w-full md:w-2/3 lg:w-1/2 sm:px-4 xs:px-8;
 
       h1 {
         @apply text-3xl md:text-5xl;
@@ -175,15 +176,16 @@ export default defineComponent({
       }
 
       .stalk-us {
-        @apply mt-8;
+        @apply mt-4 xs:mt-8;
         h4, img { @apply inline-block; }
+        h4 { @apply font-bolder text-xl md:text-2xl; }
 
         img {
           @apply w-10 ml-3 -mt-2 hover:cursor-pointer;
         }
 
         .button {
-          @apply absolute right-0 -bottom-2;
+          @apply w-full xs:w-auto relative xs:absolute right-0 -bottom-4 xs:-bottom-2;
         }
         .spinner {
           @apply absolute right-12 bottom-0;

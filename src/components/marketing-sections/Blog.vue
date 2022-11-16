@@ -24,6 +24,14 @@
           <h3 class="title" @click="openPost(blog.url)">{{ blog.title }}</h3>
           <p>Written by {{ blog.author }}</p>
         </div>
+        <div v-if="!pastPosts.length" class="text-fblue">
+          <h3 class="title">{{ $t('NO PAST POST YET') }}</h3>
+          <p>Written by (soon!)</p>
+        </div>
+        <div v-if="!pastPosts.length" class="text-fblue">
+          <h3 class="title">{{ $t('NO PAST POST YET') }}</h3>
+          <p>Written by (soon!)</p>
+        </div>
       </div>
       <div class="blog-with-us">
         <div class="header">
@@ -33,8 +41,8 @@
           <img src="../../assets/marketing-elements/StraightYellowArrow.svg"
                class="arrow right" :alt="$t('Arrow Right')">
         </div>
-        <div class="click-here">
-          <span>{{ $t('Click Here') }}</span>
+        <div class="click-here" @click="goToContact">
+          <span>{{ $t('LET US KNOW') }}</span>
         </div>
         <img src="../../assets/illustrations/Coconut-Drinks.svg"
              class="coconut-drinks" :alt="$t('Coconut Drinks')">
@@ -67,12 +75,12 @@ export default defineComponent({
     return {
       posts: [
         {
-          title: "What's The Deal With Fungibl?",
+          title: "My Algorand Experience",
           url: "https://nobody-algo.medium.com/whats-the-deal-with-fungibl-56f370d0e990",
-          imageUrl: "https://nftstorage.link/ipfs/bafybeih6gl7yqbios3thgyg3ps5e53dv7u477d4oue2uwb5tdshyugogza/15.jpeg",
-          publishedAt: "Sep 21, 2022",
-          author: "nobody.algo",
-          previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit.",
+          imageUrl: "https://www.algorand.com/static/algorand-og-image-98d634bc4a6f00c455b35830674ae96b.png",
+          publishedAt: "Nov 16, 2022",
+          author: "Alisa Yar",
+          previewText: "So, before I tell you about Algorand, I wanted to explain how I got here in the first place (tldr: accidentally). The first time i’ve heard about crypto was in November 2021. It was when everyone was bullish (hyped, excited) about NFT’s and it was really hard not to hear or read about these jpeg drawings that worth millions of dollars.",
         },
         {
           title: "What's The Deal With Fungibl?",
@@ -82,22 +90,22 @@ export default defineComponent({
           author: "nobody.algo",
           previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit.",
         },
-        {
-          title: "What's The Deal With Fungibl?",
-          url: "https://nobody-algo.medium.com/whats-the-deal-with-fungibl-56f370d0e990",
-          imageUrl: "https://miro.medium.com/max/720/1*hJ01D3_ool_FDQZ6zLE3gQ.png",
-          publishedAt: "Sep 21, 2022",
-          author: "nobody.algo",
-          previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit.",
-        },
-        {
-          title: "What's The Deal With Fungibl?",
-          url: "https://nobody-algo.medium.com/whats-the-deal-with-fungibl-56f370d0e990",
-          imageUrl: "https://miro.medium.com/max/720/1*hJ01D3_ool_FDQZ6zLE3gQ.png",
-          publishedAt: "Sep 21, 2022",
-          author: "nobody.algo",
-          previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit.",
-        },
+        // {
+        //   title: "What's The Deal With Fungibl?",
+        //   url: "https://nobody-algo.medium.com/whats-the-deal-with-fungibl-56f370d0e990",
+        //   imageUrl: "https://miro.medium.com/max/720/1*hJ01D3_ool_FDQZ6zLE3gQ.png",
+        //   publishedAt: "Sep 21, 2022",
+        //   author: "nobody.algo",
+        //   previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit.",
+        // },
+        // {
+        //   title: "What's The Deal With Fungibl?",
+        //   url: "https://nobody-algo.medium.com/whats-the-deal-with-fungibl-56f370d0e990",
+        //   imageUrl: "https://miro.medium.com/max/720/1*hJ01D3_ool_FDQZ6zLE3gQ.png",
+        //   publishedAt: "Sep 21, 2022",
+        //   author: "nobody.algo",
+        //   previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit.",
+        // },
       ],
       pastPostsPage: 1,
     }
@@ -116,6 +124,9 @@ export default defineComponent({
   methods: {
     openPost(url) {
       window.open(url, '_blank')
+    },
+    goToContact() {
+      document.querySelector('#contact').scrollIntoView({ behavior: "smooth" })
     }
   },
 })
@@ -180,7 +191,7 @@ export default defineComponent({
         }
 
         .loop-arrow {
-          @apply absolute w-24 2xl:w-28 left-0 sm:left-6 md:-left-12 lg:left-4 xl:left-6 2xl:-left-6 top-2;
+          @apply absolute w-24 2xl:w-28 -left-8 xs:left-0 sm:left-6 md:-left-12 lg:left-4 xl:left-6 2xl:-left-6 top-2;
         }
       }
 
