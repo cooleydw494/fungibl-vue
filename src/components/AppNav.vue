@@ -42,7 +42,7 @@ export default defineComponent({
 
   methods: {
     doMint() {
-      mintNfts();
+      // mintNfts();
     }
   }
 });
