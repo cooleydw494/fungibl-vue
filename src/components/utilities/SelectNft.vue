@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <modal :override-show="showSubmissionModal" name="submission" @close="closeSubmissionModal()" center full-dark opacity-time-close="0s">
+    <modal :override-show="showSubmissionModal" name="submission" @close="closeSubmissionModal()" center full-dark opacity-time-close="0s" no-logo>
       <div class="max-w-2xl text-center min-h-60vh">
 
         <img v-show="['not_submitting'].includes(submitState)" class="illustration"
@@ -254,7 +254,7 @@ export default defineComponent({
 }
 
 .illustration {
-  @apply w-76 md:w-96 h-auto mx-auto mb-8;
+  @apply w-full md:w-96 h-auto mx-auto mb-8;
 }
 
 </style>

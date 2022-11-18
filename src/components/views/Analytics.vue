@@ -7,7 +7,54 @@
         </div>
         <div class="current-metas">
           <div class="metas">
-            current metas
+            <div class="meta">
+              <div class="value-label">
+                <p class="value text-faqua">FUNFT #056</p>
+                <p class="label">{{ $t('FEATURED') }}</p>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="value-label">
+                <p class="value text-faqua">{{ 3458455 }}</p>
+                <p class="label">{{ $t('ASA ID') }}</p>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="value-label">
+                <p class="value">{{ store.poolMetas.current_nft_count }}</p>
+                <p class="label">{{ $t('NFT COUNT') }}</p>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="value-label">
+                <p class="text-fwhite value">{{ costRewardRatio }}</p>
+                <p class="label">{{ $t('COST/REWARD RATIO') }}</p>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="value-label">
+                <p class="text-fpink value">{{ currentPullCostShort }} {{ $t('$FUN') }}</p>
+                <p class="label">{{ $t('PULL COST') }}</p>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="value-label">
+                <p class="text-fpink value">{{ currentAvgRewardShort }} {{ $t('$FUN') }}</p>
+                <p class="label">{{ $t('AVG REWARD') }}</p>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="value-label">
+                <p class="text-fblue value">{{ store.poolMetas.current_pool_value }} {{ $t('$ALGO') }}</p>
+                <p class="label">{{ $t('EST POOL VALUE') }}</p>
+              </div>
+            </div>
+            <div class="meta">
+              <div class="value-label">
+                <p class="text-fblue value">{{ avgNftValue }} {{ $t('$ALGO') }}</p>
+                <p class="label">{{ $t('AVG NFT VALUE') }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -105,6 +152,18 @@ export default defineComponent({
 
       }
     },
+    avgNftValue() {
+      return (this.store.poolMetas.current_pool_value / this.store.poolMetas.current_nft_count).toFixed(2)
+    },
+    costRewardRatio() {
+      return (this.store.poolMetas.current_pull_cost / this.store.poolMetas.current_avg_reward).toFixed(2)
+    },
+    currentPullCostShort() {
+      return formatNumberShort(this.store.poolMetas.current_pull_cost)
+    },
+    currentAvgRewardShort() {
+      return formatNumberShort(this.store.poolMetas.current_avg_reward)
+    }
   },
 
   methods: {
@@ -156,7 +215,7 @@ export default defineComponent({
   @apply w-full mx-auto px-2 xs:px-6 md:px-0;
 
   .first-row {
-    @apply w-full flex flex-wrap justify-between;
+    @apply w-full flex justify-between items-stretch;
     .featured-nft {
       @apply inline-block mr-1 border-2 border-solid border-fgreen/25 rounded;
       width: calc(theme('width.2/5') - theme('margin.1'));
@@ -168,12 +227,24 @@ export default defineComponent({
       }
     }
     .current-metas {
-      @apply inline-block ml-1 border-2 border-solid border-fblue/25 rounded;
+      @apply flex  ml-1 border-2 border-solid border-fblue/25 rounded;
       width: calc(theme('width.3/5') - theme('margin.1'));
       @media(min-width: theme('screens.sm')) {
         width: calc(theme('width.3/4') - theme('margin.1'));
       }
-      height: 100%;
+
+      .metas {
+        @apply flex flex-wrap p-4;
+        .meta {
+          @apply flex w-1/2 sm:w-1/4;
+          .value-label {
+            min-width: theme('width.4/5');
+            @apply mx-auto;
+            .value { @apply text-xs font-bolder mb-0.5; }
+            .label { @apply text-2xs font-normal text-fgreen mb-2; }
+          }
+        }
+      }
     }
   }
 

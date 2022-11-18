@@ -26,7 +26,7 @@
       </bottom-or-right-panel>
     </div>
 
-    <modal :override-show="showPullModal" name="pull" @close="closePullModal()" center full-dark opacity-time-close="0s">
+    <modal :override-show="showPullModal" name="pull" @close="closePullModal()" center full-dark opacity-time-close="0s" no-logo>
       <div class="max-w-2xl text-center">
 
         <img v-show="['not_pulling'].includes(pullState)" class="illustration"
@@ -257,7 +257,7 @@ export default defineComponent({
 }
 
 .illustration {
-  @apply w-76 md:w-96 h-auto mx-auto mb-8;
+  @apply w-full md:w-96 h-auto mx-auto mb-8 px-6 md:px-0;
 }
 
 </style>

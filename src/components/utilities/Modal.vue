@@ -51,6 +51,10 @@ export default defineComponent({
     opacityTimeClose: {
       type: String,
       required: false,
+    },
+    noLogo: {
+      type: Boolean,
+      default: false,
     }
   },
 
