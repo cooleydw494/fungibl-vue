@@ -59,7 +59,7 @@ export default defineComponent({
   .content {
     @apply w-5/6 2xl:w-2/3 mx-auto;
     .main-text {
-      @apply inline-block p-4 xs:p-16 pt-4 rounded border-solid border-2 border-fyellow;
+      @apply inline-block p-4 xs:p-12 xs:pt-6 rounded border-solid border-2 border-fyellow;
       .yellow-bars {
         @apply p-2 pr-6 mb-8 mt-12 text-left bg-fyellow text-fdark
         rounded-full;
@@ -78,7 +78,6 @@ export default defineComponent({
       }
       span, strong {
         @apply my-16 text-xl lg:text-2xl font-medium;
-        font-stretch: 90%;
         line-height: 1.5;
       }
 

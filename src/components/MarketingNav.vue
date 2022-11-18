@@ -3,7 +3,7 @@
           :style="store.isMobile ? `margin-bottom: -${store.innerHeight*.15}px`:``">
 
     <div v-if="store.isMobile && store.loadedMarketingBg" class="mobile-nav-header">
-      <img class="stacked-logo"
+      <img class="stacked-logo" @click="goToTop"
            :class="{'hide': !store.currentModal}"
            src="../assets/icons/Fungibl-Logo-Stacked-White.svg"
            :alt="$t('Fungibl Logo Square')">
@@ -23,8 +23,8 @@
 
     <!-- DESKTOP -->
     <div v-if="!store.isMobile" class="logo-container" :class="{'scrolled-down': !topOfPage}">
-      <div class="logo" :class="{'scrolled-down': !topOfPage}">
-        <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" />
+      <div class="logo hover:cursor-pointer" :class="{'scrolled-down': !topOfPage}">
+        <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" @click="goToTop" />
       </div>
     </div>
     <div v-if="!store.isMobile" class="button-container desktop" :class="{'scrolled-down': !topOfPage}">
@@ -134,6 +134,11 @@ export default defineComponent({
     openTwitter() {
       window.open('https://twitter.com/FungiblApp', '_blank')
     },
+    goToTop() {
+      document.querySelector('#tippy-top')
+          .scrollIntoView({ behavior: "smooth" })
+      this.topOfPage = true
+    }
   },
 
 })

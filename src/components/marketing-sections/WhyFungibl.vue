@@ -85,7 +85,6 @@ export default defineComponent({
       span, strong {
         @apply text-xl xl:text-2xl font-medium;
         line-height: 1.5;
-        font-stretch: 90%;
       }
       @apply inline-block w-full mx-auto md:w-4/5 lg:w-2/3 bg-fdarkblue
       p-6 lg:p-8 border-solid border-2 border-fpink rounded;

@@ -38,7 +38,7 @@
           <vue-recaptcha ref="captcha" :sitekey="siteKey"
                          loadRecaptchaScript @verify="submitForm" @expired="resetCaptcha" theme="dark">
             <styled-button v-show="!sendingForm" button-style="primary" :disabled="!formFieldsValid">
-              {{ (formSent ? $t('THANKS!') : $t('SUBMIT')) }}
+              {{ (formSent ? $t('THANKS!') : $t('SUBMIT!')) }}
             </styled-button>
             <looping-rhombuses-spinner class="spinner" v-show="sendingForm"></looping-rhombuses-spinner>
           </vue-recaptcha>

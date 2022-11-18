@@ -24,7 +24,7 @@ const appRoutes: Array<RouteRecordRaw> = [
   {
     path: '/analytics',
     name: 'analytics',
-    component: () => import('../components/views/MarketingSite.vue') // lazy-loads
+    component: () => import('../components/views/Analytics.vue') // lazy-loads
   },
 ]
 

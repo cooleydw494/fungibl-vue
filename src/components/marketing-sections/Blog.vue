@@ -42,7 +42,7 @@
                class="arrow right" :alt="$t('Arrow Right')">
         </div>
         <div class="click-here" @click="goToContact">
-          <span>{{ $t('LET US KNOW') }}</span>
+          <span>{{ $t("LET US KNOW, WE'LL FEATURE IT!") }}</span>
         </div>
         <img src="../../assets/illustrations/Coconut-Drinks.svg"
              class="coconut-drinks" :alt="$t('Coconut Drinks')">
@@ -80,7 +80,7 @@ export default defineComponent({
           imageUrl: "https://www.algorand.com/static/algorand-og-image-98d634bc4a6f00c455b35830674ae96b.png",
           publishedAt: "Nov 16, 2022",
           author: "Alisa Yar",
-          previewText: "So, before I tell you about Algorand, I wanted to explain how I got here in the first place (tldr: accidentally). The first time i’ve heard about crypto was in November 2021. It was when everyone was bullish (hyped, excited) about NFT’s and it was really hard not to hear or read about these jpeg drawings that worth millions of dollars.",
+          previewText: "So, before I tell you about Algorand, I wanted to explain how I got here in the first place (tldr: accidentally). The first time i’ve heard about crypto was in November 2021. It was when everyone was bullish (hyped, excited) about NFTs and it was really hard not to hear or read about these JPEG drawings...",
         },
         {
           title: "What's The Deal With Fungibl?",
@@ -88,7 +88,7 @@ export default defineComponent({
           imageUrl: "https://miro.medium.com/max/720/1*hJ01D3_ool_FDQZ6zLE3gQ.png",
           publishedAt: "Sep 21, 2022",
           author: "nobody.algo",
-          previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit.",
+          previewText: "Fungibl is first and foremost my personal love letter to the Algorand community. I want to deliver something cool to all of my friends, with a heavy coat of polish, that elevates what it means to be here. I want it to serve everyone’s interests. I want it to exemplify the $ALGO NFT spirit...",
         },
         // {
         //   title: "What's The Deal With Fungibl?",
@@ -175,8 +175,7 @@ export default defineComponent({
       }
 
       .preview-text {
-        @apply mt-4 text-lg lg:text-xl 3xl:text-2xl font-medium;
-        font-stretch: 90%;
+        @apply mt-4 text-lg xl:text-xl font-medium;
         line-height: 1.5;
       }
     }
@@ -186,12 +185,12 @@ export default defineComponent({
       w-full md:w-1/2 min-h-76 md:min-h-76 md:pr-6 mt-24 mb-12;
       .header {
         h2 {
-          @apply inline-block px-8 xs:px-16 md:px-8 text-fwhite bg-fblue rounded
+          @apply inline-block py-0.5 px-8 xs:px-16 md:px-8 text-fwhite bg-fblue rounded
           text-4xl md:text-3xl xl:text-4xl 2xl:text-5xl;
         }
 
         .loop-arrow {
-          @apply absolute w-24 2xl:w-28 -left-8 xs:left-0 sm:left-6 md:-left-12 lg:left-4 xl:left-6 2xl:-left-6 top-2;
+          @apply absolute w-24 xl:w-26 2xl:w-28 3xl:w-30 -left-8 xs:left-0 sm:left-6 md:-left-12 lg:left-4 xl:left-6 2xl:-left-6 top-2;
         }
       }
 

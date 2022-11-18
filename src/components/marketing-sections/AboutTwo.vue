@@ -65,7 +65,6 @@ export default defineComponent({
       span, strong {
         @apply text-xl xl:text-2xl font-medium;
         line-height: 1.5;
-        //font-stretch: 90%;
       }
     }
     .image-container {

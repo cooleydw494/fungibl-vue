@@ -1,5 +1,5 @@
 <template>
-  <intersection-observer v-if="isMarketingSite" sentinal-name="top-of-page"
+  <intersection-observer v-if="isMarketingSite" sentinal-name="top-of-page" id="tippy-top"
                          @intersect="topOfPage = true" class="intersection-top one">
   </intersection-observer>
   <intersection-observer v-if="isMarketingSite" sentinal-name="top-of-page"
