@@ -11,13 +11,13 @@
       </top-or-left-panel>
       <bottom-or-right-panel>
         <!-- Image Desktop -->
-        <div class="icon-container desktop md:-mt-32">
+        <div class="icon-container desktop">
           <img src="../../assets/illustrations/pull/Pull-1.svg" :alt="$t('Pull Illustration')">
           <div class="flex justify-center">
             <h5 class="pool-count desktop">{{ store.poolMetas.current_nft_count }} {{ $t('NFTs') }}</h5>
           </div>
         </div>
-        <div class="w-full text-center pt-16 md:pt-0">
+        <div class="w-full text-center pt-4 md:pt-0">
           <styled-button button-style="primary wide" :disabled="walletState !== 'connected'"
                          @click="initPull">
             {{ $t('PULL') + $t('!') }}
@@ -26,19 +26,19 @@
       </bottom-or-right-panel>
     </div>
 
-    <modal :override-show="showPullModal" name="pull" @close="closePullModal()" center>
+    <modal :override-show="showPullModal" name="pull" @close="closePullModal()" center full-dark opacity-time-close="0s">
       <div class="max-w-2xl text-center">
 
-        <img v-if="['not_pulling'].includes(pullState)" class="illustration"
+        <img v-show="['not_pulling'].includes(pullState)" class="illustration"
              src="../../assets/illustrations/pull/Pull-1.svg"
              :alt="`${$t('Pull Illustration')} 1`">
-        <img v-if="['attaching'].includes(pullState)" class="illustration animate-pulse"
+        <img v-show="['attaching'].includes(pullState)" class="illustration animate-pulse"
              src="../../assets/illustrations/pull/Pull-2.svg"
              :alt="`${$t('Pull Illustration')} 2`">
-        <img v-if="['opting_in'].includes(pullState)" class="illustration animate-pulse"
+        <img v-show="['opting_in'].includes(pullState)" class="illustration animate-pulse"
              src="../../assets/illustrations/pull/Pull-3.svg"
              :alt="`${$t('Pull Illustration')} 3`">
-        <img v-if="['sending_fun', 'transferring_fun', 'transferring_nft'].includes(pullState)" class="illustration animate-pulse"
+        <img v-show="['sending_fun', 'transferring_fun', 'transferring_nft'].includes(pullState)" class="illustration animate-pulse"
              src="../../assets/illustrations/pull/Pull-4.svg"
              :alt="`${$t('Pull Illustration')} 4`">
 
@@ -50,21 +50,23 @@
           </nft-image>
         </div>
 
-        <h2 v-if="pullState === 'not_pulling'" class="text-fblue font-extrabold mb-6">ARE YOU SURE?</h2>
-        <h2 v-if="pullState === 'attaching'" class="text-fblue font-extrabold mb-6">ATTACHING TO CONTRACT</h2>
-        <h2 v-if="pullState === 'sending_fun'" class="text-fblue font-extrabold mb-6">EXCHANGING $FUN AND ?NFT?</h2>
-        <h2 v-if="pullState === 'opting_in'" class="text-fblue font-extrabold mb-6">OPTING IN</h2>
-        <h2 v-if="pullState === 'transferring_fun'" class="text-fblue font-extrabold mb-6">TRANSFERRING $FUN TO <span class="text-fpink">FUNGIBL</span></h2>
-        <h2 v-if="pullState === 'transferring_nft'" class="text-fblue font-extrabold mb-6">TRANSFERRING ?NFT? TO YOU</h2>
+        <h2 v-if="pullState === 'not_pulling'" class="text-faqua font-extrabold mb-6">ARE YOU SURE?</h2>
+        <h2 v-if="pullState === 'attaching'" class="text-faqua font-extrabold mb-6">ATTACHING TO CONTRACT</h2>
+        <h2 v-if="pullState === 'sending_fun'" class="text-faqua font-extrabold mb-6">EXCHANGING $FUN AND ?NFT?</h2>
+        <h2 v-if="pullState === 'opting_in'" class="text-faqua font-extrabold mb-6">OPTING IN</h2>
+        <h2 v-if="pullState === 'transferring_fun'" class="text-faqua font-extrabold mb-6">TRANSFERRING $FUN TO <span class="text-fpink">FUNGIBL</span></h2>
+        <h2 v-if="pullState === 'transferring_nft'" class="text-faqua font-extrabold mb-6">TRANSFERRING ?NFT? TO YOU</h2>
         <h2 v-if="pullState === 'done'" class="text-fblue font-extrabold mb-6"><span class="text-fpink">♥</span> SAY HELLO TO <span class="text-fgreen">{{ pulledNftId }}</span> <span class="text-fpink">♥</span></h2>
 
 
-        <div v-if="pullState !== 'done'" class="text-fblue mb-12">
-          <h5>You'll trade in <span class="text-fpink">~{{ finalizedPullCostShort || pullCostShort }} {{ $t('$FUN') }}</span></h5>
-          <h5>for 1 randomized NFT</h5>
+        <div v-if="pullState !== 'done'" class="text-fblue mt-12">
+          <h5>Trade in <span class="text-fpink">~{{ finalizedPullCostShort || pullCostShort }} {{ $t('$FUN') }}</span> for 1 randomized NFT</h5>
+        </div>
+        <div v-if="pullState !== 'done'" class="text-forange text-sm font-normal mt-4">
+          <p>While estimates use the most recent info, results may vary</p>
         </div>
 
-        <div v-if="pullState === 'not_pulling'" class="mt-6 md:mt-0 md:min-w-96 flex justify-between">
+        <div v-if="pullState === 'not_pulling'" class="mt-8 px-6 md:px-0 md:min-w-96 flex justify-between">
           <styled-button button-style="cancel" @click="closePullModal()">
             {{ $t('CANCEL') }}
           </styled-button>
@@ -72,7 +74,7 @@
             {{ $t('PULL') + $t('!') }}
           </styled-button>
         </div>
-        <h2 v-if="pullState !== 'not_pulling' && pullState !== 'done'" class="text-faqua font-extrabold mb-6">LANDING A BIG ONE!</h2>
+<!--        <h2 v-if="pullState !== 'not_pulling' && pullState !== 'done'" class="text-faqua font-extrabold mb-6">LANDING A BIG ONE!</h2>-->
 
         <div v-if="pullState === 'done'">
           <h5 class="text-fblue mb-12">You will receive <span class="text-fgreen">{{ pulledNftId }}</span> momentarily</h5>
@@ -142,12 +144,12 @@ export default defineComponent({
       return id ? { 'asset-id' : id, name: id } : null
     },
     pulledNftImageWidth() {
-      return this.store.isMobile ? 76 : 96
+      return this.spacingToPixels(this.store.isMobile ? 76 : 96)
     },
     pulledNftImageKitUrl() {
       return this.imageKitUrl(
           `${this.pulledNftId}.png`,
-          this.spacingToPixels(this.pulledNftImageWidth)
+          this.pulledNftImageWidth
       )
     }
   },
@@ -243,7 +245,7 @@ export default defineComponent({
 }
 
 .icon-container {
-  @apply w-5/12 md:w-64 lg:w-76 h-auto ml-4;
+  @apply w-5/12 md:w-64 lg:w-76 h-auto md:ml-4;
 
   &.mobile {
     @apply md:hidden;
@@ -255,7 +257,7 @@ export default defineComponent({
 }
 
 .illustration {
-  @apply w-76 h-auto mx-auto mb-8;
+  @apply w-76 md:w-96 h-auto mx-auto mb-8;
 }
 
 </style>

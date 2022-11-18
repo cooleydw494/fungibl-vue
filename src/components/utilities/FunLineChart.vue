@@ -12,33 +12,34 @@
                 :key="index"
                 @click="toggleDatasetOpt(opt)"
                 :class="{/* bg-purple-200 */'text-fdark': opt.state > 0, 'bg-fdark/25': opt.state === 0}"
-                class="m-1 p-1 rounded text-xxs font-bold"
+                class="m-1 p-1 rounded text-2xs lg:text-xs font-bold"
                 :style="optStyles(opt)"
         >
           {{ opt.title }}
         </button>
       </div>
     </div>
-    <Line
-        ref="chart"
-        :chart-options="chartOptions"
-        :chart-data="chartData"
-        :chart-id="chartId"
-        :dataset-id-key="chartId"
-        :plugins="null"
-        :css-classes="null"
-        :styles="null"
-        :width="null"
-        :height="null"
-    >
-    </Line>
+    <div class="px-2">
+      <Line
+          ref="chart"
+          :chart-options="chartOptions"
+          :chart-data="chartData"
+          :chart-id="chartId"
+          :dataset-id-key="chartId"
+          :plugins="null"
+          :css-classes="null"
+          :styles="null"
+          :width="null"
+          :height="null"
+      >
+      </Line>
+    </div>
   </div>
 </template>
 <script>
 // import {LineController} from 'chart.js'
 import {Line} from 'vue-chartjs'
-import gradient from 'chartjs-plugin-gradient'
-import chartTrendline from "chartjs-plugin-trendline"
+// import gradient from 'chartjs-plugin-gradient'
 import annotationPlugin from "chartjs-plugin-annotation"
 import {colors} from "@/tailwindExports.ts"
 import {
@@ -48,12 +49,13 @@ import {
 } from 'chart.js'
 import 'chartjs-adapter-moment'
 import moment from 'moment'
+import {formatNumberShort} from "@jackcom/reachduck";
 ChartJS.register(
     // First-party
     Title, Tooltip, Legend, LinearScale, CategoryScale, PointElement,
     LineElement, Filler, TimeScale,
     // Third-party
-    gradient, chartTrendline, annotationPlugin,
+    /*gradient,*/ annotationPlugin,
     // Pizza-party
     // (lol)
 )
@@ -95,10 +97,6 @@ export default {
     },
     maxTime: {
       required: true,
-    },
-    showTrendline: {
-      type: Boolean,
-      default: false,
     }
   },
   data() {
@@ -119,27 +117,29 @@ export default {
       shouldDraw: true,
       gradients: [
         {
-          backgroundColor: {
-            axis: 'y',
-            indexedColors: {
-              0: 'rgba(216, 255, 122, 0.5)',
-              1: 'rgba(216, 255, 122, 0.45)',
-              2: 'rgba(216, 255, 122, 0)'
-            },
-            colors: {}, // populate based on range dynamically
-          },
+          // backgroundColor: {
+          //   axis: 'y',
+          //   indexedColors: {
+          //     0: 'rgba(216, 255, 122, 0.9)',
+          //     1: 'rgba(216, 255, 122, 0.1)',
+          //     2: 'rgba(216, 255, 122, .05)'
+          //   },
+          //   colors: {}, // populate based on range dynamically
+          // },
+          backgroundColor: 'rgba(216, 255, 122, 0.25)',
           borderColor: colors['fgreen'],
         },
         {
-          backgroundColor: {
-            axis: 'y',
-            indexedColors: {
-              0: 'rgba(50, 194, 251, 0.9)',
-              1: 'rgba(50, 194, 251, 0.45)',
-              2: 'rgba(50, 194, 251, 0)'
-            },
-            colors: {}, // populate based on range dynamically
-          },
+          // backgroundColor: {
+          //   axis: 'y',
+          //   indexedColors: {
+          //     0: 'rgba(50, 194, 251, 0.9)',
+          //     1: 'rgba(50, 194, 251, 0.1)',
+          //     2: 'rgba(50, 194, 251, .05)'
+          //   },
+          //   colors: {}, // populate based on range dynamically
+          // },
+          backgroundColor: 'rgba(50, 194, 251, 0.25)',
           borderColor: colors['fblue'],
         },
       ]
@@ -149,18 +149,12 @@ export default {
     this.defaultOpts.forEach((defaultOpt) => {
       this.datasetOpts[defaultOpt[0]].state = defaultOpt[1]
     })
-    this.setChartOptions(true)
-    this.setChartData(true)
-    // let tries = 0
-    // do {
-    //   tries++
-    //   await this.sleep(250)
-    // } while (this.iterations.length && tries < 10)
-    // this.setChartOptions(true)
-    // this.setChartData(true)
+    this.setChartData()
   },
   beforeUnmount() {
-    this.$refs.chart.destroy()
+    // if (this.$refs.chart) {
+    //   this.$refs.chart.$data.destroy()
+    // }
   },
   computed: {
     enabledOpts() {
@@ -179,7 +173,7 @@ export default {
     },
   },
   methods: {
-    setChartData(init = false) {
+    setChartData() {
       let datasets = []
 
       Object.values(this.enabledOpts).forEach((opt) => {
@@ -189,41 +183,37 @@ export default {
           plotInactivity['x'] = moment().valueOf()
           data = [...data, plotInactivity]
         }
-        let propOnlyData = this.arrayOfProp(this.iterations, opt.name, false)
-        let min = Math.min(...propOnlyData)
-        let max = Math.max(...propOnlyData)
-        let mid = Math.round((((min + max) / 2) * 1e2) / 1e2)
+        // let propOnlyData = this.arrayOfProp(this.iterations, opt.name, false)
+        // let min = Math.min(...propOnlyData)
+        // let max = Math.max(...propOnlyData)
+        // let mid = Math.round(max - ((1/12) * max))
         let gradient = this.gradients[opt.state-1]
-        gradient.backgroundColor.colors = {}
-        gradient.backgroundColor.colors[min] = gradient.backgroundColor.indexedColors[0]
-        gradient.backgroundColor.colors[mid] = gradient.backgroundColor.indexedColors[1]
-        gradient.backgroundColor.colors[max] = gradient.backgroundColor.indexedColors[2]
+        // gradient.backgroundColor.colors = {}
+        // gradient.backgroundColor.colors[min] = gradient.backgroundColor.indexedColors[0]
+        // gradient.backgroundColor.colors[mid] = gradient.backgroundColor.indexedColors[1]
+        // gradient.backgroundColor.colors[max] = gradient.backgroundColor.indexedColors[2]
 
         let dataset = {
           label: opt.title,
           data: data,
-          gradient: gradient,
-          fill: true,
+          // gradient: gradient,
+          // backgroundColor: gradient.backgroundColor,
+          fill: false,
           borderColor: gradient.borderColor,
           lineTension: .05,
           borderWidth: 2,
           yAxisID: 'y_'+opt.name,
           xAxisID: 'created_at',
-          // trendlineLinear: {
-          //   colorMin: gradient.borderColor,
-          //   colorMax: gradient.borderColor,
-          //   lineStyle: "dotted", // dotted or solid
-          //   width: 2,
-          //   projection: false,
-          // },
         }
 
         datasets.push(dataset)
+        this.setChartOptions()
       })
 
       this.chartData = {
         datasets: datasets,
       }
+      // this.$refs.chart._chart.update()
     },
     setChartOptions(init = false) {
       let chartOptions = {
@@ -241,12 +231,19 @@ export default {
             },
             min: this.minTime,
             max: this.maxTime,
-            title: {
-              color: colors['fwhite'],
-            },
+            // title: {
+            //   color: colors['fwhite'],
+            // },
             ticks: {
               source: 'optimal',
-            }
+              color: colors['fwhite'],
+              font: {
+                size: 9,
+              },
+            },
+            grid: {
+              color: 'rgba(96,105,242,.15)',
+            },
           },
         },
         elements: {
@@ -268,6 +265,9 @@ export default {
           },
         },
         responsive: true,
+        // animation: {
+        //   duration: 0,
+        // }
       }
 
       let min = null
@@ -301,11 +301,23 @@ export default {
           position: index === 0 ? 'left' : 'right',
           min: min || (index === 0 ? minFirst : minSecond),
           max: max || (index === 0 ? maxFirst : maxSecond),
-          title: {
-            display: true,
-            text: opt.title,
-            color: colors['fwhite'],
-          }
+          // title: {
+          //   display: true,
+          //   text: opt.title,
+          //   color: this.gradients[opt.state-1].borderColor,
+          // },
+          ticks: {
+            callback: function(value, index, values) {
+              return formatNumberShort(value);
+            },
+            color: this.gradients[opt.state-1].borderColor,
+            font: {
+              size: 9,
+            }
+          },
+          grid: {
+            color: 'rgba(96,105,242,.15)',
+          },
         }
 
         if (opt.name === 'cost_reward_ratio') {
@@ -315,16 +327,16 @@ export default {
                 type: 'line',
                 yMin: 1,
                 yMax: 1,
-                yScaleID: 'y_'+opt.name,
-                borderColor: 'rgb(255, 99, 132)',
+                yScaleID: 'y_cost_reward_ratio',
+                borderColor: 'rgb(255, 108, 55)',
                 borderWidth: 2,
               },
               costRewardRatioGoalLabel: {
                 type: 'label',
-                xValue: this.iterations.length / 18,
+                xValue: this.minTime,
                 yValue: 1,
                 yScaleID: 'y_'+opt.name,
-                backgroundColor: 'rgba(255,150,150,.85)',
+                backgroundColor: 'rgba(96,105,242,.85)',
                 content: ['Parity'],
                 font: {
                   size: 9,
@@ -438,9 +450,7 @@ export default {
       }
 
       this.datasetOpts[opt.name].state = newState
-
       this.setChartData()
-      this.setChartOptions()
     },
     arrayOfProp(arrayOfObj, prop, includeCreatedAt = false) {
       // arrayOfObj.map(x => x.prop) is nicer, but way less efficient
@@ -449,9 +459,9 @@ export default {
       let val = null
       for(let i = 0; i < length; i++) {
         if (prop === 'cost_reward_ratio') {
-          val = arrayOfObj[i]['current_pull_cost'] / arrayOfObj[i]['current_avg_reward']
+          val = parseFloat((arrayOfObj[i]['current_pull_cost'] / arrayOfObj[i]['current_avg_reward']).toFixed(2))
         } else if (prop === 'avg_nft_value') {
-          val = arrayOfObj[i]['current_pool_value'] / arrayOfObj[i]['current_nft_count']
+          val = Math.round(arrayOfObj[i]['current_pool_value'] / arrayOfObj[i]['current_nft_count'])
         } else {
           val = arrayOfObj[i][prop]
         }

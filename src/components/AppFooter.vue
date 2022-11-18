@@ -20,7 +20,7 @@ export default defineComponent({
 @import "@/css/mixins.scss";
 
 footer {
-  @apply w-full min-h-15vh flex flex-col justify-center;
+  @apply w-full px-4 min-h-15vh flex flex-col justify-center bg-fdarkblue;
 
   @media(min-width: theme('screens.md')) {
     @apply min-h-15vh;

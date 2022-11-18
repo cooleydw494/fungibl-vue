@@ -1,9 +1,9 @@
 <template>
   <div class="nft-data">
-    <div v-if="nftImageLoading" class="nft-image flex place-content-center" :style="widthStyle">
+    <div v-show="nftImageLoading" class="nft-image flex place-content-center" :style="widthStyle">
       <fulfilling-square-spinner
           :animation-duration="2000"
-          :size="spacingToPixels(imageWidth)"
+          :size="imageWidth"
           :color="themeColor('fgreen')"
       />
     </div>
@@ -54,7 +54,7 @@ export default defineComponent({
       return this.nft.name
     },
     widthStyle() {
-      return `width: ${spacing[this.imageWidth]};`
+      return `width: ${this.imageWidth}px;`
     }
   },
 

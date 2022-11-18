@@ -49,7 +49,7 @@ export default defineComponent({
 
     &.wide {
       font-stretch: 115%;
-      @apply min-w-80 text-2xl;
+      @apply w-full md:w-auto min-w-80 text-2xl;
     }
   }
 
@@ -59,7 +59,7 @@ export default defineComponent({
   }
 
   &.button-connect {
-    @apply min-w-72 bg-fdark/25 text-faqua border-faqua/50;
+    @apply w-full min-w-72 md:w-auto bg-fdark/25 text-faqua border-faqua/50;
 
     &.darker-bg {
       @apply bg-fdark/50;

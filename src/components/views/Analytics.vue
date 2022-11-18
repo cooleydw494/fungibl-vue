@@ -12,7 +12,12 @@
         </div>
       </div>
       <div class="second-row">
-        <FunLineChart class="w-full" ref="funChart" :chartId="'funChart'" :iterations="logs" :minTime="minTime" :maxTime="maxTime" :defaultOpts="[['current_pull_cost', 1], ['current_avg_reward', 2]]"></FunLineChart>
+        <div class="chart w-full">
+          <FunLineChart class="w-full" ref="funChart" :chartId="'funChart'" :iterations="logs" :minTime="minTime" :maxTime="maxTime" :defaultOpts="[['current_pull_cost', 1], ['current_avg_reward', 2]]"></FunLineChart>
+        </div>
+<!--        <div class="counts inline-block w-1/5">-->
+<!--          {{ JSON.stringify(counts) }}-->
+<!--        </div>-->
       </div>
       <div class="third-row">
         <button v-for="(duration, index) in ['30m', '1h', '12h', '1d', '7d', '30d']"
@@ -62,11 +67,18 @@ export default defineComponent({
       showTrendline: false,
       latestLogsInterval: null,
       logs: [],
+      counts: { 'submits': 0, 'pulls': 0, 'submitRate': 0, },
     }
   },
 
   mounted() {
     this.getLogs()
+  },
+
+  beforeUnmount() {
+    if (this.latestLogsInterval) {
+      clearInterval(this.latestLogsInterval)
+    }
   },
 
   computed: {
@@ -104,9 +116,9 @@ export default defineComponent({
       if (this.latestLogsInterval) clearInterval(this.latestLogsInterval)
       get(`pool-metas/logs?duration=${this.duration}`).then((res) => {
         this.logs = res.logs
+        this.counts = res.counts
         setTimeout(() => {
           this.$refs.funChart.setChartData()
-          this.$refs.funChart.setChartOptions()
         }, 250)
         this.latestLogsInterval = setInterval(() => {
           this.getLatestLogs()
@@ -118,12 +130,12 @@ export default defineComponent({
     getLatestLogs() {
       if (!this.logs.length) return
       const lastIdParam = `?last_log_id=${this.logs[this.logs.length-1].id}`
-      get(`pool-metas/latest-logs${lastIdParam}`).then((res) => {
+      get(`pool-metas/latest-logs${lastIdParam}&duration=${this.duration}`).then((res) => {
         if (res.latest_logs.length) {
           this.logs = [...this.logs, ...res.latest_logs]
+          this.counts = res.counts
           setTimeout(() => {
             this.$refs.funChart.setChartData()
-            this.$refs.funChart.setChartOptions()
           }, 250)
         }
       }).catch((err) => {

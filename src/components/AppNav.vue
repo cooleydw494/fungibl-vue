@@ -1,11 +1,11 @@
 <template>
   <header>
     <div class="logo-icons-container">
-      <router-link v-if="isSubmit || isAnalytics" to="/pull">
+      <router-link v-if="!isSubmit" to="/submit">
         <img src="../assets/icons/Submit-Icon-Green.svg"
              :alt="submitAlt" :title="submitAlt">
       </router-link>
-      <router-link v-if="!isSubmit && !isAnalytics" to="/submit">
+      <router-link v-if="isSubmit" to="/pull">
         <img src="../assets/icons/Pull-Icon-Green.svg"
              :alt="pullAlt" :title="pullAlt">
       </router-link>
@@ -16,7 +16,7 @@
         <img src="../assets/icons/Analytics-Icon.svg"
              :alt="analyticsAlt" :title="analyticsAlt">
       </router-link>
-      <router-link v-if="isAnalytics" to="/submit">
+      <router-link v-if="isAnalytics" to="/pull">
         <img src="../assets/icons/Pull-Icon-Green.svg"
              :alt="pullAlt" :title="pullAlt">
       </router-link>
@@ -36,8 +36,8 @@ export default defineComponent({
     isSubmit() { return this.$route.name === 'submit' },
     isAnalytics() { return this.$route.name === 'analytics' },
     analyticsAlt() { return this.$root.$t('Switch to Analytics') },
-    pullAlt() { return this.$root.$t('Switch to Submit') },
-    submitAlt() { return this.$root.$t('Switch to Pull') },
+    pullAlt() { return this.$root.$t('Switch to Pull') },
+    submitAlt() { return this.$root.$t('Switch to Submit') },
   },
 
   methods: {

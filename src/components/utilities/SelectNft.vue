@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex justify-center">
-    <div class="w-full max-w-96 flex flex-col" :class="{'justify-between': store.selectedNftId, 'justify-around': !store.selectedNftId }">
-      <select class="select mt-16" id="selectNft" v-model="selected" :disabled="!enabled"
+    <div class="w-full md:max-w-96 flex flex-col" :class="{'justify-between': store.selectedNftId, 'justify-around': !store.selectedNftId }">
+      <select class="select mt-4 md:mt-2" id="selectNft" v-model="selected" :disabled="!enabled"
               @change="setSelected(parseInt($event.target.value))"
               :class="{'md:mt-0': store.selectedNftId, 'md:mt-8': !store.selectedNftId }">
         <option v-if="!store.selectedNft" value="null" class="option">{{ $t('SELECT AN NFT') }}</option>
@@ -36,22 +36,22 @@
       </div>
     </div>
 
-    <modal :override-show="showSubmissionModal" name="submission" @close="closeSubmissionModal()" center full-dark>
+    <modal :override-show="showSubmissionModal" name="submission" @close="closeSubmissionModal()" center full-dark opacity-time-close="0s">
       <div class="max-w-2xl text-center min-h-60vh">
 
-        <img v-if="['not_submitting'].includes(submitState)" class="illustration"
+        <img v-show="['not_submitting'].includes(submitState)" class="illustration"
              src="../../assets/illustrations/submit/Submit-1.svg"
              :alt="`${$t('Submit Illustration')} 1`">
-        <img v-if="['creating', 'initializing'].includes(submitState)" class="illustration animate-pulse"
+        <img v-show="['creating', 'initializing'].includes(submitState)" class="illustration animate-pulse"
              src="../../assets/illustrations/submit/Submit-2.svg"
              :alt="`${$t('Submit Illustration')} 2`">
-<!--        <img v-if="['initializing'].includes(submitState)" class="illustration animate-pulse"-->
+<!--        <img v-show="['initializing'].includes(submitState)" class="illustration animate-pulse"-->
 <!--             src="../../assets/illustrations/submit/Submit-3.svg"-->
 <!--             :alt="`${$t('Submit Illustration')} 3`">-->
-        <img v-if="['transferring'].includes(submitState)" class="illustration animate-pulse"
+        <img v-show="['transferring'].includes(submitState)" class="illustration animate-pulse"
              src="../../assets/illustrations/submit/Submit-3.svg"
              :alt="`${$t('Submit Illustration')} 3`">
-        <img v-if="['done'].includes(submitState)" class="illustration"
+        <img v-show="['done'].includes(submitState)" class="illustration"
              src="../../assets/illustrations/submit/Submit-5.svg"
              :alt="`${$t('Submit Illustration')} 5`">
 
@@ -79,8 +79,8 @@
         </div>
 <!--        <h2 v-if="submitState !== 'not_submitting' && submitState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>-->
 
-        <div v-if="submitState === 'done'">
-          <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ finalizedRewardShort }} {{ $t('$FUN') }}</span> momentarily</h5>
+        <div v-if="submitState === 'done'" class="mt-12">
+          <h5 class="text-fblue mb-8">You will receive <span class="text-fpink">~{{ finalizedRewardShort }} {{ $t('$FUN') }}</span> momentarily</h5>
           <styled-button button-style="primary wide" @click="reInitialize()">
             {{ $t('DONE') }}
           </styled-button>
@@ -254,7 +254,7 @@ export default defineComponent({
 }
 
 .illustration {
-  @apply w-64 h-auto mx-auto mb-8;
+  @apply w-76 md:w-96 h-auto mx-auto mb-8;
 }
 
 </style>

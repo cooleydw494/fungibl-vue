@@ -57,13 +57,13 @@ export default defineComponent({
   computed: {
     selectedNftImageWidth() {
       return this.store.isMobile
-          ? 76
-          : (this.store.innerWidth < 1024 ? 88 : 96)
+          ? this.spacingToPixels(76)
+          : this.spacingToPixels(this.store.innerWidth < 1024 ? 88 : 96)
     },
     selectedNftImageKitUrl() {
       return this.imageKitUrl(
           `${this.store.selectedNftId}.png`,
-          this.spacingToPixels(this.selectedNftImageWidth)
+          this.selectedNftImageWidth
       )
     }
   }
@@ -77,7 +77,7 @@ export default defineComponent({
 @include panel-container();
 
 .icon {
-  @apply w-2/5 md:w-62 lg:w-72 h-auto ml-4;
+  @apply w-2/5 md:w-62 lg:w-72 h-auto md:ml-4 md:mb-16;
 
   &.mobile {
     @apply md:hidden;

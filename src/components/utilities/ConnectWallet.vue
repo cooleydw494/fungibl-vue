@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <styled-button :button-style="'connect'" @click="toggleConnect" class="mx-4">
+  <div class="w-full md:w-auto">
+    <styled-button :button-style="'connect'" @click="toggleConnect" class="md:mx-4">
       <div v-if="!store.connected" class="content-container">
         <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
         {{ connectButtonText }}
@@ -111,10 +111,10 @@ export default defineComponent({
 }
 
 .content-container {
-  @apply flex justify-around items-center min-h-10 text-left;
+  @apply w-full flex justify-around items-center min-h-10 text-left;
 
   &.wallet-info {
-    @apply text-base w-65vw md:w-96 h-14 md:h-16;
+    @apply text-base w-full md:w-96 h-14 md:h-16;
   }
 
   .wallet-data-container {
