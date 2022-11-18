@@ -56,7 +56,7 @@ export default defineComponent({
 
   computed: {
     selectedNftImageWidth() {
-      return this.store.isMobile < 768
+      return this.store.isMobile
           ? 76
           : (this.store.innerWidth < 1024 ? 88 : 96)
     },

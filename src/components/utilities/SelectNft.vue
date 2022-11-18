@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <modal :override-show="showSubmissionModal" name="submission" @close="closeSubmissionModal()" center>
+    <modal :override-show="showSubmissionModal" name="submission" @close="closeSubmissionModal()" center full-dark>
       <div class="max-w-2xl text-center min-h-60vh">
 
         <img v-if="['not_submitting'].includes(submitState)" class="illustration"
@@ -55,23 +55,21 @@
              src="../../assets/illustrations/submit/Submit-5.svg"
              :alt="`${$t('Submit Illustration')} 5`">
 
-        <h2 v-if="submitState === 'not_submitting'" class="text-fblue font-extrabold mb-6">ARE YOU SURE?</h2>
+        <h2 v-if="submitState === 'not_submitting'" class="text-faqua font-extrabold mb-6">ARE YOU SURE?</h2>
         <h2 v-if="submitState === 'creating'" class="text-fblue font-extrabold mb-6">CREATING CONTRACT</h2>
         <h2 v-if="submitState === 'initializing'" class="text-fblue font-extrabold mb-6">INITIALIZING</h2>
         <h2 v-if="submitState === 'transferring'" class="text-fblue font-extrabold mb-6">TRANSFERRING</h2>
         <h2 v-if="submitState === 'done'" class="text-fblue font-extrabold mb-6">SUCCESS!</h2>
 
 
-        <div v-if="submitState !== 'done'" class="text-fblue mb-8">
-          <h5>You'll send 1 NFT to a smart contract</h5>
-          <h5>and will receive <span class="text-fpink">~{{ rewardShort }} {{ $t('$FUN') }}</span></h5>
+        <div v-if="submitState !== 'done'" class="text-fblue mt-12">
+          <h5>Send 1 NFT and receive <span class="text-fpink">~{{ rewardShort }} {{ $t('$FUN') }}</span></h5>
         </div>
-        <div v-if="submitState !== 'done'" class="text-fyellow text-sm font-semibold mb-12">
-          <p>Be aware that while estimates are based on</p>
-          <p>very recent information, outcomes may vary</p>
+        <div v-if="submitState !== 'done'" class="text-forange text-sm font-normal mt-4">
+          <p>While estimates use the most recent info, results may vary</p>
         </div>
 
-        <div v-if="submitState === 'not_submitting'" class="w-full flex justify-between mt-6">
+        <div v-if="submitState === 'not_submitting'" class="w-full flex justify-between mt-8">
           <styled-button button-style="cancel" @click="closeSubmissionModal()">
             {{ $t('CANCEL') }}
           </styled-button>
@@ -79,7 +77,7 @@
             {{ $t('SUBMIT') + $t('!') }}
           </styled-button>
         </div>
-        <h2 v-if="submitState !== 'not_submitting' && submitState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>
+<!--        <h2 v-if="submitState !== 'not_submitting' && submitState !== 'done'" class="text-faqua font-extrabold mb-6">CANNONBALL!</h2>-->
 
         <div v-if="submitState === 'done'">
           <h5 class="text-fblue mb-12">You will receive <span class="text-fpink">~{{ finalizedRewardShort }} {{ $t('$FUN') }}</span> momentarily</h5>

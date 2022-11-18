@@ -12,7 +12,7 @@ import {
   loadStdlib,
   ALGO_MyAlgoConnect as MyAlgoConnect,
   ALGO_WalletConnect as WalletConnect,
-  ALGO_PeraConnect as PeraWallet,
+  ALGO_MakePeraConnect as PeraWallet,
 } from "@reach-sh/stdlib"
 import store, { addNotification } from "../state"
 

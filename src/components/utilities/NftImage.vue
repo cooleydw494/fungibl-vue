@@ -1,6 +1,6 @@
 <template>
   <div class="nft-data">
-    <div v-if="nftImageLoading" class="nft-image flex place-content-center">
+    <div v-if="nftImageLoading" class="nft-image flex place-content-center" :style="widthStyle">
       <fulfilling-square-spinner
           :animation-duration="2000"
           :size="spacingToPixels(imageWidth)"
@@ -10,7 +10,8 @@
     <img v-show="!nftImageLoading" class="nft-image" @load="nftLoaded()"
          :src="imageKitUrl"
          @error="$event.target.src = nft.imageUrl"
-         :alt="`${$t('NFT Image for ')} ${imageAlt}`">
+         :alt="`${$t('NFT Image for ')} ${imageAlt}`"
+         :style="widthStyle">
   </div>
 </template>
 
@@ -19,6 +20,7 @@ import { defineComponent } from "@vue/runtime-core"
 import StyledButton from "@/components/utilities/StyledButton"
 import {FulfillingSquareSpinner} from "epic-spinners"
 import {nftImageLoading} from "@/state"
+import {spacing} from "@/tailwindExports"
 
 export default defineComponent({
   name: "NftImage",
@@ -50,6 +52,9 @@ export default defineComponent({
   computed: {
     imageAlt() {
       return this.nft.name
+    },
+    widthStyle() {
+      return `width: ${spacing[this.imageWidth]};`
     }
   },
 
@@ -70,7 +75,7 @@ export default defineComponent({
   @apply block w-full;
 
   .nft-image {
-    @apply w-76 md:w-88 lg:w-96 h-auto mx-auto rounded border-2 border-solid border-fgreen;
+    @apply h-auto mx-auto rounded border-2 border-solid border-fgreen;
   }
 }
 
