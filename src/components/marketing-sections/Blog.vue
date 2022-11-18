@@ -76,8 +76,8 @@ export default defineComponent({
       posts: [
         {
           title: "My Algorand Experience",
-          url: "https://nobody-algo.medium.com/whats-the-deal-with-fungibl-56f370d0e990",
-          imageUrl: "https://www.algorand.com/static/algorand-og-image-98d634bc4a6f00c455b35830674ae96b.png",
+          url: "https://medium.com/@alisa.algo/my-algorand-experience-176285db6a41",
+          imageUrl: "https://fungible-files.s3.amazonaws.com/web-resources/blogs/AlisaYar.jpg",
           publishedAt: "Nov 16, 2022",
           author: "Alisa Yar",
           previewText: "So, before I tell you about Algorand, I wanted to explain how I got here in the first place (tldr: accidentally). The first time i’ve heard about crypto was in November 2021. It was when everyone was bullish (hyped, excited) about NFTs and it was really hard not to hear or read about these JPEG drawings...",
