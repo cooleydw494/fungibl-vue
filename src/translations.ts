@@ -37,6 +37,9 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "Disconnecting...": "Disconnecting...",
         "Connecting...": "Connecting...",
         "NFT Image for": "NFT Image for",
+        "ESTIMATED REWARD": "ESTIMATED REWARD",
+        "ESTIMATED VALUE": "ESTIMATED VALUE",
+        "Submit Illustration": "Submit Illustration",
 
         // TRY TO KEEP THE SAME LENGTH
         "SUBMIT": "SUBMIT",
@@ -122,6 +125,9 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "Disconnecting...": "Disconnecting...",
         "Connecting...": "Connecting...",
         "NFT Image for": "NFT Image for",
+        "ESTIMATED REWARD": "ESTIMATED REWARD",
+        "ESTIMATED VALUE": "ESTIMATED VALUE",
+        "Submit Illustration": "Submit Illustration",
 
 
         // TRY TO KEEP THE SAME LENGTH

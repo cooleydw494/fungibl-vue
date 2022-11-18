@@ -12,16 +12,16 @@
       <div v-if="store.selectedNftId" class="mt-8 md:min-h-48 flex flex-col justify-center">
         <div class="flex justify-between">
           <div>
-            <p class="text-fblue text-xl font-bolder">{{ store.selectedNftEstimates.estAlgo }}
-              <img class="inline-block w-3.5 h-4 -mt-1" src="../../assets/icons/Algorand-Icon.svg" alt="$ALGO Symbol">
+            <p class="text-fblue text-xl font-bolder">{{ store.selectedNftEstimates.estAlgo }} {{ $t('$ALGO') }}
+<!--              <img class="inline-block w-3.5 h-4 -mt-1" src="../../assets/icons/Algorand-Icon.svg" alt="$ALGO Symbol">-->
             </p>
-            <p class="text-fgreen text-xs">ESTIMATED VALUE</p>
+            <p class="text-fgreen text-xs">{{ $t('ESTIMATED VALUE') }}</p>
           </div>
           <div :title="reward">
-            <p class="text-fpink text-xl font-bolder">~{{ rewardShort }}
-              <img class="inline-block w-4 h-3.5 -mt-1" src="../../assets/icons/Fungibl-F.svg" alt="$FUN Symbol">
+            <p class="text-fpink text-xl font-bolder">~{{ rewardShort }} {{ $t('$FUN') }}
+<!--              <img class="inline-block w-4 h-3.5 -mt-1" src="../../assets/icons/Fungibl-F.svg" alt="$FUN Symbol">-->
             </p>
-            <p class="text-fgreen text-xs">REWARD</p>
+            <p class="text-fgreen text-xs">{{ $t('ESTIMATED REWARD') }}</p>
           </div>
         </div>
       </div>
