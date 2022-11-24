@@ -4,7 +4,7 @@
          :class="{'hide': !(store.currentModal === 'mobile-menu' || (topOfPage && store.currentModal !== 'preview'))}">
       <styled-button button-style="nav-filled-mobile"
                      @click="launchApp">
-        {{ $t('LAUNCH APP') + $t('!') }}
+        {{ $t('LAUNCH APP!') }}
       </styled-button>
     </div>
   </footer>

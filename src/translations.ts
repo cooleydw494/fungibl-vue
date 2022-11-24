@@ -43,11 +43,12 @@ const messages: {[k:string]: {[k:string]: string}} = {
 
         // TRY TO KEEP THE SAME LENGTH
         "SUBMIT": "SUBMIT",
-        "WHAT IS FUN?": "WHAT IS $FUN?",
+        "WHAT IS $FUN?": "WHAT IS $FUN?",
         "HOW DO I USE IT?": "HOW DO I USE IT?",
         "OK, BUT I WANT DETAILS": "OK, BUT I WANT DETAILS",
         "FOUNDER": "FOUNDER",
         "PAST POSTS": "PAST POSTS",
+        "Written by": "Written by",
         "WANT TO BLOG WITH US?": "WANT TO BLOG WITH US?",
 
         // Marketing Copy
@@ -80,6 +81,7 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "BLOG": "BLOG",
         "CONTACT": "CONTACT",
         "LAUNCH!": "LAUNCH!",
+        "LAUNCH APP!": "LAUNCH APP!",
         "CLOSE": "CLOSE",
         "We appreciate your early support,": "We appreciate your early support,",
         "it encourages us to work hard for #algofam": "it encourages us to work hard for #algofam",
@@ -132,11 +134,12 @@ const messages: {[k:string]: {[k:string]: string}} = {
 
         // TRY TO KEEP THE SAME LENGTH
         "SUBMIT": "SUBMIT",
-        "WHAT IS FUN?": "¿QUÉ ES $FUN?",
+        "WHAT IS $FUN?": "¿QUÉ ES $FUN?",
         "HOW DO I USE IT?": "¿CÓMO USAR $FUN?",
         "OK, BUT I WANT DETAILS": "OK, PERO DIME MÁS…",
         "FOUNDER": "FUNDADOR",
         "PAST POSTS": "+PUBLICACIONES",
+        "Written by": "Escrito por",
         "WANT TO BLOG WITH US?": "¿QUIERES PUBLICAR AQUÍ?",
 
         // Marketing Copy
@@ -168,7 +171,8 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "ABOUT": "FUNGIBL",
         "BLOG": "BLOG",
         "CONTACT": "CONTACTANOS",
-        "LAUNCH!": "¡COMIENZA!",
+        "LAUNCH!": "¡ABRIR!",
+        "LAUNCH APP!": "¡ABRIR APP!",
         "CLOSE": "CLOSE",
         "We appreciate your early support,": "Gracias por apoyar este proyecto,",
         "it encourages us to work hard for #algofam": "que estés aquí nos motiva a seguir trabajando para la comunidad #algofam",

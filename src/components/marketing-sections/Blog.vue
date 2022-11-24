@@ -22,15 +22,15 @@
         </div>
         <div v-for="(blog, index) in pastPosts" :key="index" class="text-fblue">
           <h3 class="title" @click="openPost(blog.url)">{{ blog.title }}</h3>
-          <p>Written by {{ blog.author }}</p>
+          <p>{{ $t('Written by') }} {{ blog.author }}</p>
         </div>
         <div v-if="!pastPosts.length" class="text-fblue">
           <h3 class="title">{{ $t('NO PAST POST YET') }}</h3>
-          <p>Written by (soon!)</p>
+          <p>{{ $t('Written by') }} (???)</p>
         </div>
         <div v-if="!pastPosts.length" class="text-fblue">
           <h3 class="title">{{ $t('NO PAST POST YET') }}</h3>
-          <p>Written by (soon!)</p>
+          <p>{{ $t('Written by') }} (???)</p>
         </div>
       </div>
       <div class="blog-with-us">
