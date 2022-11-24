@@ -80,7 +80,7 @@ export default defineComponent({
           imageUrl: "https://fungible-files.s3.amazonaws.com/web-resources/blogs/AlisaYar.jpg",
           publishedAt: "Nov 16, 2022",
           author: "Alisa Yar",
-          previewText: "So, before I tell you about Algorand, I wanted to explain how I got here in the first place (tldr: accidentally). The first time i’ve heard about crypto was in November 2021. It was when everyone was bullish (hyped, excited) about NFTs and it was really hard not to hear or read about these JPEG drawings...",
+          previewText: "So, before I tell you about Algorand, I wanted to explain how I got here in the first place (tldr: accidentally). The first time I heard about crypto was in November 2021. It was when everyone was bullish (hyped, excited) about NFTs and it was really hard not to hear or read about these JPEG drawings...",
         },
         {
           title: "What's The Deal With Fungibl?",
