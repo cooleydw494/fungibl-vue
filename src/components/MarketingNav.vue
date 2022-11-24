@@ -138,6 +138,7 @@ export default defineComponent({
       document.querySelector('#tippy-top')
           .scrollIntoView({ behavior: "smooth" })
       this.topOfPage = true
+      state.currentModal(null)
     }
   },
 
