@@ -209,8 +209,6 @@ export default defineComponent({
       this.pullState = 'transferring_nft'
     },
     getPullCost() { return this.finalizedPullCost },
-    getFunToken() { return this.FUN_ASSET_ID },
-    getFungiblAppWallet() { return this.FUNGIBL_APP_WALLET },
     pullSuccess(nftAssetId) {
       this.pulledNftId = nftAssetId
       nftImageLoading(nftAssetId)

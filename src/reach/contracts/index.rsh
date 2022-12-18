@@ -1,6 +1,10 @@
 'reach 0.1'
 
 export const main = Reach.App(() => {
+  const Fungibl = Participant('Fungibl', {
+    fungiblAddress: Address,
+    nftAssetId: Token,
+  })
   const Submitter = Participant('Submitter', {
     getNftAssetId: Fun([], Token),
     initializing: Fun([], Null),

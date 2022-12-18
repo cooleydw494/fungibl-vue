@@ -42,14 +42,14 @@
         <img v-show="['not_submitting'].includes(submitState)" class="illustration"
              src="../../assets/illustrations/submit/Submit-1.svg"
              :alt="`${$t('Submit Illustration')} 1`">
-        <img v-show="['creating', 'initializing'].includes(submitState)" class="illustration animate-pulse"
+        <img v-show="['creating'/*, 'attaching'*/].includes(submitState)" class="illustration animate-pulse"
              src="../../assets/illustrations/submit/Submit-2.svg"
              :alt="`${$t('Submit Illustration')} 2`">
-<!--        <img v-show="['initializing'].includes(submitState)" class="illustration animate-pulse"-->
-<!--             src="../../assets/illustrations/submit/Submit-3.svg"-->
-<!--             :alt="`${$t('Submit Illustration')} 3`">-->
-        <img v-show="['transferring'].includes(submitState)" class="illustration animate-pulse"
+        <img v-show="['attaching'].includes(submitState)" class="illustration animate-pulse"
              src="../../assets/illustrations/submit/Submit-3.svg"
+             :alt="`${$t('Submit Illustration')} 3`">
+        <img v-show="['transferring'].includes(submitState)" class="illustration animate-pulse"
+             src="../../assets/illustrations/submit/Submit-4.svg"
              :alt="`${$t('Submit Illustration')} 3`">
         <img v-show="['done'].includes(submitState)" class="illustration"
              src="../../assets/illustrations/submit/Submit-5.svg"
@@ -57,8 +57,8 @@
 
         <h2 v-if="submitState === 'not_submitting'" class="text-faqua font-extrabold mb-6">ARE YOU SURE?</h2>
         <h2 v-if="submitState === 'creating'" class="text-fblue font-extrabold mb-6">CREATING CONTRACT</h2>
-        <h2 v-if="submitState === 'initializing'" class="text-fblue font-extrabold mb-6">INITIALIZING</h2>
-        <h2 v-if="submitState === 'transferring'" class="text-fblue font-extrabold mb-6">TRANSFERRING</h2>
+        <h2 v-if="submitState === 'attaching'" class="text-fblue font-extrabold mb-6">ATTACHING</h2>
+        <h2 v-if="submitState === 'transferring'" class="text-fblue font-extrabold mb-6">TRANSFERRING NFT</h2>
         <h2 v-if="submitState === 'done'" class="text-fblue font-extrabold mb-6">SUCCESS!</h2>
 
 
@@ -122,11 +122,12 @@ export default defineComponent({
       },
       selected: null,
       showSubmissionModal: false,
-      // 'creating', 'initializing', 'transferring', 'done'
+      // 'creating', 'attaching', 'transferring', 'done'
       submitState: 'not_submitting',
       finalizedReward: null,
       contractInfo: null,
       ctc: null,
+      stdLib: null,
     }
   },
 
@@ -180,26 +181,35 @@ export default defineComponent({
       store.selectedNft((this.store.nfts.filter(nft => nft['asset-id'] === nftId))[0])
       store.selectedNftEstimates({ estAlgo: Math.floor(Math.random() * 240) + 10 })
     },
-    initSubmission() {
-      this.finalizedReward = this.reward // TODO: this needs to happen after database stuff
-      this.showSubmissionModal = true
-    },
+    initSubmission() { this.showSubmissionModal = true },
     async submitSelectedNft() {
       this.submitState = 'creating'
-      this.ctc = this.store.account.contract(backend)
-      this.stdLib = await useReach()
+      await Promise.all([
+          await this.getSubmitContract(),
+          await this.loadStdLib(),
+      ])
+      await this.getSubmitContract()
+      this.submitState = 'attaching'
+      const contractInfo = JSON.parse(this.contractInfo)
+      this.ctc = this.store.account.contract(backend, contractInfo)
       await this.stdLib.withDisconnect(() => backend.Submitter(this.ctc, this)
           .catch((err) => {
             this.oop(err, 'Contract incomplete')
             this.reInitialize()
           }))
     },
+    async getSubmitContract() {
+      const requestData = { nft_asset_id: this.store.selectedNft, }
+      return post('create-submit-contract', requestData)
+          .then(res => this.contractInfo = res.data.ctc_info)
+          .catch(err => this.oop(err))
+    },
+    async loadStdLib() { this.stdLib = await useReach() },
 
     // The rest of these methods are triggered by Reach
-    initializing() { this.submitState = 'initializing' },
     signingTransfer() { this.submitState = 'transferring' },
     async submitSuccess(assetId) {
-      this.contractInfo = JSON.stringify(await this.ctc.getInfo(), null, 2)
+      // this.contractInfo = JSON.stringify(await this.ctc.getInfo(), null, 2)
       console.log('assetId', assetId)
       console.log('selectedNftId', this.store.selectedNftId)
       console.log('contractInfo', this.contractInfo)
@@ -209,17 +219,24 @@ export default defineComponent({
       }
       await post('nfts/add-to-pool',
           { nfts: [{...this.store.selectedNft, estimated_value: this.store.selectedNftEstimates.estAlgo, contract_info: this.contractInfo }] })
-          .then(() => {
-            store.nfts(this.store.nfts.filter(nft => nft['asset-id'] !== this.store.selectedNftId))
-            this.submitState = 'done'
+          .then((res) => {
+            if (res.pool_nfts[0]) {
+              const poolNft = res.pool_nfts[0]
+              console.log(poolNft)
+              this.finalizedReward = res.finalized_reward
+              store.nfts(this.store.nfts.filter(nft => nft['asset-id'] !== this.store.selectedNftId))
+              this.submitState = 'done'
+            } else {
+              const exception = res.exceptions[0]
+              console.log(exception)
+              this.oop(null,`Failed to sync NFT add with database / send $FUN. Contact support. IMPORTANT! Save this contract info and include in support ticket (also in console): ${this.contractInfo}`)
+              this.reInitialize()
+            }
           }).catch((err) => {
             this.oop(null,`Failed to sync NFT add with database / send $FUN. Contact support. IMPORTANT! Save this contract info and include in support ticket (also in console): ${this.contractInfo}`)
             this.reInitialize()
           })
       // this.stdLib.disconnect()
-    },
-    getNftAssetId() {
-      return this.store.selectedNftId
     },
   }
 
