@@ -4,6 +4,8 @@ import {get, post} from "../api"
 import {Algodv2} from "algosdk"
 import {getAlgodClient} from "../algod"
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer"
+import {parseASAUrl} from "../ipfs/nft"
+import {getMetaFromIpfs} from "../ipfs/ipfs"
 
 const StoreMixin = defineComponent({
   data(): any {
@@ -103,7 +105,7 @@ const StoreMixin = defineComponent({
       try {
         let nextToken = ''
         let moreResults = true
-        const limit = 5
+        const limit = 50
         do {
           const assetsRes = await useIndexerClient()
               .lookupAccountAssets(this.getState('address'))
@@ -116,24 +118,31 @@ const StoreMixin = defineComponent({
         store.assets(this.getState('assets').filter((asset: {[k: string]: any}) => {
           return asset.amount > 0 && !asset['is-frozen'] && !asset.deleted
         }))
-        const algod = await this.getAlgodClient()
-        store.assets(await Promise.all(this.getState('assets').map(async (asset: {[k: string]: any}) => {
-          const assetInfo = await algod.getAssetByID(asset['asset-id']).do()
-          // const base = 'https://gateway.pinata.cloud/ipfs/'
-          const base = 'https://nftstorage.link/ipfs/'
-          const assetUrl = assetInfo.params.url
-          const index = assetUrl.indexOf('ipfs://') > -1 ?
-              assetUrl.indexOf('ipfs://') + 7 : assetUrl.indexOf('ipfs/') + 5;
-          const imageUrl = `${base}${assetUrl.substr(index)}`
-          const label = `${assetInfo.params.name} - ${assetInfo.params['unit-name']}`
-          return {...asset, ...assetInfo, imageUrl, label}
-        })))
         store.nfts(
             await Promise.all(this.getState('assets').filter(
                 (asset: {[k: string]: any}) => {
                   return asset.amount === 1
                 }))
         )
+        const algod = await this.getAlgodClient()
+        store.nfts(await Promise.all(this.getState('nfts').map(async (nft: {[k: string]: any}) => {
+          const nftInfo = await algod.getAssetByID(nft['asset-id']).do()
+          // const base = 'https://gateway.pinata.cloud/ipfs/'
+          const base = 'https://nftstorage.link/ipfs/'
+          let assetUrl = nftInfo.params.url
+          const isArc19 = nftInfo.params.url.includes('template-ipfs')
+          console.log(assetUrl)
+          assetUrl = parseASAUrl(assetUrl, nftInfo.params.reserve)
+          if (isArc19) {
+            const metadataUrl = assetUrl
+            assetUrl = (await getMetaFromIpfs(metadataUrl))['image']
+          }
+          const index = assetUrl.indexOf('ipfs://') > -1 ?
+              assetUrl.indexOf('ipfs://') + 7 : assetUrl.indexOf('ipfs/') + 5;
+          const imageUrl = `${base}${assetUrl.substr(index)}`
+          const label = `${nftInfo.params.name} - ${nftInfo.params['unit-name']}`
+          return {...nft, ...nftInfo, imageUrl, label}
+        })))
         await this.syncNftsToBackend(this.getState('nfts'))
       } catch (err) { this.oop(err, 'There was an error getting assets/nfts')}
       console.log('Finished fetching assets/nfts')

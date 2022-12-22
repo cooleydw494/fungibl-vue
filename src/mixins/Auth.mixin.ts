@@ -108,7 +108,7 @@ const AuthMixin = defineComponent({
           localStorage.setItem('funAuthWallet', this.getState('address'))
           store.authConfirmed(true)
         }).catch(err => this.oop(err, 'Call to API login failed'))
-      } catch (err) { this.oop(err, 'ALGO wallet auth transaction failed') }
+      } catch (err) { this.oop(err, 'ALGO wallet auth transaction failed. You may need to enable pop-ups for this page.') }
       console.log('Finished auth')
     },
 
