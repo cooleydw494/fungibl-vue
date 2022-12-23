@@ -39,3 +39,16 @@ export async function getAlgodClient(): Promise<Algodv2> {
     //     console.log(e)
     // })
 }
+
+// This is apparently not a thing, the openAI chatbot tried to make it work for me but I get CORS error
+// export async function getAssetsByIDs(client: Algodv2, assetIds: Array<number|string>) {
+//     const response = await client.c.get(
+//         '/v2/assets',
+//         {
+//             'ids': assetIds.join(',')
+//         }, {
+//             'X-API-Key': process.env.VUE_APP_ALGOD_API_KEY || ''
+//         }
+//     )
+//     return response.body?.assets
+// }
