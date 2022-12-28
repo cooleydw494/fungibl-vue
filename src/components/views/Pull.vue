@@ -100,9 +100,11 @@ import NftImage from "@/components/utilities/NftImage"
 import {defaultPoolMetas} from "@/defaults"
 import {formatNumberShort} from "@jackcom/reachduck"
 import {nftImageLoading} from "@/state"
-import {get} from "@/api"
+import {get, post} from "@/api"
 import * as backend from "@/reach/contracts/build/index.main.mjs"
 import ImageKitMixin from "@/mixins/ImageKit.mixin";
+import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
+import {loadStdlib} from "@reach-sh/stdlib";
 
 export default defineComponent({
   components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, PullHeaders,
@@ -174,8 +176,9 @@ export default defineComponent({
     },
     initPull() { this.showPullModal = true },
     async pull() {
+      const payTxn = this.payPullCost()
       this.pullState = 'attaching'
-      const contractInfo = JSON.parse(await this.getRandomContractInfo())
+      const contractInfo = JSON.parse(await this.getRandomContractInfo(payTxn))
       this.ctc = this.store.account.contract(backend, contractInfo)
       await backend.Puller(this.ctc, this)
           .catch((err) => {
@@ -183,8 +186,8 @@ export default defineComponent({
             this.reInitialize()
           })
     },
-    async getRandomContractInfo() {
-      const res = await get('random-contract-info').catch(err => {
+    async getRandomContractInfo(payTxn) {
+      const res = await post(`random-contract-info?`, {pay_txn: JSON.stringify(payTxn)}).catch(err => {
         this.oop(err, 'Failed to fetch random NFT contract')
       })
       this.finalizedPullCost = res.finalized_pull_cost
@@ -213,12 +216,22 @@ export default defineComponent({
       this.pulledNftId = nftAssetId
       nftImageLoading(nftAssetId)
       this.pullState = 'done'
-      // TODO: will need to split this off when implementing a more secure flow
-      // post(`nfts/${nftAssetId}/pulled`).catch(err => {
-      //   this.oop(err, 'Database was not informed of NFT pull, ' +
-      //       'please notify Fungibl of this for the good of humanity')
-      // })
     },
+    async payPullCost() {
+      const reach = loadStdlib()
+      reach.setSigningMonitor(async (evt, pre, post) =>
+          this.txns.push({evt, pre: await pre, post: await post}))
+      await reach.transfer(this.getState('account'), this.getState('account'), this.getPullCost(), this.FUN_ASSET_ID, {note: 'pull cost payment'})
+      do {
+        await this.sleep(100)
+      } while (this.txns.length === 0)
+      const reachTxn = this.txns[0].evt[0].txn
+      const accountTxns = await useIndexerClient()
+          .lookupAccountTransactions(this.getState('address')).limit(1).do()
+      const txn = accountTxns.transactions[0]
+      txn.txn = reachTxn
+      return reachTxn
+    }
   }
 
 })

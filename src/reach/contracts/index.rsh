@@ -21,7 +21,7 @@ export const main = Reach.App(() => {
   })
   const Oracle = API('Oracle', {
     verifyNftIsSubmitted: Fun([], Bool),
-    // Args: Puller Address, Additional Cost, Refund Amount
+    // Args: pullerAddress, additionalCost, refundAmount, platformFee
     setPullDetails: Fun([Address, UInt, UInt, UInt], Null),
   })
 
