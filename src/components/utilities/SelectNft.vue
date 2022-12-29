@@ -199,7 +199,7 @@ export default defineComponent({
           }))
     },
     async getSubmitContract() {
-      const requestData = { nft_asset_id: this.store.selectedNft, }
+      const requestData = { nft_asset_id: this.store.selectedNftId, }
       return post('create-submit-contract', requestData)
           .then(res => this.contractInfo = res.data.ctc_info)
           .catch(err => this.oop(err))

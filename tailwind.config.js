@@ -110,11 +110,11 @@ module.exports = {
       screens: {
         xxs: '480px',
         xs: '568px',
-        // sm: '640px',
-        // md: '768px',
-        // lg: '1024px',
-        // xl: '1280px',
-        // '2xl': '1536px',
+        sm: '640px', // default options
+        md: '768px', // default options
+        lg: '1024px', // default options
+        xl: '1280px', // default options
+        '2xl': '1536px', // default options
         '3xl': '1760px',
         '4xl': '1920px',
       },

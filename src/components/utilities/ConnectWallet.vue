@@ -1,6 +1,6 @@
 <template>
   <div class="w-full md:w-auto">
-    <styled-button :button-style="'connect'" @click="toggleConnect" class="md:mx-4">
+    <styled-button :button-style="'connect'" @click="handleClick" class="md:mx-4">
       <div v-if="!store.connected" class="content-container">
         <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
         {{ connectButtonText }}
@@ -29,6 +29,9 @@
         <styled-button button-style="connect" darker-bg @click="connectToProvider(provider.value)">{{ provider.name }}</styled-button>
       </div>
     </modal>
+    <modal name="user-profile" close-button center>
+      <user-profile @disconnect-wallet="disconnect"></user-profile>
+    </modal>
   </div>
 </template>
 
@@ -39,6 +42,7 @@ import {
   disconnectWallet,
   } from "@/reach"
 import StyledButton from "./StyledButton.vue"
+import UserProfile from "@/components/view-modals/UserProfile"
 import Modal from "./Modal"
 import AuthMixin from "@/mixins/Auth.mixin"
 import store from "@/state"
@@ -46,7 +50,7 @@ import store from "@/state"
 export default defineComponent({
   name: "ConnectWallet",
 
-  components: { StyledButton, Modal },
+  components: { StyledButton, Modal, UserProfile, },
 
   mixins: [AuthMixin],
 
@@ -83,12 +87,17 @@ export default defineComponent({
   },
 
   methods: {
-    toggleConnect() {
+    handleClick() {
+      if (this.store.connected)
+        this.setModal('user-profile')
+      else
+        this.showWalletSelect = true
+    },
+    disconnect() {
       if (this.store.connected) {
         this.store.disconnecting = true
         return disconnectWallet()
       }
-      this.showWalletSelect = true
     },
     async connectToProvider(provider) {
       this.showWalletSelect = false

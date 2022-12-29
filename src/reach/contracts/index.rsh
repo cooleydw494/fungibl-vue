@@ -27,6 +27,9 @@ export const main = Reach.App(() => {
 
   init()
 
+  Deployer.publish()
+  commit()
+
   // Contract created by nodejs backend and verifiable info provided
   Deployer.only(() => {
     const nftAssetId = declassify(interact.nftAssetId)

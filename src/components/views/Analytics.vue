@@ -1,93 +1,90 @@
 <template>
-  <page-container>
-    <section class="analytics">
-      <div class="first-row">
-        <div class="featured-nft">
-          <img :src="featuredNftUrl" :alt="$t('Featured Pool NFT')">
-        </div>
-        <div class="current-metas">
-          <div class="metas">
-            <div class="meta">
-              <div class="value-label">
-                <p class="value text-faqua">FUNFT #056</p>
-                <p class="label">{{ $t('FEATURED') }}</p>
-              </div>
+  <section class="analytics">
+    <div class="first-row">
+      <div class="featured-nft">
+        <img :src="featuredNftUrl" :alt="$t('Featured Pool NFT')">
+      </div>
+      <div class="current-metas">
+        <div class="metas">
+          <div class="meta">
+            <div class="value-label">
+              <p class="value text-faqua">FUNFT #056</p>
+              <p class="label">{{ $t('FEATURED') }}</p>
             </div>
-            <div class="meta">
-              <div class="value-label">
-                <p class="value text-faqua">{{ 3458455 }}</p>
-                <p class="label">{{ $t('ASA ID') }}</p>
-              </div>
+          </div>
+          <div class="meta">
+            <div class="value-label">
+              <p class="value text-faqua">{{ 3458455 }}</p>
+              <p class="label">{{ $t('ASA ID') }}</p>
             </div>
-            <div class="meta">
-              <div class="value-label">
-                <p class="value">{{ store.poolMetas.current_nft_count }}</p>
-                <p class="label">{{ $t('NFT COUNT') }}</p>
-              </div>
+          </div>
+          <div class="meta">
+            <div class="value-label">
+              <p class="value">{{ store.poolMetas.current_nft_count }}</p>
+              <p class="label">{{ $t('NFT COUNT') }}</p>
             </div>
-            <div class="meta">
-              <div class="value-label">
-                <p class="text-fwhite value">{{ costRewardRatio }}</p>
-                <p class="label">{{ $t('COST/REWARD RATIO') }}</p>
-              </div>
+          </div>
+          <div class="meta">
+            <div class="value-label">
+              <p class="text-fwhite value">{{ costRewardRatio }}</p>
+              <p class="label">{{ $t('COST/REWARD RATIO') }}</p>
             </div>
-            <div class="meta">
-              <div class="value-label">
-                <p class="text-fpink value">{{ currentPullCostShort }} {{ $t('$FUN') }}</p>
-                <p class="label">{{ $t('PULL COST') }}</p>
-              </div>
+          </div>
+          <div class="meta">
+            <div class="value-label">
+              <p class="text-fpink value">{{ currentPullCostShort }} {{ $t('$FUN') }}</p>
+              <p class="label">{{ $t('PULL COST') }}</p>
             </div>
-            <div class="meta">
-              <div class="value-label">
-                <p class="text-fpink value">{{ currentAvgRewardShort }} {{ $t('$FUN') }}</p>
-                <p class="label">{{ $t('AVG REWARD') }}</p>
-              </div>
+          </div>
+          <div class="meta">
+            <div class="value-label">
+              <p class="text-fpink value">{{ currentAvgRewardShort }} {{ $t('$FUN') }}</p>
+              <p class="label">{{ $t('AVG REWARD') }}</p>
             </div>
-            <div class="meta">
-              <div class="value-label">
-                <p class="text-fblue value">{{ store.poolMetas.current_pool_value }} {{ $t('$ALGO') }}</p>
-                <p class="label">{{ $t('EST POOL VALUE') }}</p>
-              </div>
+          </div>
+          <div class="meta">
+            <div class="value-label">
+              <p class="text-fblue value">{{ store.poolMetas.current_pool_value }} {{ $t('$ALGO') }}</p>
+              <p class="label">{{ $t('EST POOL VALUE') }}</p>
             </div>
-            <div class="meta">
-              <div class="value-label">
-                <p class="text-fblue value">{{ avgNftValue }} {{ $t('$ALGO') }}</p>
-                <p class="label">{{ $t('AVG NFT VALUE') }}</p>
-              </div>
+          </div>
+          <div class="meta">
+            <div class="value-label">
+              <p class="text-fblue value">{{ avgNftValue }} {{ $t('$ALGO') }}</p>
+              <p class="label">{{ $t('AVG NFT VALUE') }}</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="second-row">
-        <div class="chart w-full">
-          <FunLineChart class="w-full" ref="funChart" :chartId="'funChart'" :iterations="logs" :minTime="minTime" :maxTime="maxTime" :defaultOpts="[['current_pull_cost', 1], ['current_avg_reward', 2]]"></FunLineChart>
-        </div>
+    </div>
+    <div class="second-row">
+      <div class="chart w-full">
+        <FunLineChart class="w-full" ref="funChart" :chartId="'funChart'" :iterations="logs" :minTime="minTime" :maxTime="maxTime" :defaultOpts="[['current_pull_cost', 1], ['current_avg_reward', 2]]"></FunLineChart>
+      </div>
 <!--        <div class="counts inline-block w-1/5">-->
 <!--          {{ JSON.stringify(counts) }}-->
 <!--        </div>-->
-      </div>
-      <div class="third-row">
-        <button v-for="(duration, index) in ['30m', '1h', '12h', '1d', '7d', '30d']"
-                :key="index"
-                @click="changeDuration(duration)"
-                :class="{/* bg-purple-200 */'text-fdark bg-fblue/75': this.duration === duration, 'bg-fdark/25': this.duration !== duration}"
-                class="m-1 p-1 px-4 rounded text-xxs font-bold"
-        >
-          {{ duration }}
-        </button>
+    </div>
+    <div class="third-row">
+      <button v-for="(duration, index) in ['30m', '1h', '12h', '1d', '7d', '30d']"
+              :key="index"
+              @click="changeDuration(duration)"
+              :class="{/* bg-purple-200 */'text-fdark bg-fblue/75': this.duration === duration, 'bg-fdark/25': this.duration !== duration}"
+              class="m-1 p-1 px-4 rounded text-xxs font-bold"
+      >
+        {{ duration }}
+      </button>
 <!--        <button @click="toggleTrendline"-->
 <!--                :class="{/* bg-purple-200 */'text-fdark bg-fblue/75': showTrendline, 'bg-fdark/25': !showTrendline}"-->
 <!--                class="m-1 p-1 px-2 rounded text-xxs font-bold">-->
 <!--          {{ $t(`Trend Line`) }}-->
 <!--        </button>-->
-      </div>
-    </section>
-  </page-container>
+    </div>
+  </section>
 </template>
 
 <script>
 import { defineComponent } from "vue"
-import PageContainer from "../utilities/PageContainer.vue"
 import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel"
 import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel"
 import StyledButton from "@/components/utilities/StyledButton"
@@ -99,8 +96,7 @@ import {get} from "@/api"
 import StoreMixin from "@/mixins/Store.mixin"
 
 export default defineComponent({
-  components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, StyledButton,
-  FunLineChart,},
+  components: { TopOrLeftPanel, BottomOrRightPanel, StyledButton, FunLineChart,},
   name: "Analytics",
 
   mixins: [StoreMixin,],

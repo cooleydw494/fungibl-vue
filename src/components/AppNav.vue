@@ -12,10 +12,10 @@
       <div class="logo" @click="doMint">
         <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" />
       </div>
-      <router-link v-if="!isAnalytics" to="/analytics">
+      <a v-if="!isAnalytics" @click="openAnalytics">
         <img src="../assets/icons/Analytics-Icon.svg"
              :alt="analyticsAlt" :title="analyticsAlt">
-      </router-link>
+      </a>
       <router-link v-if="isAnalytics" to="/pull">
         <img src="../assets/icons/Pull-Icon-Green.svg"
              :alt="pullAlt" :title="pullAlt">
@@ -25,8 +25,8 @@
 </template>
 
 <script lang="js">
-import { defineComponent } from "vue";
-import {mintNfts} from "@/mint";
+import { defineComponent } from "vue"
+import {mintNfts} from "@/mint"
 
 export default defineComponent({
   name: "AppNav",
@@ -43,6 +43,9 @@ export default defineComponent({
   methods: {
     doMint() {
       // mintNfts();
+    },
+    openAnalytics() {
+      this.setModal('analytics')
     }
   }
 });

@@ -32,11 +32,15 @@
       </h6>
     </div>
   </modal>
+  <modal name="analytics" close-button center>
+    <analytics></analytics>
+  </modal>
 </template>
 
 <script>
 import MarketingNav from "@/components/MarketingNav"
 import MobileLaunchButton from "@/components/MobileLaunchButton"
+import Analytics from "@/components/views/Analytics"
 import AppNav from "./components/AppNav.vue"
 import AppFooter from "./components/AppFooter.vue"
 import Modal from "@/components/utilities/Modal"
@@ -48,7 +52,7 @@ export default {
   name: "App",
 
   components: { MarketingNav, MobileLaunchButton, AppNav, AppFooter, Modal,
-  IntersectionObserver, },
+  IntersectionObserver, Analytics},
 
   mixins: [AuthMixin],
 

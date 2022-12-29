@@ -6,18 +6,26 @@
     <div class="slot">
       <slot />
     </div>
+    <div v-if="closeButton" class="w-full flex justify-center px-4">
+      <styled-button v-if="!store.isMobile" button-style="primary wide mt-12" @click="setModal(null)">
+        {{ $t('CLOSE') }}
+      </styled-button>
+    </div>
   </section>
 </template>
 
 <script>
 import { defineComponent } from "@vue/runtime-core"
 import state from "@/state"
+import StyledButton from "@/components/utilities/StyledButton"
 import StoreMixin from "@/mixins/Store.mixin"
 
 export default defineComponent({
   name: "Modal",
 
   mixins: [StoreMixin],
+
+  components: { StyledButton, },
 
   props: {
     name: {
@@ -53,6 +61,10 @@ export default defineComponent({
       required: false,
     },
     noLogo: {
+      type: Boolean,
+      default: false,
+    },
+    closeButton: {
       type: Boolean,
       default: false,
     }

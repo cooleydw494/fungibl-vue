@@ -20,7 +20,7 @@ import { defineComponent } from "@vue/runtime-core"
 import StyledButton from "@/components/utilities/StyledButton"
 import {FulfillingSquareSpinner} from "epic-spinners"
 import {nftImageLoading} from "@/state"
-import {spacing} from "@/tailwindExports"
+import {screens} from "@/tailwindExports"
 
 export default defineComponent({
   name: "NftImage",
@@ -54,7 +54,15 @@ export default defineComponent({
       return this.nft.name
     },
     widthStyle() {
-      return `width: ${this.imageWidth}px;`
+      let imageWidth = this.imageWidth
+      const md = parseInt(screens['md'].replace('px', ''))
+      let height = window.innerHeight;
+      // if this becomes an issue we could use the store.innerHeight
+      // however we can probably assume people aren't resizing the window height
+      if ((height <= md) && ((height / 3.5) < this.imageWidth)) {
+        imageWidth = Math.round(height / 3.5)
+      }
+      return `width: ${imageWidth}px;`
     }
   },
 

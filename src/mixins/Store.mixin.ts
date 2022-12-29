@@ -46,7 +46,7 @@ const StoreMixin = defineComponent({
      * Optionally returns a keyed object to initialize local component store.
      * This can prevent lag between component mount and update, as well as
      * initialization issues on mount when the store has already been updated */
-    subscribe(keys: string[], initializeLocal = false): {[k:string]: any}|void {
+    subscribe(keys: any[], initializeLocal = false): {[k:string]: any}|void {
       // Subscription returns an "unsubscribe" function (used in unmount).
       // See docs for @jackcom/raphsducks to see how the global store works.
       this.unsubscribeStore = store.subscribeToKeys(this.onStoreUpdate, keys)
