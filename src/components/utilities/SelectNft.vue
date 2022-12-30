@@ -201,7 +201,7 @@ export default defineComponent({
     async getSubmitContract() {
       const requestData = { nft_asset_id: this.store.selectedNftId, }
       return post('create-submit-contract', requestData)
-          .then(res => this.contractInfo = res.data.ctc_info)
+          .then(res => this.contractInfo = res.ctc_info)
           .catch(err => this.oop(err))
     },
     async loadStdLib() { this.stdLib = await useReach() },

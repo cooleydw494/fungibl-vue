@@ -27,8 +27,8 @@ function parseASAUrl(url: string, reserveAddr: string): string {
         url = url.slice(0, url.length - ARC3_URL_SUFFIX.length)
 
     let chunks = url.split('://')
-    console.log('resolve protocol:', url)
-    console.log(chunks)
+    // console.log('resolve protocol:', url)
+    // console.log(chunks)
     // Check if prefix is template-ipfs and if {ipfscid:..} is where CID would normally be
     if (chunks[0] === 'template-ipfs' && chunks[1].startsWith('{ipfscid:')) {
         // Look for something like: template:ipfs://{ipfscid:1:raw:reserve:sha2-256} and parse into components

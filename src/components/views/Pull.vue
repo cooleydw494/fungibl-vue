@@ -124,6 +124,7 @@ export default defineComponent({
       pulledNftId: null,
       finalizedPullCost: null,
       optInToken: null,
+      txns: [],
     }
   },
 
@@ -176,7 +177,7 @@ export default defineComponent({
     },
     initPull() { this.showPullModal = true },
     async pull() {
-      const payTxn = this.payPullCost()
+      const payTxn = await this.payPullCost()
       this.pullState = 'attaching'
       const contractInfo = JSON.parse(await this.getRandomContractInfo(payTxn))
       this.ctc = this.store.account.contract(backend, contractInfo)
@@ -211,7 +212,6 @@ export default defineComponent({
       console.log('transferringNftToPuller')
       this.pullState = 'transferring_nft'
     },
-    getPullCost() { return this.finalizedPullCost },
     pullSuccess(nftAssetId) {
       this.pulledNftId = nftAssetId
       nftImageLoading(nftAssetId)
@@ -221,7 +221,7 @@ export default defineComponent({
       const reach = loadStdlib()
       reach.setSigningMonitor(async (evt, pre, post) =>
           this.txns.push({evt, pre: await pre, post: await post}))
-      await reach.transfer(this.getState('account'), this.getState('account'), this.getPullCost(), this.FUN_ASSET_ID, {note: 'pull cost payment'})
+      await reach.transfer(this.getState('account'), this.getState('account'), this.store.poolMetas.current_pull_cost, this.FUN_ASSET_ID, {note: this.str2arr('pull cost payment')})
       do {
         await this.sleep(100)
       } while (this.txns.length === 0)

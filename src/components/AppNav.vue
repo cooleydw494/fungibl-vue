@@ -75,6 +75,7 @@ header {
 
     /* <router-link> becomes <a> */
     a {
+      @apply hover:cursor-pointer;
       img {
         @apply w-18 h-18 mx-0 md:mx-2 xl:mx-4;
       }

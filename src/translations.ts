@@ -40,6 +40,18 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "ESTIMATED REWARD": "ESTIMATED REWARD",
         "ESTIMATED VALUE": "ESTIMATED VALUE",
         "Submit Illustration": "Submit Illustration",
+        "PULL COST": "PULL COST",
+        "AVG REWARD": "AVG REWARD",
+        "EST POOL VALUE": "EST POOL VALUE",
+        "Pull Illustration": "Pull Illustration",
+        "COST/REWARD RATIO": "COST/REWARD RATIO",
+        "NFT COUNT": "NFT COUNT",
+        "ASA ID": "ASA ID",
+        "FEATURED": "FEATURED",
+        "Featured Pool NFT": "Featured Pool NFT",
+        "AVG NFT VALUE": "AVG NFT VALUE",
+        "Awaiting Confirmation From": "Awaiting Confirmation From",
+        "CANCEL": "CANCEL",
 
         // TRY TO KEEP THE SAME LENGTH
         "SUBMIT": "SUBMIT",
@@ -130,6 +142,18 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "ESTIMATED REWARD": "ESTIMATED REWARD",
         "ESTIMATED VALUE": "ESTIMATED VALUE",
         "Submit Illustration": "Submit Illustration",
+        "PULL COST": "PULL COST",
+        "AVG REWARD": "AVG REWARD",
+        "EST POOL VALUE": "EST POOL VALUE",
+        "Pull Illustration": "Pull Illustration",
+        "COST/REWARD RATIO": "COST/REWARD RATIO",
+        "NFT COUNT": "NFT COUNT",
+        "ASA ID": "ASA ID",
+        "FEATURED": "FEATURED",
+        "Featured Pool NFT": "Featured Pool NFT",
+        "AVG NFT VALUE": "AVG NFT VALUE",
+        "Awaiting Confirmation From": "Awaiting Confirmation From",
+        "CANCEL": "CANCEL",
 
 
         // TRY TO KEEP THE SAME LENGTH

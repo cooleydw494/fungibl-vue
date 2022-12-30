@@ -29,7 +29,7 @@
         <styled-button button-style="connect" darker-bg @click="connectToProvider(provider.value)">{{ provider.name }}</styled-button>
       </div>
     </modal>
-    <modal name="user-profile" close-button center>
+    <modal name="user-profile" close-button no-logo center>
       <user-profile @disconnect-wallet="disconnect"></user-profile>
     </modal>
   </div>

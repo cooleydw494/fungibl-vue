@@ -1,13 +1,19 @@
 'reach 0.1'
 
+const Common = {
+    ...hasConsoleLogger,
+}
+
 export const main = Reach.App(() => {
   const Deployer = Participant('Deployer', {
+    log: Fun([UInt], Null),
     fungiblAddress: Address,
     submitterAddress: Address,
     // creatorAddress: Address,
     funToken: Token,
     nftAssetId: Token,
     // creatorDonation: UInt,
+    ...Common,
   })
   const Submitter = Participant('Submitter', {
     signingTransfer: Fun([], Null),
@@ -20,18 +26,16 @@ export const main = Reach.App(() => {
     transferringNftToPuller: Fun([], Null),
   })
   const Oracle = API('Oracle', {
-    verifyNftIsSubmitted: Fun([], Bool),
+    verifyNftSubmitted: Fun([], Bool),
     // Args: pullerAddress, additionalCost, refundAmount, platformFee
     setPullDetails: Fun([Address, UInt, UInt, UInt], Null),
   })
 
   init()
 
-  Deployer.publish()
-  commit()
-
   // Contract created by nodejs backend and verifiable info provided
   Deployer.only(() => {
+    interact.log(1)
     const nftAssetId = declassify(interact.nftAssetId)
     const funToken = declassify(interact.funToken)
     assume(funToken != nftAssetId)
@@ -39,10 +43,11 @@ export const main = Reach.App(() => {
     const submitterAddress = declassify(interact.submitterAddress)
     // const creatorAddress = declassify(interact.creatorAddress)
     // const creatorDonation = declassify(interact.creatorDonation)
+    interact.log(2)
   })
   Deployer.publish(nftAssetId, funToken, fungiblAddress, submitterAddress)
   // some just in case checks, although this should be true
-  require(funToken != nftAssetId, "NFT is $FUN ASA")
+  // require(funToken != nftAssetId, "NFT is $FUN ASA")
   commit()
 
   Submitter.only(() => {
@@ -59,7 +64,7 @@ export const main = Reach.App(() => {
   Submitter.interact.submitSuccess(nftAssetId)
 
   // Deployer validates that the contract can continue based on database info
-  const [[], returnIsNftSubmitted] = call(Oracle.verifyNftIsSubmitted).assume(() => {
+  const [[], returnIsNftSubmitted] = call(Oracle.verifyNftSubmitted).assume(() => {
     check(this == Deployer, "Invalid Oracle (must be Deployer)")
   })
   require(this == Deployer, "Invalid Oracle (must be Deployer)")

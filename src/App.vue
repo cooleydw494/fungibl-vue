@@ -32,7 +32,7 @@
       </h6>
     </div>
   </modal>
-  <modal name="analytics" close-button center>
+  <modal name="analytics" close-button no-logo center>
     <analytics></analytics>
   </modal>
 </template>

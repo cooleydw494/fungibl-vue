@@ -131,7 +131,6 @@ const StoreMixin = defineComponent({
           const base = 'https://nftstorage.link/ipfs/'
           let assetUrl = nftInfo.params.url
           const isArc19 = nftInfo.params.url.includes('template-ipfs')
-          console.log(assetUrl)
           assetUrl = parseASAUrl(assetUrl, nftInfo.params.reserve)
           if (isArc19) {
             const metadataUrl = assetUrl
