@@ -89,10 +89,10 @@ import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel"
 import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel"
 import StyledButton from "@/components/utilities/StyledButton"
 import FunLineChart from "@/components/utilities/FunLineChart"
-import {defaultPoolMetas} from "@/defaults"
+import {defaultPoolMetas} from "@/utilities/defaults"
 import {formatNumberShort} from "@jackcom/reachduck"
 import moment from 'moment'
-import {get} from "@/api"
+import {get} from "@/utilities/api"
 import StoreMixin from "@/mixins/Store.mixin"
 
 export default defineComponent({

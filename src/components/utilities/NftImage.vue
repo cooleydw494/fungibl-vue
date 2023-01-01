@@ -20,7 +20,7 @@ import { defineComponent } from "@vue/runtime-core"
 import StyledButton from "@/components/utilities/StyledButton"
 import {FulfillingSquareSpinner} from "epic-spinners"
 import {nftImageLoading} from "@/state"
-import {screens} from "@/tailwindExports"
+import {screens} from "@/utilities/tailwindExports"
 
 export default defineComponent({
   name: "NftImage",

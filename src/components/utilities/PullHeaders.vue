@@ -43,7 +43,7 @@
 
 <script>
 import { defineComponent } from "@vue/runtime-core"
-import {defaultPoolMetas} from "@/defaults"
+import {defaultPoolMetas} from "@/utilities/defaults"
 import TwoRectangles from "@/components/utilities/TwoRectangles"
 import StyledButton from "@/components/utilities/StyledButton"
 import StoreMixin from "@/mixins/Store.mixin"

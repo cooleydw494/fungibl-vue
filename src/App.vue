@@ -18,7 +18,7 @@
                          @intersect="topOfPage = false" class="intersection-down three">
   </intersection-observer>
   <marketing-nav v-if="isMarketingSite" :top-of-page="topOfPage" ref="marketingNav" />
-  <app-nav v-else />
+  <app-nav v-else :showLogo="store.showLogo" />
   <router-view />
   <mobile-launch-button v-if="isMobileMarketing" :top-of-page="topOfPage" />
   <app-footer v-if="!isMarketingSite" />
@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       store: {
-        connecting: false, account: null, walletType: null,
+        connecting: false, account: null, walletType: null, showLogo: true,
         isMobile: window.innerWidth < 768,
       },
       topOfPage: true,

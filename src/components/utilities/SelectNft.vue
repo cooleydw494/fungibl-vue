@@ -97,11 +97,11 @@ import StyledButton from "@/components/utilities/StyledButton"
 import StoreMixin from "@/mixins/Store.mixin"
 import store from "@/state"
 import {nftImageLoading} from "@/state"
-import {defaultPoolMetas} from "@/defaults"
+import {defaultPoolMetas} from "@/utilities/defaults"
 import {formatNumberShort} from "@jackcom/reachduck";
 import {useReach} from "@/reach";
 import * as backend from "@/reach/contracts/build/index.main.mjs"
-import {post} from "@/api"
+import {post} from "@/utilities/api"
 import Modal from "@/components/utilities/Modal";
 
 export default defineComponent({

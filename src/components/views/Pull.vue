@@ -97,10 +97,10 @@ import PullHeaders from "@/components/utilities/PullHeaders"
 import StyledButton from "@/components/utilities/StyledButton"
 import Modal from "@/components/utilities/Modal"
 import NftImage from "@/components/utilities/NftImage"
-import {defaultPoolMetas} from "@/defaults"
+import {defaultPoolMetas} from "@/utilities/defaults"
 import {formatNumberShort} from "@jackcom/reachduck"
 import {nftImageLoading} from "@/state"
-import {get, post} from "@/api"
+import {get, post} from "@/utilities/api"
 import * as backend from "@/reach/contracts/build/index.main.mjs"
 import ImageKitMixin from "@/mixins/ImageKit.mixin";
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";

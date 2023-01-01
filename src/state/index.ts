@@ -1,9 +1,5 @@
 import createState from "@jackcom/raphsducks"
 import { NETWORKS } from "@jackcom/reachduck"
-import {Algodv2} from "algosdk"
-import ImageKit from "imagekit-javascript"
-import {defaultPoolMetas} from "../defaults"
-
 /** Your global application state. Add any properties you need here */
 const store = createState({
   /** When true, user has connected a wallet */
@@ -35,12 +31,14 @@ const store = createState({
   funBalance: "0",
 
   /** All assets of connected wallet */
-  assets: [],
+  assets: [] as Array<any>,
 
   /** TODO: Get wallet NFTs */
-  nfts: [],
+  nfts: [] as Array<any>,
 
   needsPostAuthNftSync: false,
+
+  nftLookupIds: [] as Array<any>,
 
   nftImagesLoading: {},
 
@@ -73,6 +71,8 @@ const store = createState({
 
   currentModal: <string|null> null,
 
+  showLogo: <boolean> true,
+
   loadedMarketingBg: <boolean> false,
 
   innerWidth: <number> window.innerWidth,
@@ -81,6 +81,10 @@ const store = createState({
 
   isMobile: <boolean> isMobile(),
 })
+import {Algodv2} from "algosdk"
+import ImageKit from "imagekit-javascript"
+
+import {defaultPoolMetas} from "../utilities/defaults"
 
 export default store
 

@@ -52,7 +52,7 @@
 
 <script>
 import { defineComponent } from "@vue/runtime-core"
-import { post } from "../../api"
+import { post } from "../../utilities/api"
 import StyledButton from "@/components/utilities/StyledButton"
 import {LoopingRhombusesSpinner} from "epic-spinners"
 import {VueRecaptcha} from 'vue-recaptcha'

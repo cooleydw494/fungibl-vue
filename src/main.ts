@@ -5,7 +5,7 @@ import router from './router'
 import {createI18n} from 'vue-i18n'
 import {messages, dontTranslate} from './translations'
 import './css/index.scss'
-import globalMixins from "./globalMixins";
+import globalMixins from "./utilities/globalMixins";
 
 // 'en', 'es', etc
 const defaultLanguage = navigator.language.substr(0,2)

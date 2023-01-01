@@ -1,5 +1,5 @@
-import config from "../tailwind.config.js"
-import configDefault from "../tailwind.default-config"
+import config from "../../tailwind.config.js"
+import configDefault from "../../tailwind.default-config"
 
 const spacing: { [p: string]: string; [p: number]: string } = {
     // @ts-ignore

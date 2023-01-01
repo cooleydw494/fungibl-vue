@@ -1,5 +1,5 @@
 import {loadStdlib} from "@reach-sh/stdlib";
-import store from "./state";
+import store from "../state";
 import {ApplicationState} from "@jackcom/raphsducks/lib/types";
 import {ReachAccount} from "@jackcom/reachduck";
 const mintNfts = async () => {

@@ -9,7 +9,7 @@
         <img src="../assets/icons/Pull-Icon-Green.svg"
              :alt="pullAlt" :title="pullAlt">
       </router-link>
-      <div class="logo" @click="doMint">
+      <div class="logo" :class="{'z-50': showLogo, 'z-0': !showLogo}" @click="doMint">
         <img :alt="$t('Fungibl Logo')" src="../assets/Logo-Full.svg" />
       </div>
       <a v-if="!isAnalytics" @click="openAnalytics">
@@ -26,11 +26,18 @@
 
 <script lang="js">
 import { defineComponent } from "vue"
-import {mintNfts} from "@/mint"
+import {mintNfts} from "@/utilities/mint"
 
 export default defineComponent({
   name: "AppNav",
   components: { /**/ },
+
+  props: {
+    showLogo: {
+      type: Boolean,
+      default: true,
+    },
+  },
 
   computed: {
     isSubmit() { return this.$route.name === 'submit' },
@@ -67,7 +74,7 @@ header {
   .logo-icons-container {
     @apply flex justify-between items-center;
     .logo {
-      @apply z-50 my-0 mx-8;
+      @apply my-0 mx-8;
       img {
         @apply w-full h-auto;
       }

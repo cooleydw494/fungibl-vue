@@ -3,7 +3,7 @@ import store from "../state/index";
 import {checkSessionExists, disconnectUser} from "@jackcom/reachduck";
 import {reconnectWallet, connectWallet} from "../reach";
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
-import {get, post} from "../api.js"
+import {get, post} from "../utilities/api.js"
 import {loadStdlib} from "@reach-sh/stdlib";
 import StoreMixin from "./Store.mixin";
 

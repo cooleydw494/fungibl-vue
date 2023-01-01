@@ -102,11 +102,13 @@ export default defineComponent({
     },
     justOpened() {
       this.currentlyShowing = true
+      state.showLogo(!this.noLogo)
       this.$emit('open')
       setTimeout(() => { this.opacityStyle = 'opacity: 1' }, 25)
     },
     async justClosed() {
       this.currentlyShowing = false
+      state.showLogo(true)
       this.$emit('close')
       this.animatingOut = true
       this.opacityStyle = 'opacity: 0'

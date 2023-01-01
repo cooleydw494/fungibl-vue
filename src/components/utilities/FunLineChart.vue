@@ -41,7 +41,7 @@
 import {Line} from 'vue-chartjs'
 // import gradient from 'chartjs-plugin-gradient'
 import annotationPlugin from "chartjs-plugin-annotation"
-import {colors} from "@/tailwindExports.ts"
+import {colors} from "@/utilities/tailwindExports.ts"
 import {
   Chart as ChartJS,
   Title, Tooltip, Legend, LinearScale, CategoryScale, PointElement,

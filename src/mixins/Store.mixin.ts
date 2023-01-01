@@ -1,11 +1,12 @@
 import { defineComponent } from "@vue/runtime-core"
 import store from "../state/index"
-import {get, post} from "../api"
+import {get, post} from "../utilities/api"
 import {Algodv2} from "algosdk"
-import {getAlgodClient} from "../algod"
+import {getAlgodClient} from "../utilities/algod"
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer"
 import {parseASAUrl} from "../ipfs/nft"
 import {getMetaFromIpfs} from "../ipfs/ipfs"
+import * as localforage from "localforage";
 
 const StoreMixin = defineComponent({
   data(): any {
@@ -118,39 +119,52 @@ const StoreMixin = defineComponent({
         store.assets(this.getState('assets').filter((asset: {[k: string]: any}) => {
           return asset.amount > 0 && !asset['is-frozen'] && !asset.deleted
         }))
-        store.nfts(
-            await Promise.all(this.getState('assets').filter(
-                (asset: {[k: string]: any}) => {
-                  return asset.amount === 1
-                }))
-        )
-        const algod = await this.getAlgodClient()
-        store.nfts(await Promise.all(this.getState('nfts').map(async (nft: {[k: string]: any}) => {
-          const nftInfo = await algod.getAssetByID(nft['asset-id']).do()
-          // const base = 'https://gateway.pinata.cloud/ipfs/'
-          const base = 'https://nftstorage.link/ipfs/'
-          let assetUrl = nftInfo.params.url
-          const isArc19 = nftInfo.params.url.includes('template-ipfs')
-          assetUrl = parseASAUrl(assetUrl, nftInfo.params.reserve)
-          if (isArc19) {
-            const metadataUrl = assetUrl
-            assetUrl = (await getMetaFromIpfs(metadataUrl))['image']
+        const shallowNfts: Array<any> = await Promise.all(
+            this.getState('assets').filter((asset: {[k: string]: any}) => {
+              return asset.amount === 1
+            }))
+        const nftLookupIds = shallowNfts.map((nft: {[k: string]: any}) => nft['asset-id'])
+        const nfts = []
+        await localforage.iterate((key: string, value, iterationNumber) => {
+          const intKey = parseInt(key)
+          const index = nftLookupIds.indexOf(intKey)
+          if (index > -1) {
+            nfts.push(value)
+            nftLookupIds.splice(index, 1);
+          } else {
+            localforage.removeItem(key)
           }
-          const index = assetUrl.indexOf('ipfs://') > -1 ?
-              assetUrl.indexOf('ipfs://') + 7 : assetUrl.indexOf('ipfs/') + 5;
-          const imageUrl = `${base}${assetUrl.substr(index)}`
-          const label = `${nftInfo.params.name} - ${nftInfo.params['unit-name']}`
-          return {...nft, ...nftInfo, imageUrl, label}
-        })))
-        await this.syncNftsToBackend(this.getState('nfts'))
+        })
+        store.nftLookupIds(nftLookupIds)
+        await this.syncNftsToBackend()
+        // const algod = await this.getAlgodClient()
+        // store.nfts(await Promise.all(this.getState('nfts').map(async (nft: {[k: string]: any}) => {
+        //   const nftInfo = await algod.getAssetByID(nft['asset-id']).do()
+        //   // const base = 'https://gateway.pinata.cloud/ipfs/'
+        //   const base = 'https://nftstorage.link/ipfs/'
+        //   let assetUrl = nftInfo.params.url
+        //   const isArc19 = nftInfo.params.url.includes('template-ipfs')
+        //   assetUrl = parseASAUrl(assetUrl, nftInfo.params.reserve)
+        //   if (isArc19) {
+        //     const metadataUrl = assetUrl
+        //     assetUrl = (await getMetaFromIpfs(metadataUrl))['image']
+        //   }
+        //   const index = assetUrl.indexOf('ipfs://') > -1 ?
+        //       assetUrl.indexOf('ipfs://') + 7 : assetUrl.indexOf('ipfs/') + 5;
+        //   const imageUrl = `${base}${assetUrl.substr(index)}`
+        //   const label = `${nftInfo.params.name} - ${nftInfo.params['unit-name']}`
+        //   return {...nft, ...nftInfo, imageUrl, label}
+        // })))
       } catch (err) { this.oop(err, 'There was an error getting assets/nfts')}
       console.log('Finished fetching assets/nfts')
     },
 
-    async syncNftsToBackend(nfts: Array<{[k:string]: any}>): Promise<any> {
-      if (nfts.length === 0) return
+    async syncNftsToBackend(): Promise<any> {
+      const nftLookupIds = this.getState('nftLookupIds')
+      if (nftLookupIds.length === 0) return
+
       if (this.getState('authConfirmed')) {
-        post(`nfts/sync`, {nfts})
+        post(`nfts/sync`, {nft_ids: nftLookupIds})
             .then((res) => {
               res.needs_caching.forEach((assetId: number) => {
                 this.cacheImage(assetId)
