@@ -17,9 +17,7 @@ export default {
             const tailwindVal = spacing[spacingKey]
             const remIndex = tailwindVal.indexOf('rem')
             if (remIndex === -1)
-                throw new Error(
-                    'spacingToPixels only works for numeric Tailwind rem keys'
-                )
+                throw new Error('spacingToPixels only works for numeric Tailwind rem keys')
             const rem = parseFloat(tailwindVal.substr(0, remIndex))
             const fontSize = getComputedStyle(document.documentElement).fontSize
             return rem * parseFloat(fontSize)

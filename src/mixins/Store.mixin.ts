@@ -36,7 +36,7 @@ const StoreMixin = defineComponent({
   methods: {
     /** Respond to updates from global store instance */
     onStoreUpdate(updates: any) {
-      // "updates" is a sub-section of the updated global state. It will
+      // "updates" is a subsection of the updated global state. It will
       // contain some or all keys specified by the component that uses this mixin.
       this.store = { ...this.store, ...updates }
     },
@@ -100,9 +100,7 @@ const StoreMixin = defineComponent({
     },
 
     async getAssets(reset = false): Promise<any> {
-      if (reset) {
-        store.assets([])
-      }
+      if (reset) { store.assets([]) }
       try {
         let nextToken = ''
         let moreResults = true
@@ -123,49 +121,65 @@ const StoreMixin = defineComponent({
             this.getState('assets').filter((asset: {[k: string]: any}) => {
               return asset.amount === 1
             }))
-        const nftLookupIds = shallowNfts.map((nft: {[k: string]: any}) => nft['asset-id'])
+        const nftLookups = shallowNfts.map((nft: {[k: string]: any}) => nft['asset-id'])
         const nfts = []
-        await localforage.iterate((key: string, value, iterationNumber) => {
+        await localforage.iterate((key: string, value: string, pos: number) => {
           const intKey = parseInt(key)
-          const index = nftLookupIds.indexOf(intKey)
+          const index = nftLookups.indexOf(intKey)
           if (index > -1) {
-            nfts.push(value)
-            nftLookupIds.splice(index, 1);
+            nfts.push(JSON.parse(value))
+            nftLookups.splice(index, 1)
           } else {
             localforage.removeItem(key)
           }
         })
-        store.nftLookupIds(nftLookupIds)
+
+        let nftLookupObjs = []
+        // Outside mainnet, we can't look up nft data with Asalytic
+        if (process.env.NODE_ENV !== "production") {
+          const algod = await this.getAlgodClient()
+          nftLookupObjs = await Promise.all(nftLookups.map(async (id: number) => {
+            const nftInfo = await algod.getAssetByID(id).do()
+            // const base = 'https://gateway.pinata.cloud/ipfs/'
+            const base = 'https://nftstorage.link/ipfs/'
+            let assetUrl = nftInfo.params.url
+            const isArc19 = nftInfo.params.url.includes('template-ipfs')
+            const metadataUrl = parseASAUrl(assetUrl, nftInfo.params.reserve)
+            const metadata =  (await getMetaFromIpfs(metadataUrl))
+            console.log(' metadata', metadata)
+            assetUrl = metadata['image']
+            const index = assetUrl.indexOf('ipfs://') > -1 ?
+                assetUrl.indexOf('ipfs://') + 7 : assetUrl.indexOf('ipfs/') + 5;
+            const imageUrl = `${base}${assetUrl.substr(index)}`
+            const label = `${nftInfo.params.name} - ${nftInfo.params['unit-name']}`
+            return {
+              asset_id: id, ...nftInfo, metadata, imageUrl, label,
+              metadata_standard:(isArc19 ? 'arc19' : 'arc69'),
+              mainnet_asset_id: nftInfo.properties.mainnet_asset_id || null,
+              // mainnet_unit_name: nftInfo.properties.mainnet_unit_name || null,
+              // mainnet_asset_name: nftInfo.properties.mainnet_asset_name || null,
+            }
+          }))
+        } else {
+          nftLookupObjs = nftLookups.map(async (id: number) => {
+            return {asset_id: id,}
+          })
+        }
+
+        store.nftLookups(nftLookupObjs)
         await this.syncNftsToBackend()
-        // const algod = await this.getAlgodClient()
-        // store.nfts(await Promise.all(this.getState('nfts').map(async (nft: {[k: string]: any}) => {
-        //   const nftInfo = await algod.getAssetByID(nft['asset-id']).do()
-        //   // const base = 'https://gateway.pinata.cloud/ipfs/'
-        //   const base = 'https://nftstorage.link/ipfs/'
-        //   let assetUrl = nftInfo.params.url
-        //   const isArc19 = nftInfo.params.url.includes('template-ipfs')
-        //   assetUrl = parseASAUrl(assetUrl, nftInfo.params.reserve)
-        //   if (isArc19) {
-        //     const metadataUrl = assetUrl
-        //     assetUrl = (await getMetaFromIpfs(metadataUrl))['image']
-        //   }
-        //   const index = assetUrl.indexOf('ipfs://') > -1 ?
-        //       assetUrl.indexOf('ipfs://') + 7 : assetUrl.indexOf('ipfs/') + 5;
-        //   const imageUrl = `${base}${assetUrl.substr(index)}`
-        //   const label = `${nftInfo.params.name} - ${nftInfo.params['unit-name']}`
-        //   return {...nft, ...nftInfo, imageUrl, label}
-        // })))
       } catch (err) { this.oop(err, 'There was an error getting assets/nfts')}
       console.log('Finished fetching assets/nfts')
     },
 
     async syncNftsToBackend(): Promise<any> {
-      const nftLookupIds = this.getState('nftLookupIds')
-      if (nftLookupIds.length === 0) return
+      const nftLookups = this.getState('nftLookups')
+      if (nftLookups.length === 0) return
 
       if (this.getState('authConfirmed')) {
-        post(`nfts/sync`, {nft_ids: nftLookupIds})
+        post(`nfts/sync`, {nft_lookups: nftLookups})
             .then((res) => {
+              store.nfts([...this.getState('nfts'), ...res.nfts])
               res.needs_caching.forEach((assetId: number) => {
                 this.cacheImage(assetId)
               })

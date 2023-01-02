@@ -38,7 +38,7 @@ const store = createState({
 
   needsPostAuthNftSync: false,
 
-  nftLookupIds: [] as Array<any>,
+  nftLookups: [] as Array<any>,
 
   nftImagesLoading: {},
 

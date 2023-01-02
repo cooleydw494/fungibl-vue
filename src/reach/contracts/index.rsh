@@ -47,15 +47,12 @@ export const main = Reach.App(() => {
   })
   Deployer.publish(nftAssetId, funToken, fungiblAddress, submitterAddress)
   // some just in case checks, although this should be true
-  // require(funToken != nftAssetId, "NFT is $FUN ASA")
+  require(funToken != nftAssetId, "NFT is $FUN ASA")
   commit()
 
-  // Submitter.only(() => {
-    // assume(addressEq(Submitter, submitterAddress))
-  // })
-  // Submitter.publish()
-  // commit()
-
+  Submitter.only(() => {
+    assume(addressEq(Submitter, submitterAddress))
+  })
   Submitter.interact.signingTransfer()
   Submitter.pay([[1, nftAssetId]])
   require(balance(nftAssetId) == 1)
@@ -91,7 +88,7 @@ export const main = Reach.App(() => {
     assume(addressEq(Puller, pullerAddress))
   })
   Puller.publish()
-  require(Puller == pullerAddress, "Invalid Puller")
+  require(addressEq(Puller, pullerAddress), "Invalid Puller")
   commit()
 
   Puller.interact.sendingTokenToContract()

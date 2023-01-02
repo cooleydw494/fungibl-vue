@@ -1,4 +1,3 @@
-import { ipfsURL } from './nft'
 import {Metadata} from './metadata'
 
 export async function getMimeTypeFromIpfs(url: string): Promise<string | null> {
