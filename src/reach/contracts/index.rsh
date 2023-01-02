@@ -1,12 +1,12 @@
 'reach 0.1'
 
 const Common = {
-    ...hasConsoleLogger,
+  // ...hasConsoleLogger,
 }
 
 export const main = Reach.App(() => {
   const Deployer = Participant('Deployer', {
-    log: Fun([UInt], Null),
+    // log: Fun([UInt], Null),
     fungiblAddress: Address,
     submitterAddress: Address,
     // creatorAddress: Address,
@@ -35,7 +35,7 @@ export const main = Reach.App(() => {
 
   // Contract created by nodejs backend and verifiable info provided
   Deployer.only(() => {
-    interact.log(1)
+    // interact.log(1)
     const nftAssetId = declassify(interact.nftAssetId)
     const funToken = declassify(interact.funToken)
     assume(funToken != nftAssetId)
@@ -43,23 +43,23 @@ export const main = Reach.App(() => {
     const submitterAddress = declassify(interact.submitterAddress)
     // const creatorAddress = declassify(interact.creatorAddress)
     // const creatorDonation = declassify(interact.creatorDonation)
-    interact.log(2)
+    // interact.log(2)
   })
   Deployer.publish(nftAssetId, funToken, fungiblAddress, submitterAddress)
   // some just in case checks, although this should be true
   // require(funToken != nftAssetId, "NFT is $FUN ASA")
   commit()
 
-  Submitter.only(() => {
-    assume(addressEq(Submitter, submitterAddress))
-  })
-  Submitter.publish()
-  require(addressEq(Submitter,submitterAddress), "Invalid Submitter (must match Account specified by Fungibl back-end")
-  commit()
+  // Submitter.only(() => {
+    // assume(addressEq(Submitter, submitterAddress))
+  // })
+  // Submitter.publish()
+  // commit()
 
   Submitter.interact.signingTransfer()
   Submitter.pay([[1, nftAssetId]])
   require(balance(nftAssetId) == 1)
+  require(addressEq(Submitter, submitterAddress), "Invalid Submitter (must match Account specified by Fungibl back-end")
   commit()
   Submitter.interact.submitSuccess(nftAssetId)
 
@@ -76,10 +76,10 @@ export const main = Reach.App(() => {
 
   // Deployer sets the Verified Puller that is allowed to attach to the contract
   const [[pullerAddress, additionalCost, refundAmount, platformFee], returnNothing] =
-  call(Oracle.setPullDetails).assume((pullerAddress, additionalCost, refundAmount, platformFee) => { // checks in local step
-    check(typeof (pullerAddress) == Address, "Invalid Address for Puller") // ensure pullerAddress is valid Address
-    check(this == Deployer, "Invalid Oracle (must be Deployer)") // ensure API caller is Deployer
-  })
+    call(Oracle.setPullDetails).assume((pullerAddress, additionalCost, refundAmount, platformFee) => { // checks in local step
+      check(typeof (pullerAddress) == Address, "Invalid Address for Puller") // ensure pullerAddress is valid Address
+      check(this == Deployer, "Invalid Oracle (must be Deployer)") // ensure API caller is Deployer
+    })
   require(this == Deployer, "Invalid Oracle (must be Deployer)") // check consensus step API caller is Deployer
   // this needs to be separate call if we are going to do it
   // Oracle.pay([[refundAmount, funToken]])
