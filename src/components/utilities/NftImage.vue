@@ -3,11 +3,12 @@
     <div v-show="nftImageLoading" class="nft-image flex place-content-center" :style="widthStyle">
       <fulfilling-square-spinner
           :animation-duration="2000"
-          :size="imageWidth"
+          :size="actualWidth"
           :color="themeColor('fgreen')"
       />
     </div>
-    <img v-show="!nftImageLoading" class="nft-image" @load="nftLoaded()"
+    <img v-show="!nftImageLoading" @click="goToAsalytic"
+         class="nft-image" @load="nftLoaded()"
          :src="imageKitUrl"
          @error="$event.target.src = nft.imageUrl"
          :alt="`${$t('NFT Image for ')} ${imageAlt}`"
@@ -42,34 +43,52 @@ export default defineComponent({
     imageWidth: {
       type: Number,
       required: true,
+    },
+    isNftSelect: {
+      type: Boolean,
+      default: false,
     }
   },
 
   mounted() {
-    if (this.nft) nftImageLoading(this.nft['asset-id'], true)
+    if (this.nft) nftImageLoading(this.nft['asset_id'], true)
   },
 
   computed: {
     imageAlt() {
       return this.nft.name
     },
-    widthStyle() {
+    actualWidth() {
       let imageWidth = this.imageWidth
-      const md = parseInt(screens['md'].replace('px', ''))
-      let height = window.innerHeight;
-      // if this becomes an issue we could use the store.innerHeight
-      // however we can probably assume people aren't resizing the window height
-      if ((height <= md) && ((height / 3.5) < this.imageWidth)) {
-        imageWidth = Math.round(height / 3.5)
+      if (this.isNftSelect) {
+        const md = parseInt(screens['md'].replace('px', ''))
+        let innerWidth = window.innerWidth
+        // if this becomes an issue we could use the store.innerHeight
+        // however we can probably assume people aren't resizing the window innerWidth
+        if ((innerWidth <= md) && ((innerWidth / 1.75) < this.imageWidth)) {
+          imageWidth = Math.round(innerWidth / 1.75)
+        }
       }
-      return `width: ${imageWidth}px;`
+      return imageWidth
+    },
+    widthStyle() {
+      return `width: ${this.actualWidth}px;`
     }
   },
 
   methods: {
     nftLoaded() {
-      nftImageLoading(this.nft['asset-id'], false)
+      nftImageLoading(this.nft['asset_id'], false)
     },
+    goToAsalytic() {
+      let url = ''
+      if (this.nft['fake_mainnet_data']) {
+        url = `https://www.asalytic.app/nft/${this.nft['fake_mainnet_data']['asset_id']}`
+      } else {
+        url = `https://www.asalytic.app/nft/${this.nft['asset_id']}`
+      }
+      window.open(url, '_blank')
+    }
   },
 
 })
@@ -80,10 +99,11 @@ export default defineComponent({
 
 .nft-data {
 
-  @apply block w-full;
+  @apply block md:w-full;
 
   .nft-image {
-    @apply h-auto mx-auto rounded border-2 border-solid border-fgreen;
+    @apply h-auto md:mx-auto rounded hover:cursor-pointer
+    border-2 border-solid border-fgreen;
   }
 }
 

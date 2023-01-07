@@ -1,7 +1,7 @@
 <template>
   <div class="w-full md:w-auto">
     <styled-button :button-style="'connect'" @click="handleClick" class="md:mx-4">
-      <div v-if="!store.connected" class="content-container">
+      <div v-if="!store.connected" class="content-container disconnected">
         <img class="icon" src="../../assets/icons/Wallet-Icon.svg" :alt="$t('Wallet Icon')">
         {{ connectButtonText }}
       </div>
@@ -57,7 +57,7 @@ export default defineComponent({
   data: () => ({
     store: {
       connected: false, connecting: false, disconnecting: false,
-      address: "", nfts: [], balance: "0", funBalance: "0",
+      address: "", nfts: [], balance: "0", funBalance: "0", user: {},
     },
     showWalletSelect: false,
     providers: [
@@ -79,7 +79,11 @@ export default defineComponent({
       return this.$i18n.t('CONNECT WALLET')
     },
     walletString() {
-      return this.store.connected ? truncateString(this.store.address, 4) : `🥲`
+      let wallet = this.store.user?.nfd || this.store.address
+      if (wallet.length > 16) {
+        wallet = truncateString(wallet, 4)
+      }
+      return this.store.connected ? wallet : `🥲`
     },
     displayFunBalance() {
       return formatNumberShort(this.store.funBalance)
@@ -122,6 +126,13 @@ export default defineComponent({
 .content-container {
   @apply w-full flex justify-around items-center min-h-10 text-left;
 
+  &.disconnected {
+    @apply justify-center;
+    .icon {
+      @apply mr-4;
+    }
+  }
+
   &.wallet-info {
     @apply text-base w-full md:w-96 h-14 md:h-16;
   }
@@ -130,7 +141,8 @@ export default defineComponent({
     @apply flex flex-col justify-between min-h-10;
 
     .label {
-      @apply text-2xs font-semibold;
+      @apply text-xs;
+      font-weight: 400;
     }
   }
 }

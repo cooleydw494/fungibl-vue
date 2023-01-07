@@ -6,38 +6,30 @@
               :class="{'md:mt-0': store.selectedNftId, 'md:mt-8': !store.selectedNftId }">
         <option v-if="!store.selectedNft" value="null" class="option">{{ $t('SELECT AN NFT') }}</option>
         <!--      <option v-if="store.selectedNft.length" value="null" class="option">{{ $t('SELECT ANOTHER NFT') }}</option>-->
-        <option v-for="nft in selectableNfts" :key="nft['asset-id']" :value="nft['asset-id']" class="option">{{ nft.label }}</option>
+        <option v-for="nft in selectableNfts" :key="nft['asset_id']" :value="nft['asset_id']" class="option">{{ getLabel(nft) }}</option>
       </select>
 
-      <div v-if="store.selectedNftId" class="mt-8 md:min-h-48 flex flex-col justify-center">
-        <div class="flex justify-between">
-          <div>
-            <p class="text-fblue text-xl font-bolder">{{ store.selectedNftEstimates.estAlgo }} {{ $t('$ALGO') }}
-<!--              <img class="inline-block w-3.5 h-4 -mt-1" src="../../assets/icons/Algorand-Icon.svg" alt="$ALGO Symbol">-->
-            </p>
-            <p class="text-fgreen text-xs">{{ $t('ESTIMATED VALUE') }}</p>
-          </div>
-          <div :title="reward">
-            <p class="text-fpink text-xl font-bolder">~{{ rewardShort }} {{ $t('$FUN') }}
-<!--              <img class="inline-block w-4 h-3.5 -mt-1" src="../../assets/icons/Fungibl-F.svg" alt="$FUN Symbol">-->
-            </p>
-            <p class="text-fgreen text-xs">{{ $t('ESTIMATED REWARD') }}</p>
-          </div>
-        </div>
+      <div v-if="store.selectedNftId" class="mt-8 md:min-h-48 hidden md:flex flex-col justify-center">
+        <selected-nft-info class="md:min-h-48" :reward="reward" :selectedNft="store.selectedNft"
+                      :selectedNftEstimates="store.selectedNftEstimates" two-rows/>
+      </div>
+
+      <div v-if="store.selectedNftId" class="mt-8 md:min-h-48 flex flex-col justify-center hidden md:visible">
+
       </div>
 
       <div v-if="store.selectedNftId" class="w-full flex justify-between mt-8">
         <styled-button button-style="cancel" @click="reInitialize()">
           {{ $t('CANCEL') }}
         </styled-button>
-        <styled-button button-style="primary" @click="initSubmission()">
+        <styled-button :disabled="!reward" button-style="primary" @click="initSubmission()">
           {{ $t('SUBMIT') }}
         </styled-button>
       </div>
     </div>
 
     <modal :override-show="showSubmissionModal" name="submission" @close="closeSubmissionModal()" center full-dark opacity-time-close="0s" no-logo>
-      <div class="max-w-2xl text-center min-h-60vh">
+      <div class="max-w-2xl text-center min-h-60vh mx-4">
 
         <img v-show="['not_submitting'].includes(submitState)" class="illustration"
              src="../../assets/illustrations/submit/Submit-1.svg"
@@ -92,26 +84,37 @@
 </template>
 
 <script>
-import { defineComponent } from "@vue/runtime-core"
+import {defineComponent} from "@vue/runtime-core"
 import StyledButton from "@/components/utilities/StyledButton"
 import StoreMixin from "@/mixins/Store.mixin"
-import store from "@/state"
-import {nftImageLoading} from "@/state"
+import store, {nftImageLoading} from "@/state"
 import {defaultPoolMetas} from "@/utilities/defaults"
-import {formatNumberShort} from "@jackcom/reachduck";
+import {formatNumberShort} from "@jackcom/reachduck"
 import {useReach} from "@/reach";
 import * as backend from "@/reach/contracts/build/index.main.mjs"
-import {post} from "@/utilities/api"
-import Modal from "@/components/utilities/Modal";
+import {get, post} from "@/utilities/api"
+import Modal from "@/components/utilities/Modal"
+import SelectedNftInfo from "@/components/utilities/SelectedNftInfo"
 
 export default defineComponent({
   name: "SelectNft",
-  components: { StyledButton, Modal },
+  components: {SelectedNftInfo, StyledButton, Modal },
 
 
   // components: { vSelect },
 
   mixins: [StoreMixin],
+
+  props: {
+    reward: {
+      type: Number,
+      required: true,
+    },
+    rewardShort: {
+      type: String,
+      required: true,
+    }
+  },
 
   data() {
     return {
@@ -143,22 +146,21 @@ export default defineComponent({
       return this.store.nfts
       // for when multi-select
       // return this.store.nfts.filter((nft) => {
-      //   return nft['asset-id'] !== this.store.selectedNftId
+      //   return nft['asset_id'] !== this.store.selectedNftId
       // })
     },
-    reward() {
-      let estAlgo = this.store.selectedNftEstimates?.estAlgo
-      const reward = this.store.poolMetas.app_supply_fun
-          * (estAlgo / (this.store.poolMetas.current_pool_value + estAlgo))
-      // We always round down on estimates/rewards, we like to keep things
-      // neat and this defaults in favor of $FUN holders.
-      return Math.floor(reward)
-    },
-    rewardShort() { return formatNumberShort(this.reward) },
-    finalizedRewardShort() { return formatNumberShort(this.finalizedReward) }
+    finalizedRewardShort() { return formatNumberShort(this.finalizedReward) },
   },
 
   methods: {
+    getLabel(nft) {
+      if (nft.fake_mainnet_data) {
+        // return `${nft.fake_mainnet_data['asset_name']} ${nft.fake_mainnet_data['unit_name']}`
+        return `${nft.fake_mainnet_data['asset_name']}`
+      } else {
+        return nft.label
+      }
+    },
     closeSubmissionModal(force = false) {
       this.showSubmissionModal =
           !(['not_submitting', 'done'].includes(this.submitState) || force)
@@ -175,11 +177,18 @@ export default defineComponent({
       this.finalizedReward = null
       this.closeSubmissionModal(true)
     },
-    setSelected(nftId) {
-      nftImageLoading(nftId)
-      store.selectedNftId(nftId)
-      store.selectedNft((this.store.nfts.filter(nft => nft['asset-id'] === nftId))[0])
-      store.selectedNftEstimates({ estAlgo: Math.floor(Math.random() * 240) + 10 })
+    async setSelected(nftId) {
+        store.selectedNftEstimates({ estAlgo: null })
+        this.getAndSetEstimate(nftId)
+        nftImageLoading(nftId)
+        store.selectedNftId(nftId)
+        store.selectedNft((this.store.nfts.filter(nft => nft['asset_id'] === nftId))[0])
+    },
+    async getAndSetEstimate(nftId) {
+      get(`estimate/${nftId}`)
+          .then((res) => {
+            store.selectedNftEstimates({ estAlgo: res.estimated_value })
+          }).catch(err => this.oop(err))
     },
     initSubmission() { this.showSubmissionModal = true },
     async submitSelectedNft() {
@@ -224,7 +233,7 @@ export default defineComponent({
               const poolNft = res.pool_nfts[0]
               console.log(poolNft)
               this.finalizedReward = res.finalized_reward
-              store.nfts(this.store.nfts.filter(nft => nft['asset-id'] !== this.store.selectedNftId))
+              store.nfts(this.store.nfts.filter(nft => nft['asset_id'] !== this.store.selectedNftId))
               this.submitState = 'done'
             } else {
               const exception = res.exceptions[0]

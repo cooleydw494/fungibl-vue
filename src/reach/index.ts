@@ -72,7 +72,7 @@ export async function connectWallet(walletType = 'MyAlgo') {
     store.loading(true)
     addNotification("🔑 Connecting Account ... ")
     await configureWalletProvider(walletType)
-    return onConnected(await connectUser(), walletType)
+    return onConnected(await connectUser({fetchAssets: false, fetchBalance: true,}), walletType)
   } catch (e: any) {
     store.error(e.message || e)
     return null
@@ -101,7 +101,7 @@ export async function reconnectWallet(addr: string) {
       walletType = 'MyAlgo'
       await useMyAlgo()
     }
-    return onConnected(await reconnectUser(addr), walletType)
+    return onConnected(await reconnectUser(addr, {fetchAssets: false, fetchBalance: true,}), walletType)
   } catch (e: any) {
     store.error(e.message || e)
     return null

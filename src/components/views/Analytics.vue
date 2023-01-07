@@ -2,19 +2,23 @@
   <section class="analytics">
     <div class="first-row">
       <div class="featured-nft">
-        <img :src="featuredNftUrl" :alt="$t('Featured Pool NFT')">
+        <nft-image v-if="featuredNftId" :nft="featuredNftShim"
+                   :nft-image-loading="!!store.nftImagesLoading[featuredNftId]"
+                   :image-width="featuredNftImageWidth"
+                   :image-kit-url="featuredNftImageKitUrl">
+        </nft-image>
       </div>
       <div class="current-metas">
         <div class="metas">
           <div class="meta">
             <div class="value-label">
-              <p class="value text-faqua">FUNFT #056</p>
+              <p class="value text-faqua">{{ featuredNftName }}</p>
               <p class="label">{{ $t('FEATURED') }}</p>
             </div>
           </div>
           <div class="meta">
             <div class="value-label">
-              <p class="value text-faqua">{{ 3458455 }}</p>
+              <p class="value text-faqua">{{ featuredNftId }}</p>
               <p class="label">{{ $t('ASA ID') }}</p>
             </div>
           </div>
@@ -27,7 +31,7 @@
           <div class="meta">
             <div class="value-label">
               <p class="text-fwhite value">{{ costRewardRatio }}</p>
-              <p class="label">{{ $t('COST/REWARD RATIO') }}</p>
+              <p class="label">{{ $t('COST/REWARD') }}</p>
             </div>
           </div>
           <div class="meta">
@@ -88,34 +92,40 @@ import { defineComponent } from "vue"
 import TopOrLeftPanel from "@/components/utilities/TopOrLeftPanel"
 import BottomOrRightPanel from "@/components/utilities/BottomOrRightPanel"
 import StyledButton from "@/components/utilities/StyledButton"
+import NftImage from "@/components/utilities/NftImage"
 import FunLineChart from "@/components/utilities/FunLineChart"
 import {defaultPoolMetas} from "@/utilities/defaults"
 import {formatNumberShort} from "@jackcom/reachduck"
 import moment from 'moment'
 import {get} from "@/utilities/api"
-import StoreMixin from "@/mixins/Store.mixin"
+import ImageKitMixin from "@/mixins/ImageKit.mixin"
 
 export default defineComponent({
-  components: { TopOrLeftPanel, BottomOrRightPanel, StyledButton, FunLineChart,},
+  components: { TopOrLeftPanel, BottomOrRightPanel, StyledButton, FunLineChart,
+  NftImage, },
   name: "Analytics",
 
-  mixins: [StoreMixin,],
+  mixins: [ImageKitMixin,],
 
   data() {
     return {
       store: { connected: false, funBalance: 0, account: null,
         poolMetas: defaultPoolMetas, address: "", assets: [],
-        isMobile: window.innerWidth < 768, },
+        isMobile: window.innerWidth < 768, nftImagesLoading: {} },
       duration: '1d',
       showTrendline: false,
       latestLogsInterval: null,
       logs: [],
       counts: { 'submits': 0, 'pulls': 0, 'submitRate': 0, },
+      featuredNftId: null,
+      fakeFeaturedNftId: null,
+      featuredNftName: null,
     }
   },
 
   mounted() {
     this.getLogs()
+    this.getFeaturedNft()
   },
 
   beforeUnmount() {
@@ -125,8 +135,19 @@ export default defineComponent({
   },
 
   computed: {
-    featuredNftUrl() {
-      return 'https://nftstorage.link/ipfs/bafybeih6gl7yqbios3thgyg3ps5e53dv7u477d4oue2uwb5tdshyugogza/25.jpeg'
+    featuredNftShim() {
+      const id = this.featuredNftId
+      const fakeId = this.fakeFeaturedNftId
+      return id ? { asset_id: id, name: id, fake_mainnet_data: {asset_id: fakeId} } : null
+    },
+    featuredNftImageWidth() {
+      return this.spacingToPixels(this.store.isMobile ? 48 : 48)
+    },
+    featuredNftImageKitUrl() {
+      return this.imageKitUrl(
+          `${this.featuredNftId}.png`,
+          this.featuredNftImageWidth
+      )
     },
     maxTime() {
       return moment()
@@ -196,6 +217,15 @@ export default defineComponent({
       }).catch((err) => {
         this.oop(err, 'Something went wrong retrieving Pool Meta Logs')
       })
+    },
+    getFeaturedNft() {
+      get(`featured-nft-info`)
+          .then((res) => {
+            this.featuredNftId = res.asset_id
+            this.fakeFeaturedNftId = res.fake_asset_id
+            this.featuredNftName = res.name
+          })
+          .catch(err => this.oop(err))
     }
   }
 
@@ -230,7 +260,7 @@ export default defineComponent({
       }
 
       .metas {
-        @apply flex flex-wrap p-4;
+        @apply flex flex-wrap p-2 pb-0 md:p-4;
         .meta {
           @apply flex w-1/2 sm:w-1/4;
           .value-label {

@@ -6,6 +6,7 @@ import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
 import {get, post} from "../utilities/api.js"
 import {loadStdlib} from "@reach-sh/stdlib";
 import StoreMixin from "./Store.mixin";
+import localforage from "localforage";
 
 const AuthMixin = defineComponent({
 
@@ -47,6 +48,7 @@ const AuthMixin = defineComponent({
 
     async connectTo(provider: string) {
       store.connecting(true)
+      await localforage.clear()
       await connectWallet(provider).then(async () => {
         const isAuthed = await this.userIsAuthenticated(this.getState('address'))
         await Promise.all([
@@ -106,6 +108,7 @@ const AuthMixin = defineComponent({
         }).then((res) => {
           localStorage.setItem('funJwt', res.access_token)
           localStorage.setItem('funAuthWallet', this.getState('address'))
+          store.user(res.user)
           store.authConfirmed(true)
         }).catch(err => this.oop(err, 'Call to API login failed'))
       } catch (err) { this.oop(err, 'ALGO wallet auth transaction failed. You may need to enable pop-ups for this page.') }
@@ -115,7 +118,12 @@ const AuthMixin = defineComponent({
     async userIsAuthenticated(address: string): Promise<boolean> {
       let authWorks = false
       await get('whoami')
-          .then(res => authWorks = !!res.id)
+          .then(res => {
+            if (res.id) {
+              authWorks = true
+              store.user(res)
+            }
+          })
           .catch((/*err*/) => { return null })
       const connectedUserIsAuthedUser =
           localStorage.getItem('funAuthWallet') === address

@@ -7,7 +7,6 @@ const Common = {
 export const main = Reach.App(() => {
   const Deployer = Participant('Deployer', {
     // log: Fun([UInt], Null),
-    fungiblAddress: Address,
     submitterAddress: Address,
     // creatorAddress: Address,
     funToken: Token,
@@ -39,13 +38,12 @@ export const main = Reach.App(() => {
     const nftAssetId = declassify(interact.nftAssetId)
     const funToken = declassify(interact.funToken)
     assume(funToken != nftAssetId)
-    const fungiblAddress = declassify(interact.fungiblAddress)
     const submitterAddress = declassify(interact.submitterAddress)
     // const creatorAddress = declassify(interact.creatorAddress)
     // const creatorDonation = declassify(interact.creatorDonation)
     // interact.log(2)
   })
-  Deployer.publish(nftAssetId, funToken, fungiblAddress, submitterAddress)
+  Deployer.publish(nftAssetId, funToken, submitterAddress)
   // some just in case checks, although this should be true
   require(funToken != nftAssetId, "NFT is $FUN ASA")
   commit()
@@ -82,7 +80,6 @@ export const main = Reach.App(() => {
   // Oracle.pay([[refundAmount, funToken]])
   returnNothing(null)
   commit()
-
 
   Puller.only(() => {
     assume(addressEq(Puller, pullerAddress))

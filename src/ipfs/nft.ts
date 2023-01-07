@@ -26,7 +26,7 @@ function parseASAUrl(url: string, reserveAddr: string): string {
     if (url.endsWith(ARC3_URL_SUFFIX))
         url = url.slice(0, url.length - ARC3_URL_SUFFIX.length)
 
-    let chunks = url.split('://')
+    const chunks = url.split('://')
     // console.log('resolve protocol:', url)
     // console.log(chunks)
     // Check if prefix is template-ipfs and if {ipfscid:..} is where CID would normally be
@@ -71,9 +71,9 @@ function parseASAUrl(url: string, reserveAddr: string): string {
             throw new Error(`unsupported codec: ${cidCodec}`)
         }
         const cid = CID.create(parseInt(cidVersion, 10) as Version, cidCodecCode, mhdigest)
-        console.log('switching to id:', cid.toString())
+        // console.log('switching to id:', cid.toString())
         chunks[1] = cid.toString() + '/' + chunks[1].split('/').slice(1).join('/')
-        console.log('redirecting to ipfs:', chunks[1])
+        // console.log('redirecting to ipfs:', chunks[1])
     }
 
     // No protocol specified, give up

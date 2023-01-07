@@ -30,25 +30,28 @@
       <div class="max-w-2xl text-center">
 
         <img v-show="['not_pulling'].includes(pullState)" class="illustration"
-             src="../../assets/illustrations/pull/Pull-1.svg"
+             src="../../assets/illustrations/pull/Pull-2.svg"
              :alt="`${$t('Pull Illustration')} 1`">
         <img v-show="['attaching'].includes(pullState)" class="illustration animate-pulse"
-             src="../../assets/illustrations/pull/Pull-2.svg"
+             src="../../assets/illustrations/pull/Pull-3.svg"
              :alt="`${$t('Pull Illustration')} 2`">
         <img v-show="['opting_in'].includes(pullState)" class="illustration animate-pulse"
-             src="../../assets/illustrations/pull/Pull-3.svg"
+             src="../../assets/illustrations/pull/Pull-4.svg"
              :alt="`${$t('Pull Illustration')} 3`">
         <img v-show="['sending_fun', 'transferring_fun', 'transferring_nft'].includes(pullState)" class="illustration animate-pulse"
-             src="../../assets/illustrations/pull/Pull-4.svg"
+             src="../../assets/illustrations/pull/Pull-5.svg"
              :alt="`${$t('Pull Illustration')} 4`">
 
         <div v-if="pullState === 'done'" class="w-full flex justify-center">
-          <nft-image :nft="pulledNftShim" class="mb-2"
+          <nft-image :nft="pulledNft" class="mb-1"
                      :nft-image-loading="!!store.nftImagesLoading[pulledNftId]"
                      :image-width="pulledNftImageWidth"
                      :image-kit-url="pulledNftImageKitUrl">
           </nft-image>
         </div>
+        <p v-if="pullState === 'done'" class="text-xs mb-2 text-fgreen font-semibold text-center mb-4">
+          {{ pulledNft?.fake_mainnet_data?.asset_name || pulledNft.name }}
+        </p>
 
         <h2 v-if="pullState === 'not_pulling'" class="text-faqua font-extrabold mb-6">ARE YOU SURE?</h2>
         <h2 v-if="pullState === 'attaching'" class="text-faqua font-extrabold mb-6">ATTACHING TO CONTRACT</h2>
@@ -56,7 +59,8 @@
         <h2 v-if="pullState === 'opting_in'" class="text-faqua font-extrabold mb-6">OPTING IN</h2>
         <h2 v-if="pullState === 'transferring_fun'" class="text-faqua font-extrabold mb-6">TRANSFERRING $FUN TO <span class="text-fpink">FUNGIBL</span></h2>
         <h2 v-if="pullState === 'transferring_nft'" class="text-faqua font-extrabold mb-6">TRANSFERRING ?NFT? TO YOU</h2>
-        <h2 v-if="pullState === 'done'" class="text-fblue font-extrabold mb-6"><span class="text-fpink">♥</span> SAY HELLO TO <span class="text-fgreen">{{ pulledNftId }}</span> <span class="text-fpink">♥</span></h2>
+        <h2 v-if="pullState === 'done'" class="text-fblue font-extrabold"><span class="text-fpink">♥</span> THAT'S A KEEPER! <span class="text-fpink">♥</span></h2>
+        <h5 v-if="pullState === 'done'" class="text-forange font-extrabold mb-6">SAY HI TO <span class="text-fgreen">{{ pulledNft?.fake_mainnet_data?.unit_name || pulledNft.unit_name }}</span></h5>
 
 
         <div v-if="pullState !== 'done'" class="text-fblue mt-12">
@@ -76,9 +80,13 @@
         </div>
 <!--        <h2 v-if="pullState !== 'not_pulling' && pullState !== 'done'" class="text-faqua font-extrabold mb-6">LANDING A BIG ONE!</h2>-->
 
-        <div v-if="pullState === 'done'">
-          <h5 class="text-fblue mb-12">You will receive <span class="text-fgreen">{{ pulledNftId }}</span> momentarily</h5>
-          <styled-button button-style="primary wide" @click="reInitialize(true)">
+        <div v-if="pullState === 'done'" class="mx-4">
+<!--          <h5 class="text-fblue mb-12">You will receive <span class="text-fgreen">{{ pulledNftId }}</span> momentarily</h5>-->
+          <div class="mb-6">
+            <pulled-nft-info :pulled-nft="pulledNft"></pulled-nft-info>
+          </div>
+
+          <styled-button class="px-2" button-style="primary wide" @click="reInitialize(true)">
             {{ $t('DONE') }}
           </styled-button>
         </div>
@@ -97,10 +105,11 @@ import PullHeaders from "@/components/utilities/PullHeaders"
 import StyledButton from "@/components/utilities/StyledButton"
 import Modal from "@/components/utilities/Modal"
 import NftImage from "@/components/utilities/NftImage"
+import PulledNftInfo from "@/components/utilities/PulledNftInfo"
 import {defaultPoolMetas} from "@/utilities/defaults"
 import {formatNumberShort} from "@jackcom/reachduck"
 import {nftImageLoading} from "@/state"
-import {get, post} from "@/utilities/api"
+import {post} from "@/utilities/api"
 import * as backend from "@/reach/contracts/build/index.main.mjs"
 import ImageKitMixin from "@/mixins/ImageKit.mixin";
 import {useIndexerClient} from "@jackcom/reachduck/lib/networks/ALGO.indexer";
@@ -108,7 +117,7 @@ import {loadStdlib} from "@reach-sh/stdlib";
 
 export default defineComponent({
   components: { PageContainer, TopOrLeftPanel, BottomOrRightPanel, PullHeaders,
-  StyledButton, Modal, NftImage },
+  StyledButton, Modal, NftImage, PulledNftInfo, },
   name: "Pull",
 
   mixins: [ImageKitMixin],
@@ -122,6 +131,7 @@ export default defineComponent({
       // attaching, sending_fun, transferring_fun, transferring_nft, done
       pullState: 'not_pulling',
       pulledNftId: null,
+      pulledNft: null,
       finalizedPullCost: null,
       optInToken: null,
       txns: [],
@@ -142,10 +152,6 @@ export default defineComponent({
     pullCostShort() {
       return formatNumberShort(this.store.poolMetas.current_pull_cost)
     },
-    pulledNftShim() {
-      const id = this.pulledNftId
-      return id ? { 'asset-id' : id, name: id } : null
-    },
     pulledNftImageWidth() {
       return this.spacingToPixels(this.store.isMobile ? 76 : 96)
     },
@@ -154,7 +160,7 @@ export default defineComponent({
           `${this.pulledNftId}.png`,
           this.pulledNftImageWidth
       )
-    }
+    },
   },
 
   methods: {
@@ -191,9 +197,10 @@ export default defineComponent({
       const res = await post(`random-contract-info?`, {pay_txn: JSON.stringify(payTxn)}).catch(err => {
         this.oop(err, 'Failed to fetch random NFT contract')
       })
-      this.finalizedPullCost = res.finalized_pull_cost
-      this.optInToken = res.opt_in_token
-      return res.contract_info
+      this.finalizedPullCost = res.nft.pull_cost_fun
+      this.optInToken = res.nft.asset_id
+      this.pulledNft = res.nft
+      return res.nft.contract_info
     },
 
     // The rest of these methods are triggered by Reach

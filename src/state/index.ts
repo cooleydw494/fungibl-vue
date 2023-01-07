@@ -18,6 +18,8 @@ const store = createState({
   /** Reach `networkAccount` instance */
   account: null as any | null,
 
+  user: null as any | null,
+
   walletType: null as string | null,
 
   /** Reach `networkAccount` balance */
@@ -34,7 +36,7 @@ const store = createState({
   assets: [] as Array<any>,
 
   /** TODO: Get wallet NFTs */
-  nfts: [] as Array<any>,
+  nfts: [] as Array<object>,
 
   needsPostAuthNftSync: false,
 

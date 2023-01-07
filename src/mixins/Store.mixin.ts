@@ -87,13 +87,14 @@ const StoreMixin = defineComponent({
       return this.getState('algodClient')
     },
 
-    async initWalletStuff(): Promise<any> {
+    async initWalletStuff(reconnecting = false): Promise<any> {
       do {
         this.sleep(100)
       } while (!this.getState('address'))
       Promise.all([
         await this.getAssets(),
         await this.getFunUserInfo(),
+        (reconnecting ? null : (await this.refreshNfd())),
         // await this.getAppFunInfo(), obsoleted because of PoolMetas
       ]).then(() => console.log('Finished initWalletStuff'))
           .catch(err => this.oop(err, err.message))
@@ -117,22 +118,25 @@ const StoreMixin = defineComponent({
         store.assets(this.getState('assets').filter((asset: {[k: string]: any}) => {
           return asset.amount > 0 && !asset['is-frozen'] && !asset.deleted
         }))
+        const dontSync: Array<number> = await localforage.getItem('dont_sync') || []
         const shallowNfts: Array<any> = await Promise.all(
             this.getState('assets').filter((asset: {[k: string]: any}) => {
-              return asset.amount === 1
+              return asset.amount === 1 && !dontSync.includes(parseInt(asset['asset-id']))
             }))
         const nftLookups = shallowNfts.map((nft: {[k: string]: any}) => nft['asset-id'])
-        const nfts = []
-        await localforage.iterate((key: string, value: string, pos: number) => {
+        const nfts: Array<object> = []
+        await localforage.iterate((value: any, key: string, pos: number) => {
+          if (['dont_sync'].includes(key)) { return } // this isn't an NFT
           const intKey = parseInt(key)
           const index = nftLookups.indexOf(intKey)
           if (index > -1) {
-            nfts.push(JSON.parse(value))
+            nfts.push(value)
             nftLookups.splice(index, 1)
           } else {
             localforage.removeItem(key)
           }
         })
+        store.nfts(nfts) // from localforage
 
         let nftLookupObjs = []
         // Outside mainnet, we can't look up nft data with Asalytic
@@ -144,10 +148,12 @@ const StoreMixin = defineComponent({
             const base = 'https://nftstorage.link/ipfs/'
             let assetUrl = nftInfo.params.url
             const isArc19 = nftInfo.params.url.includes('template-ipfs')
-            const metadataUrl = parseASAUrl(assetUrl, nftInfo.params.reserve)
-            const metadata =  (await getMetaFromIpfs(metadataUrl))
-            console.log(' metadata', metadata)
-            assetUrl = metadata['image']
+            let metadata = null
+            if (isArc19) {
+              const metadataUrl = parseASAUrl(assetUrl, nftInfo.params.reserve)
+              metadata = (await getMetaFromIpfs(metadataUrl))
+              assetUrl = metadata['image']
+            }
             const index = assetUrl.indexOf('ipfs://') > -1 ?
                 assetUrl.indexOf('ipfs://') + 7 : assetUrl.indexOf('ipfs/') + 5;
             const imageUrl = `${base}${assetUrl.substr(index)}`
@@ -155,7 +161,7 @@ const StoreMixin = defineComponent({
             return {
               asset_id: id, ...nftInfo, metadata, imageUrl, label,
               metadata_standard:(isArc19 ? 'arc19' : 'arc69'),
-              mainnet_asset_id: nftInfo.properties.mainnet_asset_id || null,
+              mainnet_asset_id: metadata?.properties?.mainnet_asset_id || null,
               // mainnet_unit_name: nftInfo.properties.mainnet_unit_name || null,
               // mainnet_asset_name: nftInfo.properties.mainnet_asset_name || null,
             }
@@ -180,6 +186,12 @@ const StoreMixin = defineComponent({
         post(`nfts/sync`, {nft_lookups: nftLookups})
             .then((res) => {
               store.nfts([...this.getState('nfts'), ...res.nfts])
+              // cache NFTs with localforage that don't update every time
+              // So basically non-ARC19
+              this.storeNftStateLocally()
+              if (res.dont_sync) {
+                this.addToDontSync(res.dont_sync)
+              }
               res.needs_caching.forEach((assetId: number) => {
                 this.cacheImage(assetId)
               })
@@ -188,6 +200,23 @@ const StoreMixin = defineComponent({
               this.oop(err, null, 'Err on NFT Sync')
             })
       } else { store.needsPostAuthNftSync(true) }
+    },
+
+    async addToDontSync(dontSyncIds: Array<number>) {
+      await localforage.getItem('dont_sync', (value) => {
+        const existing = value || []
+        const newVal: Array<number> = [...existing, ...dontSyncIds]
+        localforage.setItem('dont_sync', newVal)
+      })
+    },
+
+    async storeNftStateLocally() {
+      this.getState('nfts')
+          .forEach((nft: any) => {
+            if (nft.metadata_standard !== 'arc19') {
+              localforage.setItem(`${nft.asset_id}`, nft)
+            }
+          })
     },
 
     async cacheImage(assetId: number): Promise<any> {
@@ -209,6 +238,26 @@ const StoreMixin = defineComponent({
           store.funBalance(funInfo['asset-holding'].amount); store.funOptedIn(true)
         } else { store.funBalance(`🥲`); store.funOptedIn(false) }
       } catch (err) { store.funBalance(`🥲`); store.funOptedIn(false) }
+    },
+
+    async refreshNfd(): Promise<any> {
+      const base = process.env.VUE_APP_NFD_BASE_URL
+      console.log(base)
+      const address: string = this.getState('address')
+      get(`v2/address?address=${address}&limit=1&view=thumbnail`, base)
+          .then((res: {[k: string]: any}) => {
+            const nfd = res?.[address]?.[0] || null
+            if (nfd === null || !nfd['caAlgo'] || !nfd['caAlgo'].includes(address)) { return }
+            const name = nfd?.name || null
+            const avatarUrl = nfd?.properties?.verified?.avatar || null
+            const user = this.getState('user')
+            if (name !== user.nfd || avatarUrl !== user.avatar_url)
+            post(`update-nfd-info`, {nfd: name, avatar_url: avatarUrl})
+                .then(res => {
+                  if (res.user) { store.user(res.user) }
+                })
+                .catch(err => this.oop(err))
+      }).catch(err => this.oop(err))
     },
 
     async optInToFun(): Promise<any> {
