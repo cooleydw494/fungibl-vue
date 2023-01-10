@@ -57,6 +57,8 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "ENTRY EST.": "ENTRY EST.",
         "EXIT EST.": "EXIT EST.",
         "RELATIVE VALUE": "RELATIVE VALUE",
+        "Checkbox": "Checkbox",
+        "Check": "Check",
 
         // TRY TO KEEP THE SAME LENGTH
         "SUBMIT": "SUBMIT",
@@ -164,6 +166,8 @@ const messages: {[k:string]: {[k:string]: string}} = {
         "ENTRY EST.": "ENTRY EST.",
         "EXIT EST.": "EXIT EST.",
         "RELATIVE VALUE": "RELATIVE VALUE",
+        "Checkbox": "Checkbox",
+        "Check": "Check",
 
 
         // TRY TO KEEP THE SAME LENGTH
